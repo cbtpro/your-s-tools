@@ -49,4 +49,11 @@ export default defineConfig({
       }
     }
   },
+  server: {
+    watch: {
+      // 自动重建
+      usePolling: true,
+      interval: 100
+    }
+  },
 })

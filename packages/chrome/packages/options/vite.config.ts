@@ -26,4 +26,11 @@ export default defineConfig({
   build: {
     outDir: '../../dist/options',
   },
+  server: {
+    watch: {
+      // 自动重建
+      usePolling: true,
+      interval: 100
+    }
+  },
 })

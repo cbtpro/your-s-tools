@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm -r run dev",
+    "build:watch": "pnpm -r run build:watch",
     "build": "pnpm -r run build",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"

@@ -24,6 +24,14 @@ export default defineConfig({
     // }) as unknown as PluginOption
   ],
   build: {
+    sourcemap: true,
     outDir: '../../dist/newtab',
+  },
+  server: {
+    watch: {
+      // 自动重建
+      usePolling: true,
+      interval: 100
+    }
   },
 })

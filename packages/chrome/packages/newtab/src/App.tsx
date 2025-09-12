@@ -1,10 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useChromeStorage from './utils/use-chrome-storage';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const storage = useChromeStorage({ area: 'local' });
+
+  const testChromeStorage = async () => {
+    
+    // 设置值
+    await storage.setItem('color', 'blue', 10);
+
+    // 获取值
+    const color = await storage.getItem<string>('color');
+    console.log('color:', color);
+
+    // 删除值
+    await storage.removeItem('color');
+
+  }
+  useEffect(() => {
+    // 监听值变化
+    storage.onChange('color', (newValue, oldValue) => {
+      console.log('颜色变化了:', oldValue, '→', newValue);
+    });
+    return () => {
+      // 取消监听
+      storage.offChange('color', (newValue, oldValue) => {
+        console.log('颜色变化了:', oldValue, '→', newValue);
+      });
+    }
+  }, [])
+  useEffect(() => {
+    testChromeStorage()
+  }, [])
+
 
   return (
     <>
@@ -25,9 +58,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      新标签页1
     </>
   )
 }
