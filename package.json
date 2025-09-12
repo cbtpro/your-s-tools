@@ -1,0 +1,27 @@
+{
+  "name": "your-s-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -r run dev",
+    "build": "pnpm -r run build",
+    "catalog": "pnpx codemod pnpm/catalog",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": "^20.19.3",
+    "pnpm": "^10.10.0"
+  },
+  "dependencies": {
+    "@types/node": "^24.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.9",
+    "vite-plugin-static-copy": "^3.1.2"
+  }
+}
