@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@arco-design/web-react": "^2.66.5",
     "@your-s-tools/shared": "workspace:^",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
