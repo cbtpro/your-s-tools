@@ -1,15 +1,10 @@
 import { useEffect } from 'react'
 import { Button } from "@arco-design/web-react";
-// import useChromeStorage from '@your-s-tools/shared/utils/use-chrome-storage';
-// import useCountStorage from '@your-s-tools/shared/hook/use-count-storage';
-
 import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
-import "@arco-design/web-react/dist/css/arco.css";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import reactLogo from '../../assets/react.svg'
+import viteLogo from '../../assets/vite.svg'
 
-function App() {
+function Home() {
   const storage = useChromeStorage({ area: 'local' });
   const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
@@ -71,13 +66,9 @@ function App() {
         <Button type="primary" onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      新标签页
     </>
   )
 }
 
-export default App
+export default Home;

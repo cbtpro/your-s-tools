@@ -1,12 +1,9 @@
 {
   "name": "your-s-tools",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run dev:shared & pnpm run dev:chrome:packages & pnpm run dev:chrome",
-    "dev:shared": "pnpm -r --filter \"./packages/shared\" run build:watch",
-    "dev:chrome": "pnpm -r --filter \"./packages/chrome\" run build:watch",
-    "dev:chrome:packages": "pnpm -r --filter \"./packages/chrome\" run build:packages",
+    "dev": "pnpm -r --filter ./packages/** run dev",
     "build": "pnpm -r run build",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"

@@ -24,9 +24,11 @@ export default defineConfig({
     // }) as unknown as PluginOption
   ],
   build: {
-    outDir: '../../dist/options',
+    outDir: '../chrome/dist/popup',
   },
   server: {
+    host: '::',
+    port: 8002,
     watch: {
       // 自动重建
       usePolling: true,

@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build:watch": "tsc -b && vite build --watch",
     "build:packages": "pnpm -r --filter \"./packages/**\" run build:watch",
     "lint": "eslint .",

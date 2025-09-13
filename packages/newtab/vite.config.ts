@@ -24,9 +24,12 @@ export default defineConfig({
     // }) as unknown as PluginOption
   ],
   build: {
-    outDir: '../../dist/popup',
+    sourcemap: true,
+    outDir: '../chrome/dist/newtab',
   },
   server: {
+    host: '::',
+    port: 8000,
     watch: {
       // 自动重建
       usePolling: true,

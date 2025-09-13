@@ -24,10 +24,11 @@ export default defineConfig({
     // }) as unknown as PluginOption
   ],
   build: {
-    sourcemap: true,
-    outDir: '../../dist/newtab',
+    outDir: '../chrome/dist/options',
   },
   server: {
+    host: '::',
+    port: 8001,
     watch: {
       // 自动重建
       usePolling: true,
