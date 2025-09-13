@@ -5,6 +5,9 @@
 ```bash
 pnpm install
 
+cd packages/shared
+pnpm run build:watch
+
 cd packages/newtab
 pnpm run build:watch
 

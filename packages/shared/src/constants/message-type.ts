@@ -1,0 +1,10 @@
+enum MESSAGE_TYPE {
+  /**
+   * 路由跳转
+   */
+  NAVIGATION = 'NAVIGATION',
+  OPEN_SETTINGS = 'OPEN_SETTINGS',
+  OPEN_ABOUT = 'OPEN_ABOUT',
+}
+
+export default MESSAGE_TYPE;

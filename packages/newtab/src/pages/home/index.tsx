@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { Button } from "@arco-design/web-react";
 import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
-import reactLogo from '../../assets/react.svg'
-import viteLogo from '../../assets/vite.svg'
 
 function Home() {
   const storage = useChromeStorage({ area: 'local' });
@@ -53,15 +51,6 @@ function Home() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
         <Button type="primary" onClick={() => setCount((count) => count + 1)}>
           count is {count}

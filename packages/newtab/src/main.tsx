@@ -1,14 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import './index.css'
 import App from './App.tsx'
 import "@arco-design/web-react/dist/css/arco.css";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Router>
+    <HashRouter>
       <App />
-    </Router>
+    </HashRouter>
   </StrictMode>,
 )

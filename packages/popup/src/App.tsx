@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
-import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useChromeStorage, useCountStorage, MESSAGE_TYPE } from '@your-s-tools/shared';
 import './App.css'
 
 function App() {
@@ -36,27 +34,20 @@ function App() {
     testChromeStorage()
   }, [])
 
+  const goToSomePath = (path: string) => {
+    // 发送消息给扩展（包括 newtab 页面）
+    chrome.runtime.sendMessage({ type: MESSAGE_TYPE.NAVIGATION, payload: { path } });
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={() => goToSomePath('/settings')}>设置</button>
+        <button onClick={() => goToSomePath('/about')}>关于</button>
       </div>
-      Popup1
     </>
   )
 }
