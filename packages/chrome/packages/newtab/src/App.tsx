@@ -74,7 +74,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      新标签页122
+      新标签页
     </>
   )
 }
