@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
-import useChromeStorage from './utils/use-chrome-storage';
+import { useEffect } from 'react'
+import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const changeCount = () => {
-    setCount((count) => {
-      return count + 1
-    })
-  }
   const storage = useChromeStorage({ area: 'local' });
+  const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
     
     // 设置值
@@ -54,7 +49,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={changeCount}>
+        <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
         <p>

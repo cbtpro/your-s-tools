@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm -r run dev",
-    "build:watch": "pnpm -r run build:watch",
+    "dev": "pnpm run dev:shared & pnpm run dev:chrome:packages & pnpm run dev:chrome",
+    "dev:shared": "pnpm -r --filter \"./packages/shared\" run build:watch",
+    "dev:chrome": "pnpm -r --filter \"./packages/chrome\" run build:watch",
+    "dev:chrome:packages": "pnpm -r --filter \"./packages/chrome\" run build:packages",
     "build": "pnpm -r run build",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"

@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
-import useChromeStorage from './utils/use-chrome-storage';
+import { useEffect } from 'react'
+// import useChromeStorage from '@your-s-tools/shared/utils/use-chrome-storage';
+// import useCountStorage from '@your-s-tools/shared/hook/use-count-storage';
+
+import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
+
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   const storage = useChromeStorage({ area: 'local' });
-
+  const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
     
     // 设置值
@@ -35,6 +37,20 @@ function App() {
     }
   }, [])
   useEffect(() => {
+    const onChangeHandle = (newValue: number | null, oldValue: number | null) => {
+      if (newValue !== oldValue) {
+        if (newValue === null) {
+          newValue = 0;
+        }
+        setCount(newValue);
+      }
+    }
+    storage.onChange('count', onChangeHandle);
+    return () => {
+      storage.offChange('count', onChangeHandle);
+    }
+  }, []);
+  useEffect(() => {
     testChromeStorage()
   }, [])
 
@@ -58,7 +74,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      新标签页1
+      新标签页122
     </>
   )
 }

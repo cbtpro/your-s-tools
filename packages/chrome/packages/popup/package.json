@@ -1,7 +1,7 @@
 {
-  "name": "chrome-popup",
+  "name": "@your-s-tools/popup",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@your-s-tools/shared": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

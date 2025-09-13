@@ -1,7 +1,7 @@
 {
-  "name": "chrome-options",
+  "name": "@your-s-tools/options",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
