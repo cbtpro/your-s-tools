@@ -32,6 +32,10 @@ export default defineConfig({
           dest: './assets/icons',
         }
       ],
+      watch: {
+        // options: {},
+        // reloadPageOnChange: false,
+      },
     }) as unknown as PluginOption
   ],
   build: {
