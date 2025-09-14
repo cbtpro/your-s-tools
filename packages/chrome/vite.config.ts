@@ -43,13 +43,13 @@ export default defineConfig({
     emptyOutDir: false,  // 不清空输出目录
     rollupOptions: {
       input: {
-        background: resolve(__dirname, "src/background.ts"), // 后台脚本
-        content: resolve(__dirname, "src/content.ts")        // 内容脚本
+        background: resolve(__dirname, 'src/background.ts'), // 后台脚本
+        content: resolve(__dirname, 'src/content.ts')        // 内容脚本
       },
       output: {
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-        assetFileNames: "[name].[ext]"
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]'
       }
     }
   },

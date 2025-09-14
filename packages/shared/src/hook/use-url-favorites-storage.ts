@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import useChromeStorage from "../utils/use-chrome-storage";
-import { STORAGE_KEY, StorageAreaEnum } from "../constants/enums";
+import { useEffect, useState } from 'react';
+import useChromeStorage from '../utils/use-chrome-storage';
+import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
 const useUrlFavoritesStorage = <T>() : [T | null, React.Dispatch<React.SetStateAction<T | null>>] => {
   const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });

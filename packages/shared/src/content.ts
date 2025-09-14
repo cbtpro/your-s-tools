@@ -1,7 +1,7 @@
-console.log("Content script running...")
+console.log('Content script running...')
 
-if (location.protocol === "chrome-extension:") {
+if (location.protocol === 'chrome-extension:') {
   chrome.runtime.onInstalled.addListener(() => {
-    console.log("扩展程序已安装");
+    console.log('扩展程序已安装');
   });
 }

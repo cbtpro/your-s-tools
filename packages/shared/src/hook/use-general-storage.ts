@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import useChromeStorage from "../utils/use-chrome-storage";
-import { STORAGE_KEY, StorageAreaEnum } from "../constants/enums";
+import { useEffect, useState } from 'react';
+import useChromeStorage from '../utils/use-chrome-storage';
+import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
 const useGeneralStorage = <T>(
   /**

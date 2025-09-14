@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button } from "@arco-design/web-react";
+import { Button } from '@arco-design/web-react';
 import { useChromeStorage, useCountStorage, STORAGE_KEY, StorageAreaEnum } from '@your-s-tools/shared';
 
 function Home() {

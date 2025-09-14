@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useChromeStorage, useCountStorage, MESSAGE_TYPE, StorageAreaEnum } from '@your-s-tools/shared';
-import './App.css'
+import Menu from './components/menu';
+// import './App.css'
 
 function App() {
   const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
@@ -41,6 +42,7 @@ function App() {
   return (
     <>
       <div className="card">
+        <Menu appName="Your App" version="1.0.0" />
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>

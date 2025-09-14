@@ -1,4 +1,4 @@
-import { StorageAreaEnum } from "../constants/enums";
+import { StorageAreaEnum } from '../constants/enums';
 
 interface ChromeStorageOptions {
   area?: StorageAreaEnum; // 默认为 local

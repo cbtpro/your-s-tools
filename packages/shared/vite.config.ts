@@ -1,6 +1,6 @@
-import path from "path";
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
+import path from 'path';
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   build: {
@@ -13,19 +13,19 @@ export default defineConfig({
     },
     // lib: {
     //   entry: {
-    //     index: path.resolve(__dirname, "src/index.ts"),
-    //     utils: path.resolve(__dirname, "src/utils/index.ts"),
-    //     hooks: path.resolve(__dirname, "src/hooks/index.ts"),
+    //     index: path.resolve(__dirname, 'src/index.ts'),
+    //     utils: path.resolve(__dirname, 'src/utils/index.ts'),
+    //     hooks: path.resolve(__dirname, 'src/hooks/index.ts'),
     //   },
-    //   name: "@your-s-tools/shared",
+    //   name: '@your-s-tools/shared',
     //   fileName: (format, entryName) => `${entryName}.${format}.js`,
-    //   formats: ["es", "cjs"],
+    //   formats: ['es', 'cjs'],
     // },
     rollupOptions: {
-      external: ["react"],
+      external: ['react'],
       output: {
         globals: {
-          react: "React",
+          react: 'React',
         },
       },
       plugins: [],
