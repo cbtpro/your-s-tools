@@ -5,12 +5,21 @@ import './root.css';
 import '../../assets/styles/styles.css';
 import '../../assets/styles/example-styles.css';
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 function Root() {
 
   const containerRef = useRef<HTMLDivElement>(null);
-  
+  const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
+  const compactType = "vertical";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const initCount = async () => {
+      setMounted(true);
+    };
+    if (!mounted) initCount();
+  }, []);
   const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>({
     lg: [
       {
@@ -19,8 +28,7 @@ function Root() {
         x: 0,
         y: 0,
         i: '0',
-        moved: false,
-        static: false,
+        static: true,
       },
       {
         w: 9,
@@ -58,7 +66,7 @@ function Root() {
         y: 0,
         i: '0',
         moved: false,
-        static: false,
+        static: true,
       },
       {
         w: 4,
@@ -71,7 +79,7 @@ function Root() {
       },
       {
         w: 2,
-        h: 1,
+        h: 2,
         x: 4,
         y: 1,
         i: '2',
@@ -80,9 +88,9 @@ function Root() {
       },
       {
         w: 2,
-        h: 1,
+        h: 2,
         x: 4,
-        y: 2,
+        y: 3,
         i: '3',
         moved: false,
         static: false,
@@ -95,8 +103,8 @@ function Root() {
     currentLayout: ReactGridLayout.Layout[],
     allLayouts: ReactGridLayout.Layouts
   ) => {
-    // console.log("currentLayout:", currentLayout);
-    // console.log(allLayouts);
+    // console.log('currentLayout:', currentLayout);
+    console.log(allLayouts);
     setLayouts(allLayouts);
   };
   const generateDOM = () => {
@@ -123,11 +131,24 @@ function Root() {
     const timer = setTimeout(() => setFirstRender(false), 200);
     return () => clearTimeout(timer);
   }, []);
+
+  const onBreakpointChange = (newBreakpoint: string, newCols: number) => {
+    setCurrentBreakpoint(newBreakpoint);
+  }
   return (
-    <div ref={containerRef} style={{ height: "100vh", background: "#f8f9fa" }} className="layout-container">
-      <ResponsiveGridLayout layouts={layouts} onLayoutChange={onLayoutChange} style={{ visibility: firstRender ? 'hidden' : 'visible' }}>
+    <div ref={containerRef} style={{ background: "#f8f9fa" }} className="layout-container">
+      <ResponsiveReactGridLayout
+        layouts={layouts}
+        onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
+        measureBeforeMount={false}
+        useCSSTransforms={mounted}
+        compactType={compactType}
+        preventCollision={!compactType}
+        style={{ visibility: firstRender ? 'hidden' : 'visible' }}
+      >
         {generateDOM()}
-      </ResponsiveGridLayout>
+      </ResponsiveReactGridLayout>
     </div>
   );
 }
