@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useChromeStorage, useCountStorage, MESSAGE_TYPE, StorageAreaEnum } from '@your-s-tools/shared';
+import { useChromeStorage, useCountStorage, MESSAGE_TYPE, StorageAreaEnum, version } from '@your-s-tools/shared';
 import Menu from './components/menu';
 // import './App.css'
 
@@ -42,12 +42,12 @@ function App() {
   return (
     <>
       <div className="card">
-        <Menu appName="Your App" version="1.0.0" />
-        <button onClick={() => setCount((count) => count + 1)}>
+        <Menu appName="Your's App" version={version} />
+        {/* <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
         <button onClick={() => goToSomePath('/settings')}>设置</button>
-        <button onClick={() => goToSomePath('/about')}>关于</button>
+        <button onClick={() => goToSomePath('/about')}>关于</button> */}
       </div>
     </>
   )

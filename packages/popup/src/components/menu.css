@@ -1,7 +1,8 @@
 .menu-container {
   display: flex;
   flex-direction: column;
-  width: 240px;
+  /* width: 240px; */
+  width: 200px;
   background: #f9f9f9;
   border-right: 1px solid #ddd;
   font-family: sans-serif;
@@ -11,6 +12,11 @@
   padding: 16px;
   text-align: center;
   border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
 }
 
 .menu-header h2 {
@@ -31,6 +37,9 @@
 }
 
 .menu-list li {
+  gap: 4px;
+  display: flex;
+  flex-direction: row;
   padding: 12px 20px;
   cursor: pointer;
   transition: background 0.2s;
