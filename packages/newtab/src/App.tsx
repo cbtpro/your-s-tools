@@ -12,8 +12,8 @@ export default function App() {
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === MESSAGE_TYPE.NAVIGATION) {
     // console.log("收到 popup 消息:", msg.payload);
-    // console.log("sender:", sender);
-    // sendResponse({ success: true });
+    console.log("sender:", sender);
+    sendResponse({ success: true });
     // 在这里做页面跳转、状态更新
     navigate(msg.payload.path);
   }
