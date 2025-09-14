@@ -1,7 +1,7 @@
-type StorageArea = 'local' | 'sync';
+import { StorageAreaEnum } from "../constants/enums";
 
 interface ChromeStorageOptions {
-  area?: StorageArea; // 默认为 local
+  area?: StorageAreaEnum; // 默认为 local
 }
 
 type StorageChangeCallback<T = any> = (newValue: T | null, oldValue: T | null) => void;
@@ -9,7 +9,7 @@ type StorageChangeCallback<T = any> = (newValue: T | null, oldValue: T | null) =
 const NEVER_EXPIRES_FLAG = -1;
 
 export const useChromeStorage = (options: ChromeStorageOptions = {}) => {
-  const area: StorageArea = options.area || 'local';
+  const area: StorageAreaEnum = options.area || StorageAreaEnum.LOCAL;
 
   const getStorage = () => chrome.storage[area];
 
@@ -103,10 +103,11 @@ export const useChromeStorage = (options: ChromeStorageOptions = {}) => {
       // 过滤过期时间 key
       if (key.endsWith('__expires__')) return;
 
-      const newVal = changes[key].newValue;
-      const oldVal = changes[key].oldValue;
+      const { newValue: newVal, oldValue: oldVal } = changes[key];
 
-      listeners.get(key)?.forEach((cb) => cb(newVal, oldVal));
+      listeners.get(key)?.forEach((cb) => {
+        cb(newVal, oldVal);
+      });
     });
   });
 

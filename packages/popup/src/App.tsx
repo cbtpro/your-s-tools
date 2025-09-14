@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { useChromeStorage, useCountStorage, MESSAGE_TYPE } from '@your-s-tools/shared';
+import { useChromeStorage, useCountStorage, MESSAGE_TYPE, StorageAreaEnum } from '@your-s-tools/shared';
 import './App.css'
 
 function App() {
-  const storage = useChromeStorage({ area: 'local' });
+  const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
   const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
     
@@ -19,15 +19,14 @@ function App() {
 
   }
   useEffect(() => {
-    // 监听值变化
-    storage.onChange('color', (newValue, oldValue) => {
+    const colorChangedCallback = (newValue?: string | null, oldValue?: string | null) => {
       console.log('color changed:', oldValue, '→', newValue);
-    });
+    }
+    // 监听值变化
+    storage.onChange('color', colorChangedCallback);
     return () => {
       // 取消监听
-      storage.offChange('color', (newValue, oldValue) => {
-        console.log('color changed:', oldValue, '→', newValue);
-      });
+      storage.offChange('color', colorChangedCallback);
     }
   }, [])
   useEffect(() => {

@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@arco-design/web-react";
-import { useChromeStorage, useCountStorage } from '@your-s-tools/shared';
+import { useChromeStorage, useCountStorage, STORAGE_KEY, StorageAreaEnum } from '@your-s-tools/shared';
 
 function Home() {
-  const storage = useChromeStorage({ area: 'local' });
+  const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
   const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
     
@@ -19,15 +19,14 @@ function Home() {
 
   }
   useEffect(() => {
-    // 监听值变化
-    storage.onChange('color', (newValue, oldValue) => {
+    const colorChangedCallback = (newValue?: string | null, oldValue?: string | null) => {
       console.log('颜色变化了:', oldValue, '→', newValue);
-    });
+    }
+    // 监听值变化
+    storage.onChange('color', colorChangedCallback);
     return () => {
       // 取消监听
-      storage.offChange('color', (newValue, oldValue) => {
-        console.log('颜色变化了:', oldValue, '→', newValue);
-      });
+      storage.offChange('color', colorChangedCallback);
     }
   }, [])
   useEffect(() => {
@@ -39,14 +38,16 @@ function Home() {
         setCount(newValue);
       }
     }
-    storage.onChange('count', onChangeHandle);
+    storage.onChange(STORAGE_KEY.COUNT, onChangeHandle);
     return () => {
-      storage.offChange('count', onChangeHandle);
+      storage.offChange(STORAGE_KEY.COUNT, onChangeHandle);
     }
   }, []);
   useEffect(() => {
     testChromeStorage()
   }, [])
+
+  const [message, setMessage] = useState<string>('');
 
 
   return (
@@ -56,6 +57,7 @@ function Home() {
           count is {count}
         </Button>
       </div>
+      <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="input" />
     </>
   )
 }

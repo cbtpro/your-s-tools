@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import useChromeStorage from "../utils/use-chrome-storage";
 import { STORAGE_KEY, StorageAreaEnum } from "../constants/enums";
 
-const useCountStorage = () : [number, React.Dispatch<React.SetStateAction<number>>] => {
+const useUrlFavoritesStorage = <T>() : [T | null, React.Dispatch<React.SetStateAction<T | null>>] => {
   const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
-  const [count, setCount] = useState(0);
+  const [data, setData] = useState<T | null>(null);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const initCount = async () => {
-      const storeCount = await storage.getItem<number>(STORAGE_KEY.COUNT);
-      if (storeCount) {
-        setCount(storeCount);
+      const storeData = await storage.getItem<T>(STORAGE_KEY.URL_FAVORITES);
+      if (storeData) {
+        setData(storeData);
       }
       setInitialized(true);
     };
@@ -20,11 +20,11 @@ const useCountStorage = () : [number, React.Dispatch<React.SetStateAction<number
 
   useEffect(() => {
     if (initialized) {
-      storage.setItem(STORAGE_KEY.COUNT, count);
+      storage.setItem(STORAGE_KEY.URL_FAVORITES, data);
     }
-  }, [count, initialized, storage]);
+  }, [data, initialized, storage]);
 
-  return [count, setCount];
+  return [data, setData];
 };
 
-export default useCountStorage;
+export default useUrlFavoritesStorage;
