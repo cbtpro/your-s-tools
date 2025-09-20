@@ -1,4 +1,4 @@
-// import { resolve, dirname } from 'path';
+import { resolve } from 'path';
 // import { fileURLToPath } from 'url';
 import {
   defineConfig,
@@ -26,6 +26,11 @@ export default defineConfig({
   build: {
     sourcemap: true,
     outDir: '../chrome/dist/newtab',
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
+    }
   },
   server: {
     host: '::',

@@ -1,9 +1,9 @@
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
-import Home from './pages/home';
-import About from './pages/about';
-import Settings from './pages/settings';
-import NotFound from './pages/notfound';
+import Home from '@/pages/home';
+import About from '@/pages/about';
+import Settings from '@/pages/settings';
+import NotFound from '@/pages/notfound';
 
 import './App.css'
 

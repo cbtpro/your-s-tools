@@ -1,4 +1,4 @@
-import { Root } from '../../components/main-layout';
+import { Root } from '@/components/main-layout';
 // import Demo from '../demo';
 
 function Home() {
