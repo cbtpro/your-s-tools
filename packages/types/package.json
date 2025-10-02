@@ -1,0 +1,6 @@
+{
+  "name": "@your-s-tools/types",
+  "version": "0.0.1",
+  "main": "",
+  "types": "index.d.ts"
+}

@@ -18,11 +18,12 @@
     "pnpm": "^10.10.0"
   },
   "dependencies": {
-    "@types/node": "^24.3.1",
-    "vue-starport": "^0.4.0"
+    "@types/node": "catalog:",
+    "consola": "catalog:",
+    "vue-starport": "catalog:"
   },
   "devDependencies": {
-    "@types/chrome": "^0.1.9",
-    "vite-plugin-static-copy": "^3.1.2"
+    "@types/chrome": "catalog:",
+    "vite-plugin-static-copy": "catalog:"
   }
 }

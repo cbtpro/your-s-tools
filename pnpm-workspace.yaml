@@ -1,6 +1,36 @@
 packages:
   - packages/*
-catalog:
-  react: ^19.1.1
 onlyBuiltDependencies:
   - esbuild
+  - vue-demi
+catalog:
+  "@arco-design/web-react": ^2.66.5
+  "@eslint/js": ^9.33.0
+  "@types/chrome": ^0.1.9
+  "@types/node": ^24.3.1
+  "@types/react": ^19.1.10
+  "@types/react-dom": ^19.1.7
+  "@types/react-grid-layout": ^1.3.5
+  "@types/react-resizable": ^3.0.8
+  "@types/react-router-dom": ^5.3.3
+  "@vitejs/plugin-react": ^5.0.0
+  concurrently: ^9.2.1
+  consola: ^3.4.2
+  eslint: ^9.33.0
+  eslint-plugin-react-hooks: ^5.2.0
+  eslint-plugin-react-refresh: ^0.4.20
+  globals: ^16.3.0
+  lucide-react: ^0.544.0
+  react: ^19.1.1
+  react-dnd: ^16.0.1
+  react-dnd-html5-backend: ^16.0.1
+  react-dom: ^19.1.1
+  react-grid-layout: ^1.5.2
+  react-resizable: ^3.0.5
+  react-router-dom: ^7.9.1
+  typescript: ~5.8.3
+  typescript-eslint: ^8.39.1
+  vite: ^7.1.2
+  vite-plugin-dts: ^4.5.4
+  vite-plugin-static-copy: ^3.1.2
+  vue-starport: ^0.4.0

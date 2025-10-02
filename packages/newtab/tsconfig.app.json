@@ -26,6 +26,10 @@
       "@/*": [
         "./src/*"
       ],
+      "typeRoots": [
+        "./node_modules/@your-s-tools/types",
+        "./node_modules/@types"
+      ]
     }
   },
   "include": ["src"]

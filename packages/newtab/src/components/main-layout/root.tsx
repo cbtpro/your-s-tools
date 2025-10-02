@@ -1,155 +1,192 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type JSX } from 'react';
+import { Button, Modal, } from '@arco-design/web-react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { DndProvider, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import type { YourToolApp } from "@your-s-tools/types";
 import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
+import { useLayoutStorage } from '@your-s-tools/shared';
 import './root.css';
 import '../../assets/styles/styles.css';
-import '../../assets/styles/example-styles.css';
+import { randomString } from '@/utils';
+
+const HoverDeleteButton = lazy(() => import('@/components/hover-delete-button'));
+const ComponentSidebar = lazy(() => import('@/components/component-sidebar'));
+const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
+const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
+const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
+const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-function Root() {
+// 组件映射表
+const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
+  BaseNavbar: AsyncBaseNavbar,
+  BaseSearchBar: AsyncBaseSearchBar,
+  BasePopular: AsyncBasePopular,
+  BaseFavorite: AsyncBaseFavorite,
+};
 
+function Root() {
+  const [_isLoading, _setIsLoading] = useState(false);
+  const [isEditMode, _setIsEditMode] = useState(true); // 开启拖拽/缩放
+  const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
+  const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
   const compactType = "vertical";
   const [mounted, setMounted] = useState(false);
+  const [_LayoutJsonData, _setLayoutJsonData] = useLayoutStorage();
 
-  useEffect(() => {
-    const initCount = async () => {
-      setMounted(true);
-    };
-    if (!mounted) initCount();
-  }, []);
   const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>({
-    lg: [
-      {
-        w: 12,
-        h: 1,
-        x: 0,
-        y: 0,
-        i: '0',
-        static: true,
-      },
-      {
-        w: 9,
-        h: 2,
-        x: 0,
-        y: 1,
-        i: '1',
-        moved: false,
-        static: false,
-      },
-      {
-        w: 3,
-        h: 2,
-        x: 9,
-        y: 1,
-        i: '2',
-        moved: false,
-        static: false,
-      },
-      {
-        w: 3,
-        h: 2,
-        x: 9,
-        y: 3,
-        i: '3',
-        moved: false,
-        static: false,
-      },
-    ],
-    sm: [
-      {
-        w: 6,
-        h: 1,
-        x: 0,
-        y: 0,
-        i: '0',
-        moved: false,
-        static: true,
-      },
-      {
-        w: 4,
-        h: 2,
-        x: 0,
-        y: 1,
-        i: '1',
-        moved: false,
-        static: false,
-      },
-      {
-        w: 2,
-        h: 2,
-        x: 4,
-        y: 1,
-        i: '2',
-        moved: false,
-        static: false,
-      },
-      {
-        w: 2,
-        h: 2,
-        x: 4,
-        y: 3,
-        i: '3',
-        moved: false,
-        static: false,
-      },
-    ],
+    lg: [],
+    sm: [],
   });
 
-  const { ready } = useStableResponsiveLayout(layouts, containerRef);
-  const onLayoutChange = (
-    currentLayout: ReactGridLayout.Layout[],
-    allLayouts: ReactGridLayout.Layouts
-  ) => {
-    // console.log('currentLayout:', currentLayout);
-    console.log(allLayouts);
+  const [layoutJson, setLayoutJson] = useState<YourToolApp.LayoutJsonData[]>([]);
+
+  const { ready: _ready } = useStableResponsiveLayout(layouts, containerRef);
+
+  useEffect(() => {
+    if (!mounted) setMounted(true);
+  }, [mounted]);
+
+  // 允许右侧接收拖拽
+  const [, drop] = useDrop(() => ({
+    accept: 'COMPONENT',
+    drop: (item: { type: string }) => {
+      const newId = randomString();
+      const newItem = { id: newId, component: item.type };
+      setLayoutJson((prev) => [...prev, newItem]);
+
+      setLayouts((prev) => ({
+        ...prev,
+        lg: [
+          ...(prev.lg || []),
+          { w: 10, h: 2, x: 0, y: Infinity, i: newId, static: false },
+        ],
+      }));
+    },
+  }));
+
+  const onLayoutChange = (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
     setLayouts(allLayouts);
   };
-  const generateDOM = () => {
-    return layouts.lg.map((l, i) => {
-      return (
-        <div key={i} className={l.static ? 'static' : ''}>
-          {l.static ? (
-            <span
-              className="text"
-              title="This item is static and cannot be removed or resized."
-            >
-              Static - {i}
-            </span>
-          ) : (
-            <span className="text">{i}</span>
-          )}
-        </div>
-      );
-    });
-  };
-  const [firstRender, setFirstRender] = useState(true);
 
+  const renderComponent = (layout: ReactGridLayout.Layout) => {
+    const { i: id } = layout;
+    const item = layoutJson.find((x) => x.id === id);
+    if (!item) return <span>Unknown Component</span>;
+
+    const Comp = componentMap[item.component];
+    if (!Comp) return <span>Missing Component: {item.component}</span>;
+
+    return (
+      <Suspense fallback={<div>Loading {item.component}...</div>}>
+        <Comp />
+      </Suspense>
+    );
+  };
+
+  const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => setFirstRender(false), 200);
     return () => clearTimeout(timer);
   }, []);
 
-  const onBreakpointChange = (newBreakpoint: string, newCols: number) => {
+  const onBreakpointChange = (newBreakpoint: string, _newCols: number) => {
     setCurrentBreakpoint(newBreakpoint);
-  }
+  };
+
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null); // 待删除的组件ID
+
+// 包装渲染的组件，增加 hover & 删除按钮
+const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
+  const { i: id } = layout;
   return (
-    <div ref={containerRef} style={{ background: "#f8f9fa" }} className="layout-container">
-      <ResponsiveReactGridLayout
-        layouts={layouts}
-        onLayoutChange={onLayoutChange}
-        onBreakpointChange={onBreakpointChange}
-        measureBeforeMount={false}
-        useCSSTransforms={mounted}
-        compactType={compactType}
-        preventCollision={!compactType}
-        style={{ visibility: firstRender ? 'hidden' : 'visible' }}
-      >
-        {generateDOM()}
-      </ResponsiveReactGridLayout>
+    <div
+      style={{
+        position: "relative",
+        height: "100%",
+      }}
+      className="hover-group"
+    >
+      {/* 删除按钮 */}
+      <HoverDeleteButton onClick={() => setDeleteTarget(id)} />
+
+      {/* 真实组件 */}
+      {renderComponent(layout)}
     </div>
+  );
+};
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (divRef.current) {
+      drop(divRef.current);
+    }
+  }, [drop]);
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+    setLayoutJson((prev) => prev.filter((item) => item.id !== deleteTarget));
+    setLayouts((prev) => ({
+      ...prev,
+      lg: (prev.lg || []).filter((l) => l.i !== deleteTarget),
+    }));
+    setDeleteTarget(null); // 清空状态
+  };
+
+  return (
+    <>
+      <DndProvider backend={HTML5Backend}>
+        <div style={{ display: 'flex', height: '100vh' }}>
+          {/* 左侧组件面板 */}
+          <Suspense fallback={<div>Loading Sidebar...</div>}>
+            <ComponentSidebar />
+          </Suspense>
+
+          {/* 右侧布局区 */}
+          <div ref={divRef} style={{ flex: 1, background: "#f8f9fa" }} className="layout-container">
+            <ResponsiveReactGridLayout
+              layouts={layouts}
+              onLayoutChange={onLayoutChange}
+              onBreakpointChange={onBreakpointChange}
+              measureBeforeMount={false}
+              useCSSTransforms={mounted}
+              compactType={compactType}
+              preventCollision={!compactType}
+              isDraggable={isEditMode}
+              isResizable={isEditMode}
+              draggableCancel=".hover-delete-btn"
+              rowHeight={85}
+              style={{ visibility: firstRender ? 'hidden' : 'visible' }}
+            >
+              {(layouts.lg || []).map((l) => (
+                <div key={l.i} className={l.static ? 'static' : ''}>
+                  {renderWithWrapper(l)}
+                </div>
+              ))}
+            </ResponsiveReactGridLayout>
+          </div>
+        </div>
+      </DndProvider>
+      {deleteTarget && (
+        <Modal
+          title="删除组件"
+          visible={!!deleteTarget}
+          onCancel={() => setDeleteTarget(null)}
+          footer={[
+            <Button key="cancel" onClick={() => setDeleteTarget(null)}>
+              取消
+            </Button>,
+            <Button key="confirm" type="primary" status="danger" onClick={confirmDelete}>
+              删除
+            </Button>,
+          ]}
+        >
+          <p>确定要删除这个组件吗？</p>
+        </Modal>
+      )}
+    </>
   );
 }
 

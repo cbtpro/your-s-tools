@@ -1,7 +1,9 @@
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import consola from 'consola';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 import Home from '@/pages/home';
 import About from '@/pages/about';
+// import Settings from '@/pages/settings';
 import Settings from '@/pages/settings';
 import NotFound from '@/pages/notfound';
 
@@ -12,7 +14,7 @@ export default function App() {
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === MESSAGE_TYPE.NAVIGATION) {
     // console.log("收到 popup 消息:", msg.payload);
-    console.log("sender:", sender);
+    consola.log("sender:", sender);
     sendResponse({ success: true });
     // 在这里做页面跳转、状态更新
     navigate(msg.payload.path);

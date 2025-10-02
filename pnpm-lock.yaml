@@ -6,26 +6,116 @@ settings:
 
 catalogs:
   default:
+    '@arco-design/web-react':
+      specifier: ^2.66.5
+      version: 2.66.5
+    '@eslint/js':
+      specifier: ^9.33.0
+      version: 9.35.0
+    '@types/chrome':
+      specifier: ^0.1.9
+      version: 0.1.9
+    '@types/node':
+      specifier: ^24.3.1
+      version: 24.3.1
+    '@types/react':
+      specifier: ^19.1.10
+      version: 19.1.12
+    '@types/react-dom':
+      specifier: ^19.1.7
+      version: 19.1.9
+    '@types/react-grid-layout':
+      specifier: ^1.3.5
+      version: 1.3.5
+    '@types/react-resizable':
+      specifier: ^3.0.8
+      version: 3.0.8
+    '@types/react-router-dom':
+      specifier: ^5.3.3
+      version: 5.3.3
+    '@vitejs/plugin-react':
+      specifier: ^5.0.0
+      version: 5.0.2
+    concurrently:
+      specifier: ^9.2.1
+      version: 9.2.1
+    consola:
+      specifier: ^3.4.2
+      version: 3.4.2
+    eslint:
+      specifier: ^9.33.0
+      version: 9.35.0
+    eslint-plugin-react-hooks:
+      specifier: ^5.2.0
+      version: 5.2.0
+    eslint-plugin-react-refresh:
+      specifier: ^0.4.20
+      version: 0.4.20
+    globals:
+      specifier: ^16.3.0
+      version: 16.4.0
+    lucide-react:
+      specifier: ^0.544.0
+      version: 0.544.0
     react:
       specifier: ^19.1.1
       version: 19.1.1
+    react-dnd:
+      specifier: ^16.0.1
+      version: 16.0.1
+    react-dnd-html5-backend:
+      specifier: ^16.0.1
+      version: 16.0.1
+    react-dom:
+      specifier: ^19.1.1
+      version: 19.1.1
+    react-grid-layout:
+      specifier: ^1.5.2
+      version: 1.5.2
+    react-resizable:
+      specifier: ^3.0.5
+      version: 3.0.5
+    react-router-dom:
+      specifier: ^7.9.1
+      version: 7.9.1
+    typescript:
+      specifier: ~5.8.3
+      version: 5.8.3
+    typescript-eslint:
+      specifier: ^8.39.1
+      version: 8.43.0
+    vite:
+      specifier: ^7.1.2
+      version: 7.1.5
+    vite-plugin-dts:
+      specifier: ^4.5.4
+      version: 4.5.4
+    vite-plugin-static-copy:
+      specifier: ^3.1.2
+      version: 3.1.2
+    vue-starport:
+      specifier: ^0.4.0
+      version: 0.4.0
 
 importers:
 
   .:
     dependencies:
       '@types/node':
-        specifier: ^24.3.1
+        specifier: 'catalog:'
         version: 24.3.1
+      consola:
+        specifier: 'catalog:'
+        version: 3.4.2
       vue-starport:
-        specifier: ^0.4.0
+        specifier: 'catalog:'
         version: 0.4.0(typescript@5.8.3)
     devDependencies:
       '@types/chrome':
-        specifier: ^0.1.9
+        specifier: 'catalog:'
         version: 0.1.9
       vite-plugin-static-copy:
-        specifier: ^3.1.2
+        specifier: 'catalog:'
         version: 3.1.2(vite@7.1.5(@types/node@24.3.1))
 
   packages/chrome:
@@ -43,154 +133,166 @@ importers:
         specifier: workspace:^
         version: link:../shared
       react:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1
       react-dom:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1(react@19.1.1)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       '@types/react':
-        specifier: ^19.1.10
+        specifier: 'catalog:'
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.7
+        specifier: 'catalog:'
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.2(vite@7.1.5(@types/node@24.3.1))
       eslint:
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0(eslint@9.35.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
+        specifier: 'catalog:'
         version: 0.4.20(eslint@9.35.0)
       globals:
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.4.0
       typescript:
-        specifier: ~5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.39.1
+        specifier: 'catalog:'
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.5(@types/node@24.3.1)
 
   packages/newtab:
     dependencies:
       '@arco-design/web-react':
-        specifier: ^2.66.5
+        specifier: 'catalog:'
         version: 2.66.5(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@your-s-tools/shared':
         specifier: workspace:^
         version: link:../shared
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.544.0(react@19.1.1)
       react:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1
+      react-dnd:
+        specifier: 'catalog:'
+        version: 16.0.1(@types/node@24.3.1)(@types/react@19.1.12)(react@19.1.1)
+      react-dnd-html5-backend:
+        specifier: 'catalog:'
+        version: 16.0.1
       react-dom:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1(react@19.1.1)
       react-grid-layout:
-        specifier: ^1.5.2
+        specifier: 'catalog:'
         version: 1.5.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-resizable:
-        specifier: ^3.0.5
+        specifier: 'catalog:'
         version: 3.0.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-router-dom:
-        specifier: ^7.9.1
+        specifier: 'catalog:'
         version: 7.9.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       '@types/react':
-        specifier: ^19.1.10
+        specifier: 'catalog:'
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.7
+        specifier: 'catalog:'
         version: 19.1.9(@types/react@19.1.12)
       '@types/react-grid-layout':
-        specifier: ^1.3.5
+        specifier: 'catalog:'
         version: 1.3.5
       '@types/react-resizable':
-        specifier: ^3.0.8
+        specifier: 'catalog:'
         version: 3.0.8
       '@types/react-router-dom':
-        specifier: ^5.3.3
+        specifier: 'catalog:'
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.2(vite@7.1.5(@types/node@24.3.1))
+      '@your-s-tools/types':
+        specifier: workspace:^
+        version: link:../types
       eslint:
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0(eslint@9.35.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
+        specifier: 'catalog:'
         version: 0.4.20(eslint@9.35.0)
       globals:
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.4.0
       typescript:
-        specifier: ~5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.39.1
+        specifier: 'catalog:'
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.5(@types/node@24.3.1)
 
   packages/options:
     dependencies:
       react:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1
       react-dom:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1(react@19.1.1)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       '@types/react':
-        specifier: ^19.1.10
+        specifier: 'catalog:'
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.7
+        specifier: 'catalog:'
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.2(vite@7.1.5(@types/node@24.3.1))
       eslint:
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0(eslint@9.35.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
+        specifier: 'catalog:'
         version: 0.4.20(eslint@9.35.0)
       globals:
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.4.0
       typescript:
-        specifier: ~5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.39.1
+        specifier: 'catalog:'
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.5(@types/node@24.3.1)
 
   packages/popup:
@@ -199,90 +301,95 @@ importers:
         specifier: workspace:*
         version: link:../shared
       react:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1
       react-dom:
-        specifier: ^19.1.1
+        specifier: 'catalog:'
         version: 19.1.1(react@19.1.1)
     devDependencies:
       '@eslint/js':
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       '@types/react':
-        specifier: ^19.1.10
+        specifier: 'catalog:'
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.7
+        specifier: 'catalog:'
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.2(vite@7.1.5(@types/node@24.3.1))
       eslint:
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0(eslint@9.35.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
+        specifier: 'catalog:'
         version: 0.4.20(eslint@9.35.0)
       globals:
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.4.0
       typescript:
-        specifier: ~5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.39.1
+        specifier: 'catalog:'
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.5(@types/node@24.3.1)
 
   packages/shared:
     devDependencies:
       '@eslint/js':
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       '@types/react':
-        specifier: ^19.1.10
+        specifier: 'catalog:'
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.7
+        specifier: 'catalog:'
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.2(vite@7.1.5(@types/node@24.3.1))
+      '@your-s-tools/types':
+        specifier: workspace:^
+        version: link:../types
       concurrently:
-        specifier: ^9.2.1
+        specifier: 'catalog:'
         version: 9.2.1
       eslint:
-        specifier: ^9.33.0
+        specifier: 'catalog:'
         version: 9.35.0
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0(eslint@9.35.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.20
+        specifier: 'catalog:'
         version: 0.4.20(eslint@9.35.0)
       globals:
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.4.0
       react:
         specifier: 'catalog:'
         version: 19.1.1
       typescript:
-        specifier: ~5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
       typescript-eslint:
-        specifier: ^8.39.1
+        specifier: 'catalog:'
         version: 8.43.0(eslint@9.35.0)(typescript@5.8.3)
       vite:
-        specifier: ^7.1.2
+        specifier: 'catalog:'
         version: 7.1.5(@types/node@24.3.1)
       vite-plugin-dts:
-        specifier: ^4.5.4
+        specifier: 'catalog:'
         version: 4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1))
+
+  packages/types: {}
 
 packages:
 
@@ -640,6 +747,15 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@react-dnd/asap@5.0.2':
+    resolution: {integrity: sha512-WLyfoHvxhs0V9U+GTsGilGgf2QsPl6ZZ44fnv0/b8T3nQyvzxidxsg/ZltbWssbsRDlYW8UKSQMTGotuTotZ6A==}
+
+  '@react-dnd/invariant@4.0.2':
+    resolution: {integrity: sha512-xKCTqAK/FFauOM9Ta2pswIyT3D8AQlfrYdOi/toTPEhqCuAs1v5tcJ3Y08Izh1cJ5Jchwy9SeAXmMg6zrKs2iw==}
+
+  '@react-dnd/shallowequal@4.0.2':
+    resolution: {integrity: sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==}
 
   '@rolldown/pluginutils@1.0.0-beta.34':
     resolution: {integrity: sha512-LyAREkZHP5pMom7c24meKmJCdhf2hEyvam2q0unr3or9ydwDL+DJ8chTF6Av/RFPb3rH8UFBdMzO5MxTZW97oA==}
@@ -1111,6 +1227,10 @@ packages:
   confbox@0.2.2:
     resolution: {integrity: sha512-1NB+BKqhtNipMsov4xI/NnhCKp9XG9NamYp5PVm9klAT0fsrNPjaFICsCFhNhwZJKNh7zB/3q8qXz0E9oaMNtQ==}
 
+  consola@3.4.2:
+    resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
+    engines: {node: ^14.18.0 || >=16.10.0}
+
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
@@ -1145,6 +1265,9 @@ packages:
 
   detect-node-es@1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
+
+  dnd-core@16.0.1:
+    resolution: {integrity: sha512-HK294sl7tbw6F6IeuK16YSBUoorvHpY8RHO+9yFfaJyCDVb6n7PRcezrOEOa2SBCqiYpemh5Jx20ZcjKdFAVng==}
 
   dom-helpers@5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
@@ -1336,6 +1459,9 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1455,6 +1581,11 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+
+  lucide-react@0.544.0:
+    resolution: {integrity: sha512-t5tS44bqd825zAW45UQxpG2CvcC4urOwn2TrwSH8u+MjeE+1NnWl6QqeQ/6NdjMqdOygyiT9p3Ev0p1NJykxjw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   magic-string@0.30.19:
     resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
@@ -1589,6 +1720,24 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
 
+  react-dnd-html5-backend@16.0.1:
+    resolution: {integrity: sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==}
+
+  react-dnd@16.0.1:
+    resolution: {integrity: sha512-QeoM/i73HHu2XF9aKksIUuamHPDvRglEwdHL4jsp784BgUuWcg6mzfxT0QDdQz8Wj0qyRKx2eMg8iZtWvU4E2Q==}
+    peerDependencies:
+      '@types/hoist-non-react-statics': '>= 3.3.1'
+      '@types/node': '>= 12'
+      '@types/react': '>= 16'
+      react: '>= 16.14'
+    peerDependenciesMeta:
+      '@types/hoist-non-react-statics':
+        optional: true
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
+
   react-dom@19.1.1:
     resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
     peerDependencies:
@@ -1660,6 +1809,9 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
+
+  redux@4.2.1:
+    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -2318,6 +2470,12 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
+  '@react-dnd/asap@5.0.2': {}
+
+  '@react-dnd/invariant@4.0.2': {}
+
+  '@react-dnd/shallowequal@4.0.2': {}
+
   '@rolldown/pluginutils@1.0.0-beta.34': {}
 
   '@rollup/pluginutils@5.3.0(rollup@4.50.1)':
@@ -2860,6 +3018,8 @@ snapshots:
 
   confbox@0.2.2: {}
 
+  consola@3.4.2: {}
+
   convert-source-map@2.0.0: {}
 
   cookie@1.0.2: {}
@@ -2883,6 +3043,12 @@ snapshots:
   deep-is@0.1.4: {}
 
   detect-node-es@1.1.0: {}
+
+  dnd-core@16.0.1:
+    dependencies:
+      '@react-dnd/asap': 5.0.2
+      '@react-dnd/invariant': 4.0.2
+      redux: 4.2.1
 
   dom-helpers@5.2.1:
     dependencies:
@@ -3094,6 +3260,10 @@ snapshots:
 
   he@1.2.0: {}
 
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
+
   ignore@5.3.2: {}
 
   ignore@7.0.5: {}
@@ -3191,6 +3361,10 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
+
+  lucide-react@0.544.0(react@19.1.1):
+    dependencies:
+      react: 19.1.1
 
   magic-string@0.30.19:
     dependencies:
@@ -3314,6 +3488,22 @@ snapshots:
       '@babel/runtime': 7.28.4
       react: 19.1.1
 
+  react-dnd-html5-backend@16.0.1:
+    dependencies:
+      dnd-core: 16.0.1
+
+  react-dnd@16.0.1(@types/node@24.3.1)(@types/react@19.1.12)(react@19.1.1):
+    dependencies:
+      '@react-dnd/invariant': 4.0.2
+      '@react-dnd/shallowequal': 4.0.2
+      dnd-core: 16.0.1
+      fast-deep-equal: 3.1.3
+      hoist-non-react-statics: 3.3.2
+      react: 19.1.1
+    optionalDependencies:
+      '@types/node': 24.3.1
+      '@types/react': 19.1.12
+
   react-dom@19.1.1(react@19.1.1):
     dependencies:
       react: 19.1.1
@@ -3391,6 +3581,10 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  redux@4.2.1:
+    dependencies:
+      '@babel/runtime': 7.28.4
 
   require-directory@2.1.1: {}
 

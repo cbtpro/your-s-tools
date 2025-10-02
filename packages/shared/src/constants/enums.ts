@@ -3,6 +3,10 @@
  */
 export enum STORAGE_KEY {
   /**
+   * 布局信息
+   */
+  LAYOUT_JSON_DATA = 'LAYOUT_JSON_DATA',
+  /**
    * 网址收藏夹
    */
   URL_FAVORITES = 'url_favorites',
