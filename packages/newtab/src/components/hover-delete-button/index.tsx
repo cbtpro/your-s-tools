@@ -13,6 +13,8 @@ export const HoverDeleteButton: React.FC<HoverDeleteButtonProps> = ({ onClick, c
       <Button
         onClick={onClick}
         aria-label="删除组件"
+        size="mini"
+        status="warning"
       >
         <IconDelete />
       </Button>

@@ -27,7 +27,6 @@ button {
 }
 .hover-group:hover .hover-delete-btn {
   display: block !important;
-  z-index: 9999;
 }
 
 /* hover-delete-btn 样式 */
@@ -37,7 +36,7 @@ button {
   right: 8px;
   cursor: pointer;
   display: none;
-  z-index: 10;
+  z-index: 100;
 }
 
 .hover-delete-btn:hover {
@@ -47,4 +46,11 @@ button {
 /* 父元素 hover 时显示 */
 .hover-group:hover .hover-delete-btn {
   display: block;
+}
+
+.component-sidebar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
 }

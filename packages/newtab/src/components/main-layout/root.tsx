@@ -9,6 +9,7 @@ import { useLayoutStorage } from '@your-s-tools/shared';
 import './root.css';
 import '../../assets/styles/styles.css';
 import { randomString } from '@/utils';
+import { defaultSizeMap } from '@/constants/layout';
 
 const HoverDeleteButton = lazy(() => import('@/components/hover-delete-button'));
 const ComponentSidebar = lazy(() => import('@/components/component-sidebar'));
@@ -57,12 +58,12 @@ function Root() {
       const newId = randomString();
       const newItem = { id: newId, component: item.type };
       setLayoutJson((prev) => [...prev, newItem]);
-
+      const size = defaultSizeMap[item.type] || { w: 6, h: 2 };
       setLayouts((prev) => ({
         ...prev,
         lg: [
           ...(prev.lg || []),
-          { w: 10, h: 2, x: 0, y: Infinity, i: newId, static: false },
+          { ...size, x: 0, y: Infinity, i: newId, static: false },
         ],
       }));
     },
@@ -137,13 +138,14 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
 
   return (
     <>
+      {/* 左侧组件面板 */}
+      <div className="component-sidebar">
+        <Suspense fallback={<div>Loading Sidebar...</div>}>
+          <ComponentSidebar />
+        </Suspense>
+      </div>
       <DndProvider backend={HTML5Backend}>
         <div style={{ display: 'flex', height: '100vh' }}>
-          {/* 左侧组件面板 */}
-          <Suspense fallback={<div>Loading Sidebar...</div>}>
-            <ComponentSidebar />
-          </Suspense>
-
           {/* 右侧布局区 */}
           <div ref={divRef} style={{ flex: 1, background: "#f8f9fa" }} className="layout-container">
             <ResponsiveReactGridLayout
@@ -156,8 +158,9 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
               preventCollision={!compactType}
               isDraggable={isEditMode}
               isResizable={isEditMode}
-              draggableCancel=".hover-delete-btn"
+              cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
               rowHeight={85}
+              draggableCancel=".hover-delete-btn"
               style={{ visibility: firstRender ? 'hidden' : 'visible' }}
             >
               {(layouts.lg || []).map((l) => (

@@ -1,12 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
+import { Divider, Menu, Button, } from '@arco-design/web-react';
+import {
+  IconMenuFold,
+  IconMenuUnfold,
+  IconApps,
+  IconEdit,
+} from '@arco-design/web-react/icon';
+
+const MenuItem = Menu.Item;
+const SubMenu = Menu.SubMenu;
+const ButtonGroup = Button.Group;
 
 interface SidebarItemProps {
   type: string;
   label: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ type, label }) => {
+/**
+ * 可拖拽的 MenuItem
+ */
+const DraggableMenuItem: React.FC<SidebarItemProps> = ({ type, label }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'COMPONENT',
     item: { type },
@@ -14,30 +28,27 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ type, label }) => {
       isDragging: monitor.isDragging(),
     }),
   }));
-  const divRef = useRef<HTMLDivElement>(null);
+
+  const itemRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (divRef.current) {
-      drag(divRef.current);
+    if (itemRef.current) {
+      drag(itemRef.current);
     }
   }, [drag]);
+
   return (
-    <div
-      ref={divRef}
-      style={{
-        padding: '8px 12px',
-        margin: '6px 0',
-        background: isDragging ? '#cce5ff' : '#f8f9fa',
-        border: '1px solid #ddd',
-        borderRadius: '6px',
-        cursor: 'grab',
-      }}
-    >
+    <div ref={itemRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
       {label}
     </div>
   );
 };
 
+/**
+ * Sidebar 组件
+ */
 export const ComponentSidebar: React.FC = () => {
+  const [collapse, setCollapse] = useState(false);
+
   const components = [
     { type: 'BaseNavbar', label: '导航栏' },
     { type: 'BaseSearchBar', label: '搜索框' },
@@ -48,18 +59,43 @@ export const ComponentSidebar: React.FC = () => {
   return (
     <aside
       style={{
-        width: '220px',
-        height: '100vh',
+        width: collapse ? 60 : 220,
         borderRight: '1px solid #ddd',
-        padding: '16px',
         background: '#fff',
-        overflowY: 'auto',
+        padding: '8px',
       }}
     >
-      <h3 style={{ marginBottom: '12px' }}>组件面板</h3>
-      {components.map((comp) => (
-        <SidebarItem key={comp.type} type={comp.type} label={comp.label} />
-      ))}
+      <Button
+        type="primary"
+        onClick={() => setCollapse(!collapse)}
+      >
+        {collapse ? <IconMenuUnfold /> : <IconMenuFold />}
+      </Button>
+      <Menu
+        style={{ width: '100%', marginTop: 30, borderRadius: 4 }}
+        theme="light"
+        collapse={collapse}
+        defaultOpenKeys={['components']}
+      >
+        <SubMenu
+          key="components"
+          title={
+            <>
+              <IconApps /> 组件面板
+            </>
+          }
+        >
+          {components.map((comp) => (
+            <MenuItem key={comp.type}>
+              <DraggableMenuItem type={comp.type} label={comp.label} />
+            </MenuItem>
+          ))}
+
+      <ButtonGroup>
+        <IconEdit />
+      </ButtonGroup>
+        </SubMenu>
+      </Menu>
     </aside>
   );
 };

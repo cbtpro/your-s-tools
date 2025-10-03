@@ -3,7 +3,6 @@ import consola from 'consola';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 import Home from '@/pages/home';
 import About from '@/pages/about';
-// import Settings from '@/pages/settings';
 import Settings from '@/pages/settings';
 import NotFound from '@/pages/notfound';
 
