@@ -1,0 +1,48 @@
+{
+  "title": "MacOS Style Dock",
+  "subtitle": "Hover over the dock icons to see the magnification effect",
+  "features": {
+    "title": "Features",
+    "item1": "Smooth magnification on hover",
+    "item2": "Active state indicators",
+    "item3": "Tooltip labels with Arco Design",
+    "item4": "Glassmorphism design",
+    "item5": "Auto-hide functionality"
+  },
+  "technology": {
+    "title": "Technology",
+    "item1": "Vite + React + TypeScript",
+    "item2": "Arco Design Components",
+    "item3": "Tailwind CSS Styling",
+    "item4": "Lucide React Icons"
+  },
+  "description": "Click on any dock icon to mark it as active. The magnification effect applies to neighboring icons based on proximity.",
+  "settings": {
+    "title": "Settings",
+    "autoHide": "Auto Hide",
+    "autoHideDesc": "Automatically hide Dock when mouse is away",
+    "triggerDistance": "Trigger Distance",
+    "triggerDistanceDesc": "Show Dock when mouse is within this distance from bottom",
+    "pixels": "pixels",
+    "maxVisibleIcons": "Max Visible Icons",
+    "maxVisibleIconsDesc": "Enable horizontal scroll when exceeding this number",
+    "resetToDefault": "Reset to Default",
+    "resetConfirm": "Are you sure you want to reset to default settings?",
+    "language": "Language",
+    "languageDesc": "Select interface language",
+    "dockSection": "Dock Settings",
+    "generalSection": "General Settings"
+  },
+  "apps": {
+    "home": "Home",
+    "mail": "Mail",
+    "calendar": "Calendar",
+    "documents": "Documents",
+    "team": "Team",
+    "photos": "Photos",
+    "music": "Music",
+    "videos": "Videos",
+    "files": "Files",
+    "settings": "Settings"
+  }
+}

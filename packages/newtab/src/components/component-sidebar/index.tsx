@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { Divider, Menu, Button, } from '@arco-design/web-react';
+import { Menu, Button, } from '@arco-design/web-react';
 import {
   IconMenuFold,
   IconMenuUnfold,

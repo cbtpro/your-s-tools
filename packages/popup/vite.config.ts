@@ -23,6 +23,9 @@ export default defineConfig({
     //   ],
     // }) as unknown as PluginOption
   ],
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  },
   build: {
     outDir: '../chrome/dist/popup',
   },

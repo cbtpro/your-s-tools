@@ -13,7 +13,8 @@
   "dependencies": {
     "@your-s-tools/shared": "workspace:*",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

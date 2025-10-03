@@ -1,0 +1,48 @@
+{
+  "title": "MacOS 风格 Dock",
+  "subtitle": "将鼠标悬停在 Dock 图标上以查看放大效果",
+  "features": {
+    "title": "功能特性",
+    "item1": "悬停时平滑放大",
+    "item2": "活动状态指示器",
+    "item3": "Arco Design 工具提示",
+    "item4": "玻璃态设计",
+    "item5": "自动隐藏功能"
+  },
+  "technology": {
+    "title": "技术栈",
+    "item1": "Vite + React + TypeScript",
+    "item2": "Arco Design 组件",
+    "item3": "Tailwind CSS 样式",
+    "item4": "Lucide React 图标"
+  },
+  "description": "点击任意 Dock 图标将其标记为活动状态。放大效果会根据距离影响相邻图标。",
+  "settings": {
+    "title": "设置",
+    "autoHide": "自动隐藏",
+    "autoHideDesc": "鼠标移开时自动隐藏 Dock",
+    "triggerDistance": "触发距离",
+    "triggerDistanceDesc": "鼠标距底部多少像素时显示 Dock",
+    "pixels": "像素",
+    "maxVisibleIcons": "最大可见图标数",
+    "maxVisibleIconsDesc": "超过此数量时将启用横向滚动",
+    "resetToDefault": "恢复默认",
+    "resetConfirm": "确定要恢复默认设置吗？",
+    "language": "语言",
+    "languageDesc": "选择界面语言",
+    "dockSection": "Dock 设置",
+    "generalSection": "通用设置"
+  },
+  "apps": {
+    "home": "主页",
+    "mail": "邮件",
+    "calendar": "日历",
+    "documents": "文档",
+    "team": "团队",
+    "photos": "照片",
+    "music": "音乐",
+    "videos": "视频",
+    "files": "文件",
+    "settings": "设置"
+  }
+}
