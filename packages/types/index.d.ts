@@ -1,22 +1,49 @@
 export declare namespace YourToolApp {
   /**
-   * 编辑状态
-   * 使用 as const 来模拟 enum
+   * 常规设置
    */
-  const EditStatus = {
+  interface General {
+    /**
+     * 语言
+     */
+    language: string;
+  }
+  /**
+   * Dock 设置
+   */
+  interface Dock {
+    /**
+     * 自动隐藏
+     */
+    autoHide: boolean;
+  }
+  /**
+   * 高级设置
+   */
+  interface Advanced {
+
+  }
+  /**
+   * 设置
+   */
+  interface Settings {
+    general: General;
+    dock: Dock;
+    advanced: Advanced;
+  }
+  /**
+   * 编辑状态
+   */
+  enum EditStatus {
     /**
      * 编辑
      */
-    Edit: "edit",
+    Edit = 'edit',
     /**
      * 正常
      */
-    Normal: "normal",
-  } as const;
-  type EditStatus = keyof EditStatus;
-  interface Settings {
-    editStatus: EditStatus;
-  }
+    Normal = 'normal',
+  };
   /**
    * 布局json数据定义
    */

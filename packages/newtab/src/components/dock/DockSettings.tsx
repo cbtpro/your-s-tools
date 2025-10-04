@@ -73,8 +73,8 @@ export default function DockSettings({
                   style={{ width: 140 }}
                   prefix={<Globe size={16} />}
                 >
-                  <Option value="zh">中文</Option>
-                  <Option value="en">English</Option>
+                  <Option value="zh-CN">中文</Option>
+                  <Option value="en-US">English</Option>
                 </Select>
               </div>
             </div>

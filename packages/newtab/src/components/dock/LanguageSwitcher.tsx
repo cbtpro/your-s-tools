@@ -25,8 +25,8 @@ export default function LanguageSwitcher() {
           position: 'bottom',
         }}
       >
-        <Option value="zh">中文</Option>
-        <Option value="en">English</Option>
+        <Option value="zh-CN">中文</Option>
+        <Option value="en-US">English</Option>
       </Select>
     </div>
   );

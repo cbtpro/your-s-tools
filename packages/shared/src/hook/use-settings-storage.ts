@@ -3,10 +3,16 @@ import useChromeStorage from '../utils/use-chrome-storage';
 import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 import { YourToolApp } from '@your-s-tools/types';
 
-const useCountStorage = () : [YourToolApp.Settings, React.Dispatch<React.SetStateAction<YourToolApp.Settings>>] => {
+const useSettingsStorage = () : [YourToolApp.Settings, React.Dispatch<React.SetStateAction<YourToolApp.Settings>>] => {
   const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
   const [data, setData] = useState<YourToolApp.Settings>({
-    editStatus: YourToolApp.EditStatus.Normal,
+    general: {
+      language: 'zh-CN'
+    },
+    dock: {
+      autoHide: false,
+    },
+    advanced: {},
   });
   const [initialized, setInitialized] = useState(false);
 
@@ -30,4 +36,4 @@ const useCountStorage = () : [YourToolApp.Settings, React.Dispatch<React.SetStat
   return [data, setData];
 };
 
-export default useCountStorage;
+export default useSettingsStorage;
