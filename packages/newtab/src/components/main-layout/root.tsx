@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, type JSX } from 'react';
-import { Button, Modal, } from '@arco-design/web-react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { useTranslation } from 'react-i18next';
 import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import type { YourToolApp } from "@your-s-tools/types";
@@ -17,6 +17,7 @@ const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
 const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
 const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
+const FloatingDrawer = lazy(() => import('@/components/floating-drawer'));
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -29,6 +30,7 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
 };
 
 function Root() {
+  const { t } = useTranslation();
   const [_isLoading, _setIsLoading] = useState(false);
   const [isEditMode, _setIsEditMode] = useState(true); // 开启拖拽/缩放
   const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
@@ -98,8 +100,6 @@ function Root() {
     setCurrentBreakpoint(newBreakpoint);
   };
 
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null); // 待删除的组件ID
-
 // 包装渲染的组件，增加 hover & 删除按钮
 const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
   const { i: id } = layout;
@@ -112,7 +112,7 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
       className="hover-group"
     >
       {/* 删除按钮 */}
-      <HoverDeleteButton onClick={() => setDeleteTarget(id)} />
+      <HoverDeleteButton onClick={() => confirmDelete(id)} />
 
       {/* 真实组件 */}
       {renderComponent(layout)}
@@ -126,24 +126,23 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
     }
   }, [drop]);
 
-  const confirmDelete = () => {
-    if (!deleteTarget) return;
+  const confirmDelete = (deleteTarget: string) => {
     setLayoutJson((prev) => prev.filter((item) => item.id !== deleteTarget));
     setLayouts((prev) => ({
       ...prev,
       lg: (prev.lg || []).filter((l) => l.i !== deleteTarget),
     }));
-    setDeleteTarget(null); // 清空状态
   };
 
   return (
     <>
-      {/* 左侧组件面板 */}
-      <div className="component-sidebar">
+
+      <FloatingDrawer title={t('components.components')} width={'auto'}>
+        {/* 组件面板 */}
         <Suspense fallback={<div>Loading Sidebar...</div>}>
           <ComponentSidebar />
         </Suspense>
-      </div>
+      </FloatingDrawer>
       <DndProvider backend={HTML5Backend}>
         <div style={{ display: 'flex', height: '100vh' }}>
           {/* 右侧布局区 */}
@@ -172,23 +171,6 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
           </div>
         </div>
       </DndProvider>
-      {deleteTarget && (
-        <Modal
-          title="删除组件"
-          visible={!!deleteTarget}
-          onCancel={() => setDeleteTarget(null)}
-          footer={[
-            <Button key="cancel" onClick={() => setDeleteTarget(null)}>
-              取消
-            </Button>,
-            <Button key="confirm" type="primary" status="danger" onClick={confirmDelete}>
-              删除
-            </Button>,
-          ]}
-        >
-          <p>确定要删除这个组件吗？</p>
-        </Modal>
-      )}
     </>
   );
 }

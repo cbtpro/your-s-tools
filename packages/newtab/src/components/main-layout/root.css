@@ -47,10 +47,3 @@ button {
 .hover-group:hover .hover-delete-btn {
   display: block;
 }
-
-.component-sidebar {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: 1;
-}

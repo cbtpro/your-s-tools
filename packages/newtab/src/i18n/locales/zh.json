@@ -33,6 +33,9 @@
     "dockSection": "Dock 设置",
     "generalSection": "通用设置"
   },
+  "components": {
+    "components": "组件"
+  },
   "apps": {
     "home": "主页",
     "mail": "邮件",
@@ -44,5 +47,14 @@
     "videos": "视频",
     "files": "文件",
     "settings": "设置"
+  },
+  "drawer": {
+    "title": "菜单",
+    "section1": "快捷操作",
+    "content1": "从这里访问常用工具和快捷方式。",
+    "section2": "最近项目",
+    "content2": "查看您最近访问的文件和文档。",
+    "section3": "帮助与支持",
+    "content3": "获取帮助并了解更多可用功能。"
   }
 }

@@ -33,6 +33,9 @@
     "dockSection": "Dock Settings",
     "generalSection": "General Settings"
   },
+  "components": {
+    "components": "Components"
+  },
   "apps": {
     "home": "Home",
     "mail": "Mail",
@@ -44,5 +47,14 @@
     "videos": "Videos",
     "files": "Files",
     "settings": "Settings"
+  },
+  "drawer": {
+    "title": "Menu",
+    "section1": "Quick Actions",
+    "content1": "Access frequently used tools and shortcuts from here.",
+    "section2": "Recent Items",
+    "content2": "View your recently accessed files and documents.",
+    "section3": "Help & Support",
+    "content3": "Get help and learn more about available features."
   }
 }

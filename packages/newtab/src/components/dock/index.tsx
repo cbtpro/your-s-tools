@@ -49,7 +49,7 @@ export default function Dock() {
     return saved ? parseInt(saved) : 100;
   });
   const [isVisible, setIsVisible] = useState(true);
-  const [_mouseY, setMouseY] = useState(0);
+  const [, setMouseY] = useState(0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

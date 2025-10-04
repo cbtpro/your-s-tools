@@ -1,101 +1,152 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDrag } from 'react-dnd';
-import { Menu, Button, } from '@arco-design/web-react';
 import {
-  IconMenuFold,
-  IconMenuUnfold,
+  IconCommon,
   IconApps,
-  IconEdit,
+  IconSearch,
+  IconPlus,
+  IconMinus,
 } from '@arco-design/web-react/icon';
+import { iconMap, componentList, type ComponentItem } from '@/constants/components';
 
-const MenuItem = Menu.Item;
-const SubMenu = Menu.SubMenu;
-const ButtonGroup = Button.Group;
-
-interface SidebarItemProps {
+// ---------- 可拖拽组件 ----------
+const DraggableComponent: React.FC<{
   type: string;
   label: string;
-}
+  icon?: React.ReactNode;
+}> = ({ type, label, icon }) => {
+  const itemRef = useRef<HTMLDivElement>(null);
 
-/**
- * 可拖拽的 MenuItem
- */
-const DraggableMenuItem: React.FC<SidebarItemProps> = ({ type, label }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'COMPONENT',
     item: { type },
-    collect: (monitor) => ({
+    collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
   }));
 
-  const itemRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (itemRef.current) {
-      drag(itemRef.current);
-    }
+    if (itemRef.current) drag(itemRef.current);
   }, [drag]);
 
   return (
-    <div ref={itemRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
-      {label}
+    <div
+      ref={itemRef}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        padding: 12,
+        borderRadius: 6,
+        cursor: 'grab',
+        background: '#f5f5f5',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        transition: 'transform 0.2s',
+      }}
+    >
+      <div style={{ fontSize: 20, marginBottom: 6 }}>{icon}</div>
+      <span style={{ fontSize: 12 }}>{label}</span>
     </div>
   );
 };
 
-/**
- * Sidebar 组件
- */
-export const ComponentSidebar: React.FC = () => {
-  const [collapse, setCollapse] = useState(false);
+// ---------- 组件面板 ----------
+const ComponentSidebar: React.FC<{
+  components?: ComponentItem[]; // 可传入自定义列表
+}> = ({ components = componentList }) => {
+  const [search, setSearch] = useState('');
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
 
-  const components = [
-    { type: 'BaseNavbar', label: '导航栏' },
-    { type: 'BaseSearchBar', label: '搜索框' },
-    { type: 'BasePopular', label: '热门推荐' },
-    { type: 'BaseFavorite', label: '收藏夹' },
-  ];
+  const groups = Array.from(new Set(components.map(c => c.group)));
+
+  const toggleGroup = (group: string) => {
+    setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
+  };
 
   return (
     <aside
       style={{
-        width: collapse ? 60 : 220,
-        borderRight: '1px solid #ddd',
+        width: 280,
         background: '#fff',
-        padding: '8px',
+        height: '100%',
+        overflowY: 'auto',
+        padding: 16,
       }}
     >
-      <Button
-        type="primary"
-        onClick={() => setCollapse(!collapse)}
-      >
-        {collapse ? <IconMenuUnfold /> : <IconMenuFold />}
-      </Button>
-      <Menu
-        style={{ width: '100%', marginTop: 30, borderRadius: 4 }}
-        theme="light"
-        collapse={collapse}
-        defaultOpenKeys={['components']}
-      >
-        <SubMenu
-          key="components"
-          title={
-            <>
-              <IconApps /> 组件面板
-            </>
-          }
-        >
-          {components.map((comp) => (
-            <MenuItem key={comp.type}>
-              <DraggableMenuItem type={comp.type} label={comp.label} />
-            </MenuItem>
-          ))}
+      {/* 面板标题 */}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+        <IconApps style={{ marginRight: 8 }} />
+        <span style={{ fontWeight: 600 }}>组件面板</span>
+      </div>
 
-      <ButtonGroup>
-        <IconEdit />
-      </ButtonGroup>
-        </SubMenu>
-      </Menu>
+      {/* 搜索框 */}
+      <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center' }}>
+        <IconSearch style={{ marginRight: 4 }} />
+        <input
+          type="text"
+          placeholder="搜索组件..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{
+            flex: 1,
+            padding: '6px 10px',
+            borderRadius: 6,
+            border: '1px solid #ddd',
+          }}
+        />
+      </div>
+
+      {/* 分组列表 */}
+      {groups.map(group => {
+        const filtered = components.filter(
+          c => c.group === group && c.label.toLowerCase().includes(search.toLowerCase())
+        );
+        if (filtered.length === 0) return null;
+
+        return (
+          <div key={group} style={{ marginBottom: 16 }}>
+            {/* 分组标题 */}
+            <div
+              style={{
+                fontWeight: 600,
+                cursor: 'pointer',
+                marginBottom: 6,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              onClick={() => toggleGroup(group)}
+            >
+              <span>{group}</span>
+              <span style={{ marginLeft: 6 }}>
+                {collapsedGroups[group] ? <IconPlus /> : <IconMinus />}
+              </span>
+            </div>
+
+            {/* 分组内容，网格布局 */}
+            {!collapsedGroups[group] && (
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
+                  gap: 12,
+                }}
+              >
+                {filtered.map(c => {
+                  return  <DraggableComponent
+                    key={c.type}
+                    type={c.type}
+                    label={c.label}
+                    icon={c.icon ? iconMap[c.icon] : <IconCommon />}
+                  />;
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </aside>
   );
 };
