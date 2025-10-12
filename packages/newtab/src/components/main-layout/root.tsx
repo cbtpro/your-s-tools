@@ -5,7 +5,7 @@ import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import type { YourToolApp } from "@your-s-tools/types";
 import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
-import { useLayoutStorage } from '@your-s-tools/shared';
+import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';
 import './root.css';
 import '../../assets/styles/styles.css';
 import { randomString } from '@/utils';
@@ -31,8 +31,25 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
 
 function Root() {
   const { t } = useTranslation();
-  const [_isLoading, _setIsLoading] = useState(false);
-  const [isEditMode, _setIsEditMode] = useState(true); // 开启拖拽/缩放
+  // const [isLoading, setIsLoading] = useState(false);
+  /**
+   * 编辑状态
+   */
+  const [isEditMode, setIsEditMode] = useState(true);
+  const addToggleIsEditMode = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
+    const { type, value = !isEditMode } = message;
+    if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
+      setIsEditMode(value);
+      sendResponse({ success: true })
+    }
+  }
+  
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener(addToggleIsEditMode);
+    return () => {
+      chrome.runtime.onMessage.removeListener(addToggleIsEditMode);
+    };
+  });
   const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
@@ -136,7 +153,6 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
 
   return (
     <>
-
       <FloatingDrawer title={t('components.components')} width={'auto'}>
         {/* 组件面板 */}
         <Suspense fallback={<div>Loading Sidebar...</div>}>

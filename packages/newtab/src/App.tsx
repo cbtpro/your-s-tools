@@ -7,18 +7,27 @@ import Settings from '@/pages/settings';
 import NotFound from '@/pages/notfound';
 
 import './App.css'
+import { useEffect } from "react";
 
 export default function App() {
   const navigate = useNavigate();
-  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === MESSAGE_TYPE.NAVIGATION) {
-    // console.log("收到 popup 消息:", msg.payload);
-    consola.log("sender:", sender);
-    sendResponse({ success: true });
-    // 在这里做页面跳转、状态更新
-    navigate(msg.payload.path);
+  const routerMessage = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
+    if (message.type === MESSAGE_TYPE.NAVIGATION) {
+      // console.log("收到 popup 消息:", msg.payload);
+      consola.log("sender:", sender);
+      sendResponse({ success: true });
+      // 在这里做页面跳转、状态更新
+      navigate(message.payload.path);
+    }
   }
-});
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener(routerMessage);
+    console.log('绑定事件');
+    return () => {
+      console.log('解绑事件');
+      chrome.runtime.onMessage.removeListener(routerMessage);
+    };
+  }, []);
 
   return (
     <div>

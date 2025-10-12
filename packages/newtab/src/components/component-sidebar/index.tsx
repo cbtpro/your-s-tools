@@ -1,12 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, type ChangeEvent, type CompositionEventHandler } from 'react';
 import { useDrag } from 'react-dnd';
 import {
   IconCommon,
   IconApps,
   IconSearch,
-  IconPlus,
-  IconMinus,
+  IconPlusCircle,
+  IconMinusCircle,
 } from '@arco-design/web-react/icon';
+import { useCompositionInput } from '@your-s-tools/shared';
 import { iconMap, componentList, type ComponentItem } from '@/constants/components';
 
 // ---------- 可拖拽组件 ----------
@@ -57,7 +58,28 @@ const DraggableComponent: React.FC<{
 const ComponentSidebar: React.FC<{
   components?: ComponentItem[]; // 可传入自定义列表
 }> = ({ components = componentList }) => {
-  const [search, setSearch] = useState('');
+  // const [search, setSearch] = useState('');
+  // const inputRef = useRef<HTMLInputElement>(null);
+  // const isComposing = useRef(false);
+
+  // const handleCompositionStart = () => {
+  //   isComposing.current = true;
+  // };
+
+  // const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
+  //   isComposing.current = false;
+  //   setSearch(e.currentTarget.value);
+  // };
+
+  // const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+  //   // 不在组合中时更新
+  //   if (!isComposing.current) {
+  //     setSearch(e.currentTarget.value);
+  //   }
+  // };
+  const { value: search, bind: bindSearch } = useCompositionInput('');
+
+
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
 
   const groups = Array.from(new Set(components.map(c => c.group)));
@@ -86,10 +108,14 @@ const ComponentSidebar: React.FC<{
       <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center' }}>
         <IconSearch style={{ marginRight: 4 }} />
         <input
+          // ref={inputRef}
+          // defaultValue={search}
+          // onInput={handleInput}
+          // onCompositionStart={handleCompositionStart}
+          // onCompositionEnd={handleCompositionEnd}
+          {...bindSearch}
           type="text"
           placeholder="搜索组件..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
           style={{
             flex: 1,
             padding: '6px 10px',
@@ -121,7 +147,7 @@ const ComponentSidebar: React.FC<{
             >
               <span>{group}</span>
               <span style={{ marginLeft: 6 }}>
-                {collapsedGroups[group] ? <IconPlus /> : <IconMinus />}
+                {collapsedGroups[group] ? <IconPlusCircle /> : <IconMinusCircle />}
               </span>
             </div>
 
