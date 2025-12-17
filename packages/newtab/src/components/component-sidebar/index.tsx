@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, type ChangeEvent, type CompositionEventHandler } from 'react';
+import React, { useRef, useState, useEffect, } from 'react';
 import { useDrag } from 'react-dnd';
 import {
   IconCommon,
@@ -9,8 +9,8 @@ import {
 } from '@arco-design/web-react/icon';
 import { useCompositionInput } from '@your-s-tools/shared';
 import { iconMap, componentList, type ComponentItem } from '@/constants/components';
+import styles from './style.module.scss';
 
-// ---------- 可拖拽组件 ----------
 const DraggableComponent: React.FC<{
   type: string;
   label: string;
@@ -29,27 +29,15 @@ const DraggableComponent: React.FC<{
   useEffect(() => {
     if (itemRef.current) drag(itemRef.current);
   }, [drag]);
-
+  const style1s: React.CSSProperties = { fontSize: 20, marginBottom: 6 };
+  const style2s: React.CSSProperties = { fontSize: 12 };
   return (
     <div
       ref={itemRef}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        padding: 12,
-        borderRadius: 6,
-        cursor: 'grab',
-        background: '#f5f5f5',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        transition: 'transform 0.2s',
-      }}
+      className={[styles['sidebar-item'], isDragging ? styles['is-dragging'] : ''].join(' ')}
     >
-      <div style={{ fontSize: 20, marginBottom: 6 }}>{icon}</div>
-      <span style={{ fontSize: 12 }}>{label}</span>
+      <div style={style1s}>{icon}</div>
+      <span style={style2s}>{label}</span>
     </div>
   );
 };

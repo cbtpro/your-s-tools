@@ -7,20 +7,10 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@your-s-tools/shared',
+      name: 'shared',
+      formats: ['es', 'cjs'],
       fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'cjs']
     },
-    // lib: {
-    //   entry: {
-    //     index: path.resolve(__dirname, 'src/index.ts'),
-    //     utils: path.resolve(__dirname, 'src/utils/index.ts'),
-    //     hooks: path.resolve(__dirname, 'src/hooks/index.ts'),
-    //   },
-    //   name: '@your-s-tools/shared',
-    //   fileName: (format, entryName) => `${entryName}.${format}.js`,
-    //   formats: ['es', 'cjs'],
-    // },
     rollupOptions: {
       external: ['react'],
       output: {
@@ -31,5 +21,11 @@ export default defineConfig({
       plugins: [],
     },
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      entryRoot: 'src',
+      outDir: 'dist',
+      tsconfigPath: path.resolve(__dirname, 'tsconfig.json'),
+    })
+  ],
 });

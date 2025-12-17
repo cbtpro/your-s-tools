@@ -36,14 +36,14 @@ function Root() {
    * 编辑状态
    */
   const [isEditMode, setIsEditMode] = useState(true);
-  const addToggleIsEditMode = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
+  const addToggleIsEditMode = (message: any, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
     const { type, value = !isEditMode } = message;
     if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
       setIsEditMode(value);
       sendResponse({ success: true })
     }
   }
-  
+
   useEffect(() => {
     chrome.runtime.onMessage.addListener(addToggleIsEditMode);
     return () => {

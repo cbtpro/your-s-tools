@@ -7,7 +7,7 @@ const Dock = React.lazy(() => import('@/components/dock'));
 // import Demo from '../demo';
 
 function Home() {
-  const [layoutEdit, setLayoutEdit] = useGeneralStorage(StorageAreaEnum.LOCAL, STORAGE_KEY.EDITING_LAYOUT);
+  const [layoutEdit, _setLayoutEdit] = useGeneralStorage(StorageAreaEnum.LOCAL, STORAGE_KEY.EDITING_LAYOUT);
   if (layoutEdit) {
     return (
       <>

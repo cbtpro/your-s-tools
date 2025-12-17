@@ -6,7 +6,7 @@ function Demo() {
   const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
   const [count, setCount] = useCountStorage();
   const testChromeStorage = async () => {
-    
+
     // 设置值
     await storage.setItem('color', 'blue', 10);
 
