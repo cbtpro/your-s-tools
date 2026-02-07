@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@arco-design/web-react": "catalog:",
+    "@your-project/i18n": "workspace:*",
     "@your-s-tools/shared": "workspace:^",
     "i18next": "catalog:",
     "lucide-react": "catalog:",

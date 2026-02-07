@@ -37,6 +37,7 @@
     "components": "Components"
   },
   "apps": {
+    "name": "Your's Tools",
     "home": "Home",
     "mail": "Mail",
     "calendar": "Calendar",
@@ -46,7 +47,10 @@
     "music": "Music",
     "videos": "Videos",
     "files": "Files",
-    "settings": "Settings"
+    "settings": "Settings",
+    "customize": "Customize",
+    "help": "Help",
+    "about": "About"
   },
   "drawer": {
     "title": "Menu",

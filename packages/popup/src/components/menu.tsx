@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './menu.css';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 interface MenuProps {
@@ -13,11 +14,12 @@ interface MenuItem {
 }
 
 const Menu: React.FC<MenuProps> = ({ appName, version }) => {
+  const { t } = useTranslation();
   const menuItems: MenuItem[] = [
-    { label: '设置', path: '/settings', icon: '⚙️' },
-    { label: '个性化', path: '/customize', icon: '🎨' },
-    { label: '帮助', path: '/help', icon: '❓' },
-    { label: '关于', path: '/about', icon: 'ℹ️' },
+    { label: t('apps.settings'), path: '/settings', icon: '⚙️' },
+    { label: t('apps.customize'), path: '/customize', icon: '🎨' },
+    { label: t('apps.help'), path: '/help', icon: '❓' },
+    { label: t('apps.about'), path: '/about', icon: 'ℹ️' },
   ];
 
   const handleNavigate = async (path: string) => {
