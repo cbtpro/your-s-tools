@@ -13,6 +13,7 @@ import {
   Video,
   FolderOpen,
 } from 'lucide-react';
+import { useSettings, } from '@/hooks/use-settings';
 import DockSettings from './DockSettings';
 
 interface DockItem {
@@ -40,26 +41,19 @@ export default function Dock() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [autoHide, setAutoHide] = useState(() => {
-    const saved = localStorage.getItem('dockAutoHide');
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [triggerDistance, setTriggerDistance] = useState(() => {
-    const saved = localStorage.getItem('dockTriggerDistance');
-    return saved ? parseInt(saved) : 100;
-  });
   const [isVisible, setIsVisible] = useState(true);
-  const [, setMouseY] = useState(0);
+  const [_mouseY, setMouseY] = useState(0);
 
+  const { dock } = useSettings();
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMouseY(e.clientY);
 
-      if (autoHide) {
+      if (dock.autoHide) {
         const windowHeight = window.innerHeight;
         const distanceFromBottom = windowHeight - e.clientY;
 
-        if (distanceFromBottom <= triggerDistance) {
+        if (distanceFromBottom <= dock.triggerDistance) {
           setIsVisible(true);
         } else {
           setIsVisible(false);
@@ -71,15 +65,8 @@ export default function Dock() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [autoHide, triggerDistance]);
+  }, [dock]);
 
-  useEffect(() => {
-    localStorage.setItem('dockAutoHide', JSON.stringify(autoHide));
-  }, [autoHide]);
-
-  useEffect(() => {
-    localStorage.setItem('dockTriggerDistance', triggerDistance.toString());
-  }, [triggerDistance]);
 
   const getScale = (itemId: string, hoveredId: string | null) => {
     if (!hoveredId) return 1;
@@ -102,21 +89,11 @@ export default function Dock() {
     }
   };
 
-  const handleResetToDefault = () => {
-    setAutoHide(false);
-    setTriggerDistance(100);
-  };
-
   return (
     <>
       <DockSettings
         visible={settingsVisible}
         onClose={() => setSettingsVisible(false)}
-        autoHide={autoHide}
-        onAutoHideChange={setAutoHide}
-        triggerDistance={triggerDistance}
-        onTriggerDistanceChange={setTriggerDistance}
-        onResetToDefault={handleResetToDefault}
       />
 
       <div

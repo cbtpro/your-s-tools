@@ -3,20 +3,27 @@ import { initReactI18next } from 'react-i18next';
 import enUS from './locales/en-US.json';
 import zhCN from './locales/zh-CN.json';
 
-const savedLanguage = localStorage.getItem('language') || 'zh-CN';
+// 封装初始化逻辑
+export const initI18n = async () => {
+  // 获取存储的语言设置
+  const storage = await chrome.storage.local.get('general');
+  const savedLanguage = storage?.general?.language || 'zh-CN';
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      'en-US': { translation: enUS },
-      'zh-CN': { translation: zhCN },
-    },
-    lng: savedLanguage,
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources: {
+        'en-US': { translation: enUS },
+        'zh-CN': { translation: zhCN },
+      },
+      lng: savedLanguage,
+      fallbackLng: 'en-US',
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+
+  return i18n;
+};
 
 export default i18n;

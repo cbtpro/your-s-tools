@@ -1,11 +1,11 @@
 import ToggleSetting from './toggle-setting';
 import SelectSetting from './select-setting';
 import InputSetting from './input-setting';
-import type { SettingOption } from './settings-config';
+import type { YourToolApp } from '@your-s-tools/types';
 
 interface Props {
-  setting: SettingOption;
-  onChange: (key: string, value: any) => void;
+  setting: YourToolApp.SettingOption;
+  onChange: (key: keyof YourToolApp.Settings, value: any) => void;
   styles: Record<string, React.CSSProperties>;
 }
 

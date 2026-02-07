@@ -32,5 +32,5 @@
       ]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../shared/src/constants/settings-config.ts"]
 }

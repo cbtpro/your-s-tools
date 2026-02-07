@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useChromeStorage from '../utils/use-chrome-storage';
+import useChromeStorage from './use-chrome-storage';
 import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
 const useCountStorage = () : [number, React.Dispatch<React.SetStateAction<number>>] => {
@@ -9,7 +9,7 @@ const useCountStorage = () : [number, React.Dispatch<React.SetStateAction<number
 
   useEffect(() => {
     const initCount = async () => {
-      const storeCount = await storage.getItem<number>(STORAGE_KEY.COUNT);
+      const storeCount = await storage.getItem(STORAGE_KEY.COUNT);
       if (storeCount) {
         setCount(storeCount);
       }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { YourToolApp } from "@your-s-tools/types";
-import useChromeStorage from '../utils/use-chrome-storage';
+import useChromeStorage from './use-chrome-storage';
 import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
 const useCountStorage = () : [YourToolApp.LayoutJsonData[], React.Dispatch<React.SetStateAction<YourToolApp.LayoutJsonData[]>>] => {
@@ -10,7 +10,7 @@ const useCountStorage = () : [YourToolApp.LayoutJsonData[], React.Dispatch<React
 
   useEffect(() => {
     const init = async () => {
-      const storeLayoutJson = await storage.getItem<YourToolApp.LayoutJsonData[]>(STORAGE_KEY.LAYOUT_JSON_DATA);
+      const storeLayoutJson = await storage.getItem(STORAGE_KEY.LAYOUT_JSON_DATA);
       if (storeLayoutJson) {
         setLayoutJsonData(storeLayoutJson);
       }

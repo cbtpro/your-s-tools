@@ -159,6 +159,9 @@ importers:
       '@your-s-tools/shared':
         specifier: workspace:^
         version: link:../shared
+      '@your-s-tools/types':
+        specifier: workspace:*
+        version: link:../types
       react:
         specifier: 'catalog:'
         version: 19.1.1
@@ -354,6 +357,9 @@ importers:
       '@your-s-tools/shared':
         specifier: workspace:*
         version: link:../shared
+      '@your-s-tools/types':
+        specifier: workspace:*
+        version: link:../types
       react:
         specifier: 'catalog:'
         version: 19.1.1

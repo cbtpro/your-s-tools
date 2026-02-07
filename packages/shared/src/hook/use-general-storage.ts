@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import useChromeStorage from '../utils/use-chrome-storage';
+import useBaseStorage from './use-chrome-storage';
 import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
-const useGeneralStorage = <T>(
+const useGeneralStorage = <T extends Record<string, any>>(
   /**
    * 存储区域
    * 默认到本地存储
@@ -13,13 +13,13 @@ const useGeneralStorage = <T>(
    */
   key: STORAGE_KEY
 ): [T | null, React.Dispatch<React.SetStateAction<T | null>>] => {
-  const storage = useChromeStorage({ area });
+  const storage = useBaseStorage<T>({ area });
   const [data, setData] = useState<T | null>(null);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const initCount = async () => {
-      const storeData = await storage.getItem<T>(key);
+      const storeData = await storage.getItem(key);
       if (storeData) {
         setData(storeData);
       }
@@ -30,7 +30,7 @@ const useGeneralStorage = <T>(
 
   useEffect(() => {
     if (initialized) {
-      storage.setItem(key, data);
+      storage.setItem(key, data?.[key] ?? null);
     }
   }, [data, initialized, storage]);
 

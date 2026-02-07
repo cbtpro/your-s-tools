@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import type { YourToolApp } from "@your-s-tools/types";
+import { useStorageState, StorageAreaEnum } from '@your-s-tools/shared';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useStorageState<YourToolApp.Settings, 'count'>('count', 0, { area: StorageAreaEnum.LOCAL, expired: -1 });
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
+        <a href="https://vite.dev" rel="noopener noreferrer" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href="https://react.dev" target="_blank">
+        <a href="https://react.dev" rel="noopener noreferrer" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>

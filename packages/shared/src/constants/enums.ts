@@ -17,7 +17,11 @@ export enum STORAGE_KEY {
   /**
    * 计数器
    */
-  COUNT = 'COUNT'
+  COUNT = 'COUNT',
+  /**
+   * 设置项
+   */
+  SETTINGS = 'SETTINGS',
 };
 /**
  * Chrome 存储区域枚举

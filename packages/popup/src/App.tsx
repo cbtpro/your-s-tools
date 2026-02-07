@@ -1,41 +1,13 @@
-import { useEffect } from 'react'
-import { useChromeStorage, useCountStorage, MESSAGE_TYPE, StorageAreaEnum, version } from '@your-s-tools/shared';
+import type { YourToolApp } from '@your-s-tools/types';
+import { MESSAGE_TYPE, version, useStorageState, StorageAreaEnum } from '@your-s-tools/shared';
 import Menu from './components/menu';
 // import './App.css'
 
 function App() {
-  const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
-  const [count, setCount] = useCountStorage();
-  const testChromeStorage = async () => {
-    
-    // 设置值
-    await storage.setItem('color', 'blue', 10);
-
-    // 获取值
-    const color = await storage.getItem<string>('color');
-    console.log('color:', color);
-
-    // 删除值
-    await storage.removeItem('color');
-
-  }
-  useEffect(() => {
-    const colorChangedCallback = (newValue?: string | null, oldValue?: string | null) => {
-      console.log('color changed:', oldValue, '→', newValue);
-    }
-    // 监听值变化
-    storage.onChange('color', colorChangedCallback);
-    return () => {
-      // 取消监听
-      storage.offChange('color', colorChangedCallback);
-    }
-  }, [])
-  useEffect(() => {
-    testChromeStorage()
-  }, [])
+  const [count, setCount] = useStorageState<YourToolApp.Settings, 'count'>('count', 0, { area: StorageAreaEnum.LOCAL, expired: 60 });
 
   const goToSomePath = (path: string) => {
-    // 发送消息给扩展（包括 newtab 页面）
+    // 发送消息给扩展（包括 newTab 页面）
     chrome.runtime.sendMessage({ type: MESSAGE_TYPE.NAVIGATION, payload: { path } });
   }
 

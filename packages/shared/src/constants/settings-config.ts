@@ -1,13 +1,7 @@
-export interface SettingOption {
-  key: string;
-  label: string;
-  type: 'toggle' | 'select' | 'input';
-  value?: any;
-  options?: string[];
-}
+import type { YourToolApp } from '@your-s-tools/types';
 
 // 默认设置
-export const defaultSettings: SettingOption[] = [
+export const defaultSettings: YourToolApp.SettingOption[] = [
   { key: 'darkMode', label: '深色模式', type: 'toggle', value: false },
   {
     key: 'searchEngine',

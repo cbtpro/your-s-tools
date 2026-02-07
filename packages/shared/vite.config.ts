@@ -4,6 +4,7 @@ import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   build: {
+    minify: false,
     sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -20,6 +21,11 @@ export default defineConfig({
       },
       plugins: [],
     },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
   },
   plugins: [
     dts({

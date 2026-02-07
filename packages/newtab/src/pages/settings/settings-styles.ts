@@ -64,6 +64,7 @@ export const settingsStyles: Record<string, React.CSSProperties> = {
     border: '1px solid #ccc',
     borderRadius: '6px',
     background: '#fff',
+    color: '#333',
     cursor: 'pointer',
   },
 };

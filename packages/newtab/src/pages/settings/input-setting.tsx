@@ -8,8 +8,9 @@ interface Props {
 export default function InputSetting({ value, onChange, label, styles }: Props) {
   return (
     <div style={styles.settingItem}>
-      <label style={styles.label}>{label}</label>
+      <label htmlFor="input-setting" style={styles.label}>{label}</label>
       <input
+        id="input-setting"
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -1,13 +1,21 @@
 export declare namespace YourToolApp {
+  interface SettingOption {
+    key: keyof YourToolApp.Settings;
+    label: string;
+    type: 'toggle' | 'select' | 'input';
+    value?: any;
+    options?: string[];
+  }
+
   /**
    * 常规设置
    */
-  interface General {
+  type General = {
     /**
      * 语言
      */
     language: string;
-  }
+  };
   /**
    * Dock 设置
    */
@@ -16,6 +24,7 @@ export declare namespace YourToolApp {
      * 自动隐藏
      */
     autoHide: boolean;
+    triggerDistance: number;
   }
   /**
    * 高级设置
@@ -27,9 +36,31 @@ export declare namespace YourToolApp {
    * 设置
    */
   interface Settings {
+    count: number;
+    /**
+     * 常规设置
+     */
     general: General;
+    /**
+     * 通用设置
+     */
+    settings: SettingOption[];
+    /**
+     * Dock 设置
+     */
     dock: Dock;
+    /**
+     * 高级设置
+     */
     advanced: Advanced;
+    /**
+     * 搜索引擎
+     */
+    searchEngine: LayoutJsonData[];
+    /**
+     * 暗黑模式
+     */
+    darkMode: boolean;
   }
   /**
    * 编辑状态

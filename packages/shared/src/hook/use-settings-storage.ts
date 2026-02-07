@@ -1,26 +1,45 @@
 import { useEffect, useState } from 'react';
-import useChromeStorage from '../utils/use-chrome-storage';
-import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
-import { YourToolApp } from '@your-s-tools/types';
+import useChromeStorage, { UseChromeStorageReturn } from './use-chrome-storage';
+import { StorageAreaEnum } from '../constants/enums';
+import { defaultSettings } from '../constants/settings-config';
+import type { YourToolApp } from '@your-s-tools/types';
 
-const useSettingsStorage = () : [YourToolApp.Settings, React.Dispatch<React.SetStateAction<YourToolApp.Settings>>] => {
-  const storage = useChromeStorage({ area: StorageAreaEnum.LOCAL });
-  const [data, setData] = useState<YourToolApp.Settings>({
-    general: {
-      language: 'zh-CN'
-    },
-    dock: {
-      autoHide: false,
-    },
-    advanced: {},
-  });
+export const initialSettings: YourToolApp.Settings = {
+  count: 0,
+  general: {
+    language: 'zh-CN'
+  },
+  dock: {
+    autoHide: false,
+    triggerDistance: 100,
+  },
+  advanced: {},
+  settings: defaultSettings,
+  searchEngine: [],
+  darkMode: false
+};
+const useSettingsStorage = () : [UseChromeStorageReturn<YourToolApp.Settings>] => {
+  const storage = useChromeStorage<YourToolApp.Settings>({ area: StorageAreaEnum.LOCAL });
+
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const initial = async () => {
-      const storeData = await storage.getItem<YourToolApp.Settings>(STORAGE_KEY.COUNT);
-      if (storeData) {
-        setData(storeData);
+      const general = await storage.getItem('general');
+      if (general) {
+        storage.setItem('general', general);
+      }
+      const settings = await storage.getItem('settings');
+      if (settings) {
+        storage.setItem('settings', settings);
+      }
+      const dock = await storage.getItem('dock');
+      if (dock) {
+        storage.setItem('dock', dock);
+      }
+      const advanced = await storage.getItem('advanced');
+      if (advanced) {
+        storage.setItem('advanced', advanced);
       }
       setInitialized(true);
     };
@@ -29,11 +48,14 @@ const useSettingsStorage = () : [YourToolApp.Settings, React.Dispatch<React.SetS
 
   useEffect(() => {
     if (initialized) {
-      storage.setItem(STORAGE_KEY.COUNT, data);
+      storage.setItem('general', initialSettings.general);
+      storage.setItem('settings', initialSettings.settings);
+      storage.setItem('dock', initialSettings.dock);
+      storage.setItem('advanced', initialSettings.advanced);
     }
-  }, [data, initialized, storage]);
+  }, [initialized, storage]);
 
-  return [data, setData];
+  return [storage];
 };
 
 export default useSettingsStorage;

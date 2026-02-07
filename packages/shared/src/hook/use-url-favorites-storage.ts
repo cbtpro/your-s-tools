@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useChromeStorage from '../utils/use-chrome-storage';
+import useChromeStorage from './use-chrome-storage';
 import { STORAGE_KEY, StorageAreaEnum } from '../constants/enums';
 
 const useUrlFavoritesStorage = <T>() : [T | null, React.Dispatch<React.SetStateAction<T | null>>] => {
@@ -9,7 +9,7 @@ const useUrlFavoritesStorage = <T>() : [T | null, React.Dispatch<React.SetStateA
 
   useEffect(() => {
     const initCount = async () => {
-      const storeData = await storage.getItem<T>(STORAGE_KEY.URL_FAVORITES);
+      const storeData = await storage.getItem(STORAGE_KEY.URL_FAVORITES);
       if (storeData) {
         setData(storeData);
       }

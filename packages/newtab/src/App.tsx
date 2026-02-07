@@ -3,6 +3,7 @@ import consola from 'consola';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 import Home from '@/pages/home';
 import About from '@/pages/about';
+import LayoutEdit from '@/pages/layout-edit';
 import Settings from '@/pages/settings';
 import NotFound from '@/pages/notfound';
 
@@ -39,8 +40,9 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
+        <Route path="layout/edit" element={<LayoutEdit />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
