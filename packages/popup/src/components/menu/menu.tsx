@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './menu.css';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
+import MenuFooter from './menu-footer';
 interface MenuProps {
   appName: string;
   version: string;
@@ -17,7 +18,7 @@ const Menu: React.FC<MenuProps> = ({ appName, version }) => {
   const { t } = useTranslation();
   const menuItems: MenuItem[] = [
     { label: t('apps.settings'), path: '/settings', icon: '⚙️' },
-    { label: t('apps.customize'), path: '/customize', icon: '🎨' },
+    { label: t('apps.customize'), path: '/layout-edit', icon: '🎨' },
     { label: t('apps.help'), path: '/help', icon: '❓' },
     { label: t('apps.about'), path: '/about', icon: 'ℹ️' },
   ];
@@ -53,30 +54,7 @@ const Menu: React.FC<MenuProps> = ({ appName, version }) => {
 
       {/* 底部：图标栏 */}
       <div className="menu-footer">
-        <a
-          href="https://github.com/cbtpro/your-s-tools"
-          target="_blank"
-          rel="noreferrer noopener"
-          title="GitHub"
-        >
-          🐙
-        </a>
-        <a
-          href="https://juejin.cn/user/905653310988445"
-          target="_blank"
-          rel="noreferrer noopener"
-          title="掘金"
-        >
-          📘
-        </a>
-        <a
-          href="https://github.com/cbtpro/your-s-tools/issues"
-          target="_blank"
-          rel="noreferrer noopener"
-          title="Issue"
-        >
-          ❗
-        </a>
+        <MenuFooter />
       </div>
     </div>
   );

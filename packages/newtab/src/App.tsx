@@ -17,6 +17,7 @@ export default function App() {
       // console.log("收到 popup 消息:", msg.payload);
       consola.log("sender:", sender);
       sendResponse({ success: true });
+      console.log("导航到:", message.payload.path);
       // 在这里做页面跳转、状态更新
       navigate(message.payload.path);
     }
@@ -34,13 +35,14 @@ export default function App() {
     <div>
       {/* <nav style={{ display: "flex", gap: "12px" }}>
         <Link to="/">首页</Link>
+        <Link to="/layout-edit">布局编辑</Link>
         <Link to="/about">关于</Link>
         <Link to="/settings">设置</Link>
       </nav> */}
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="layout/edit" element={<LayoutEdit />} />
+        <Route path="layout-edit" element={<LayoutEdit />} />
         <Route path="settings" element={<Settings />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />

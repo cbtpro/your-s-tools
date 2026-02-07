@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { YourToolApp } from '@your-s-tools/types';
 import { MESSAGE_TYPE, version, useStorageState, StorageAreaEnum } from '@your-s-tools/shared';
-import Menu from './components/menu';
+import Menu from './components/menu/menu';
 // import './App.css'
 
 function App() {
