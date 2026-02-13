@@ -6,6 +6,7 @@
     "dev": "pnpm -r --filter ./packages/** run dev",
     "build": "pnpm -r run build",
     "build:watch": "pnpm -r --parallel run build:watch",
+    "build:watch:turbo": "turbo run build:watch",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"
   },
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@types/chrome": "catalog:",
+    "turbo": "^2.8.7",
     "vite-plugin-static-copy": "catalog:"
   }
 }
