@@ -24,5 +24,16 @@
   "exclude": [
     "dist",
     "node_modules"
-  ]
+  ],
+  "watchOptions": {
+    // 使用原生的文件系统事件，而不是定时轮询（最节省 CPU）
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    
+    // 如果原生事件失效，退回到轮询模式时，降低频率
+    "fallbackPolling": "dynamicPriority",
+    
+    // 忽略 node_modules，避免扫描数万个无关文件
+    "excludeDirectories": ["**/node_modules", "dist"]
+  }
 }

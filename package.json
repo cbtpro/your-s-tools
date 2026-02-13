@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "pnpm -r --filter ./packages/** run dev",
     "build": "pnpm -r run build",
+    "build:watch": "pnpm -r --parallel run build:watch",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"
   },

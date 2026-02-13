@@ -5,6 +5,8 @@
 ```bash
 pnpm install
 
+pnpm run build:watch
+
 cd packages/shared
 pnpm run build:watch
 

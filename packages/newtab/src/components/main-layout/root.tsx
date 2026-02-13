@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState, type JSX } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type JSX, type ReactNode } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 // import { useTranslation } from 'react-i18next';
 import type { YourToolApp } from "@your-s-tools/types";
@@ -21,8 +21,10 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
   BasePopular: AsyncBasePopular,
   BaseFavorite: AsyncBaseFavorite,
 };
-
-function Root() {
+interface LayoutProps {
+  children?: ReactNode; // ReactNode 涵盖了字符串、数字、组件、数组等
+}
+function Root({ children }: LayoutProps) {
   // const { t } = useTranslation();
   // const [isLoading, setIsLoading] = useState(false);
   /**
@@ -110,6 +112,7 @@ function Root() {
   return (
     <>
       <div style={{ display: 'flex', height: '100vh' }}>
+          {children}
           {/* 右侧布局区 */}
           <div style={{ flex: 1, background: "#f8f9fa" }} className="layout-container">
             <ResponsiveReactGridLayout

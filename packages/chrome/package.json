@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc -b && vite",
     "build": "tsc -b && vite build",
-    "build:watch": "tsc -b && vite build --watch",
+    "build:watch": "concurrently \"tsc -b --watch\" \"vite build --watch\"",
     "build:packages": "pnpm -r --filter \"./packages/**\" run build:watch",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -25,6 +25,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
+    "concurrently": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
     "eslint-plugin-react-refresh": "catalog:",

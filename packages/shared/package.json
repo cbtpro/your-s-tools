@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "tsc -b tsconfig.json && vite build --watch",
-    "build:watch": "tsc -b tsconfig.json && vite build --watch",
+    "build:watch": "concurrently \"tsc -b tsconfig.json --watch\" \"vite build --watch\"",
     "build": "vite build"
   },
   "devDependencies": {
