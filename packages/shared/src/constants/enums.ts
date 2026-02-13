@@ -1,7 +1,8 @@
+
 /**
  * Storage Key 枚举
  */
-export enum STORAGE_KEY {
+export const enum STORAGE_KEY {
   /**
    * 编辑布局
    */
@@ -26,7 +27,7 @@ export enum STORAGE_KEY {
 /**
  * Chrome 存储区域枚举
  */
-export enum StorageAreaEnum {
+export const enum StorageAreaEnum {
   LOCAL = 'local',
   SYNC = 'sync'
 };

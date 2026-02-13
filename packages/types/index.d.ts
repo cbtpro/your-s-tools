@@ -65,7 +65,7 @@ export declare namespace YourToolApp {
   /**
    * 编辑状态
    */
-  enum EditStatus {
+  const enum EditStatus {
     /**
      * 编辑
      */

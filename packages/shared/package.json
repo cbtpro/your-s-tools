@@ -3,20 +3,17 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./provider": {
+      "types": "./src/provider.tsx",
+      "import": "./src/provider.tsx"
     }
-  },
-  "scripts": {
-    "dev": "tsc -b tsconfig.json && vite build --watch",
-    "build:watch": "concurrently \"tsc -b tsconfig.json --watch\" \"vite build --watch\"",
-    "build": "vite build"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

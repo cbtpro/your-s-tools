@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useChromeStorage, { UseChromeStorageReturn } from './use-chrome-storage';
+import useChromeStorage, { type UseChromeStorageReturn } from './use-chrome-storage';
 import { StorageAreaEnum } from '../constants/enums';
 import { defaultSettings } from '../constants/settings-config';
 import type { YourToolApp } from '@your-s-tools/types';

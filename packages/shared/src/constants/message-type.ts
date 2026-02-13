@@ -1,4 +1,4 @@
-enum MESSAGE_TYPE {
+const enum MESSAGE_TYPE {
   /**
    * 路由跳转
    */
