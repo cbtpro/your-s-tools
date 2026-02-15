@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import { initI18n } from '@your-project/i18n';
+import { GuardProvider } from "@/routes/router-guard";
 import App from '@/App.tsx';
 
 // 样式导入
@@ -19,7 +20,9 @@ const renderApp = () => {
   createRoot(container).render(
     <StrictMode>
       <HashRouter>
-        <App />
+        <GuardProvider>
+          <App />
+        </GuardProvider>
       </HashRouter>
     </StrictMode>
   );

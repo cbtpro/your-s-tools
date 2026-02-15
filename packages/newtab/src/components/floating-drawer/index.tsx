@@ -16,6 +16,7 @@ export default function FloatingDrawer({ children, title, width }: FloatingDrawe
   return (
     <>
       <button
+        title={t('drawer.title')}
         onClick={() => setVisible(true)}
         className="fixed top-6 left-6 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 opacity-30 hover:opacity-100"
       >

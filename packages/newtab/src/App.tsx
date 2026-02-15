@@ -1,4 +1,5 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import consola from 'consola';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 import Home from '@/pages/home';
@@ -6,12 +7,12 @@ import About from '@/pages/about';
 import LayoutEdit from '@/pages/layout-edit';
 import Settings from '@/pages/settings';
 import NotFound from '@/pages/notfound';
+import { useRouterGuard } from "@/routes/router-guard";
 
 import './App.css'
-import { useEffect } from "react";
 
 export default function App() {
-  const navigate = useNavigate();
+  const { safeNavigate } = useRouterGuard();
   const routerMessage = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
     if (message.type === MESSAGE_TYPE.NAVIGATION) {
       // console.log("收到 popup 消息:", msg.payload);
@@ -19,7 +20,7 @@ export default function App() {
       sendResponse({ success: true });
       console.log("导航到:", message.payload.path);
       // 在这里做页面跳转、状态更新
-      navigate(message.payload.path);
+      safeNavigate(message.payload.path);
     }
   }
   useEffect(() => {

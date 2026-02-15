@@ -6,6 +6,9 @@ import type { YourToolApp } from '@your-s-tools/types';
 
 export const initialSettings: YourToolApp.Settings = {
   count: 0,
+  layoutEdit: {
+    isEditMode: false,
+  },
   general: {
     language: 'zh-CN'
   },
@@ -16,6 +19,7 @@ export const initialSettings: YourToolApp.Settings = {
   advanced: {},
   settings: defaultSettings,
   searchEngine: [],
+  autoTheme: false,
   darkMode: false
 };
 const useSettingsStorage = () : [UseChromeStorageReturn<YourToolApp.Settings>] => {

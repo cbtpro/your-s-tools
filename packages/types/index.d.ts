@@ -37,6 +37,12 @@ export declare namespace YourToolApp {
    */
   interface Settings {
     count: number;
+    layoutEdit: {
+      /**
+       * 编辑模式
+       */
+      isEditMode?: boolean;
+    };
     /**
      * 常规设置
      */
@@ -58,23 +64,14 @@ export declare namespace YourToolApp {
      */
     searchEngine: LayoutJsonData[];
     /**
+     * 跟随系统
+     */
+    autoTheme: boolean;
+    /**
      * 暗黑模式
      */
     darkMode: boolean;
   }
-  /**
-   * 编辑状态
-   */
-  const enum EditStatus {
-    /**
-     * 编辑
-     */
-    Edit = 'edit',
-    /**
-     * 正常
-     */
-    Normal = 'normal',
-  };
   /**
    * 布局json数据定义
    */

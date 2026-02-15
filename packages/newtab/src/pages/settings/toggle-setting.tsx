@@ -11,6 +11,8 @@ export default function ToggleSetting({ value, onChange, label, styles }: Props)
       <label style={styles.label}>{label}</label>
       <input
         type="checkbox"
+        title={label}
+        placeholder=""
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
         style={styles.toggle}

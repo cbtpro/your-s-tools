@@ -2,6 +2,7 @@ import type { YourToolApp } from '@your-s-tools/types';
 
 // 默认设置
 export const defaultSettings: YourToolApp.SettingOption[] = [
+  { key: 'autoTheme', label: '跟随系统', type: 'toggle', value: false },
   { key: 'darkMode', label: '深色模式', type: 'toggle', value: false },
   {
     key: 'searchEngine',

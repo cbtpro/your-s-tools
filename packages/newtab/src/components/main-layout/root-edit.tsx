@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import type { YourToolApp } from "@your-s-tools/types";
-import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';
+import { initialSettings, useLayoutStorage, useStorageState } from '@your-s-tools/shared';
+import { useRouterGuard } from "@/routes/router-guard";
 import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
 import './root.css';
 import '../../assets/styles/styles.css';
@@ -31,25 +32,41 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
 
 function Root() {
   const { t } = useTranslation();
+
+  const { registerGuard } = useRouterGuard();
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    const unregister = registerGuard((from, to) => {
+      return (
+        from === "/layout-edit" &&
+        to !== "/layout-edit" &&
+        isDirty
+      );
+    });
+
+    return unregister; // 自动注销
+  }, [isDirty]);
+
+  useEffect(() => {
+    setIsDirty(true);
+    return () => {
+      setIsDirty(false);
+    };
+  }, []);
   // const [isLoading, setIsLoading] = useState(false);
   /**
    * 编辑状态
    */
-  const [isEditMode, setIsEditMode] = useState(true);
-  const addToggleIsEditMode = (message: any, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-    const { type, value = !isEditMode } = message;
-    if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
-      setIsEditMode(value);
-      sendResponse({ success: true })
-    }
-  }
+  const [layoutEdit, setLayoutEdit] = useStorageState<YourToolApp.Settings, 'layoutEdit'>('layoutEdit', initialSettings.layoutEdit);
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(addToggleIsEditMode);
+    setLayoutEdit((prev) => ({ ...prev, isEditMode: true }));
     return () => {
-      chrome.runtime.onMessage.removeListener(addToggleIsEditMode);
+      setLayoutEdit((prev) => ({ ...prev, isEditMode: false }));
     };
-  });
+  }, []);
+
   const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
@@ -151,14 +168,20 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
     }));
   };
 
-  return (
-    <>
+  const renderFloatingDrawer = () => {
+    if (!layoutEdit.isEditMode) return null;
+    return (
       <FloatingDrawer title={t('components.components')} width={'auto'}>
         {/* 组件面板 */}
         <Suspense fallback={<div>Loading Sidebar...</div>}>
           <ComponentSidebar />
         </Suspense>
       </FloatingDrawer>
+    );
+  }
+  return (
+    <>
+      {renderFloatingDrawer()}
       <DndProvider backend={HTML5Backend}>
         <div style={{ display: 'flex', height: '100vh' }}>
           {/* 右侧布局区 */}
@@ -171,8 +194,8 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
               useCSSTransforms={mounted}
               compactType={compactType}
               preventCollision={!compactType}
-              isDraggable={isEditMode}
-              isResizable={isEditMode}
+              isDraggable={layoutEdit.isEditMode}
+              isResizable={layoutEdit.isEditMode}
               cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
               rowHeight={85}
               draggableCancel=".hover-delete-btn"
