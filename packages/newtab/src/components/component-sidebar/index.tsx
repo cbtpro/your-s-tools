@@ -46,25 +46,6 @@ const DraggableComponent: React.FC<{
 const ComponentSidebar: React.FC<{
   components?: ComponentItem[]; // 可传入自定义列表
 }> = ({ components = componentList }) => {
-  // const [search, setSearch] = useState('');
-  // const inputRef = useRef<HTMLInputElement>(null);
-  // const isComposing = useRef(false);
-
-  // const handleCompositionStart = () => {
-  //   isComposing.current = true;
-  // };
-
-  // const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
-  //   isComposing.current = false;
-  //   setSearch(e.currentTarget.value);
-  // };
-
-  // const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-  //   // 不在组合中时更新
-  //   if (!isComposing.current) {
-  //     setSearch(e.currentTarget.value);
-  //   }
-  // };
   const { value: search, bind: bindSearch } = useCompositionInput('');
 
 

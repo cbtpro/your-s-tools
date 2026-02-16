@@ -30,7 +30,9 @@ export default function useCompositionInput(initialValue = '') {
     }
   }, []);
 
-  // ✅ 提供一组可以直接绑定的属性
+  /**
+   * 提供一组可以直接绑定的属性
+   */
   const bind = {
     defaultValue: value,
     onInput: handleInput,
