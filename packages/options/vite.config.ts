@@ -1,66 +1,60 @@
-// import { resolve, dirname } from 'path';
-// import { fileURLToPath } from 'url';
-import {
-  defineConfig,
-  // type PluginOption,
-} from 'vite'
-import react from '@vitejs/plugin-react';
-// import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// const __dirname = dirname(fileURLToPath(import.meta.url))
+export default defineConfig(({ command, mode }) => {
+  const isDevBuild = command === 'build' && mode === 'development'
 
-// https://vite.dev/config/
-export default defineConfig({
-  base: './',
-  plugins: [
-    react(),
-    // viteStaticCopy({
-    //   targets: [
-    //     {
-    //       src: 'manifest.json', // 源文件
-    //       dest: '.'             // 输出到 dist 根目录
-    //     }
-    //   ],
-    // }) as unknown as PluginOption
-  ],
-  build: {
-    outDir: '../chrome/dist/options',
-    watch: {
-      // 1. 延迟构建（单位：毫秒）
-      // 当你保存文件时，Vite 会等待 500ms，看是否还有后续改动，再触发构建。
-      // 这能有效防止“连击保存”导致的频繁 CPU 峰值。
-      buildDelay: 500, 
+  console.error(
+    'Vite Config - Command:',
+    command,
+    'Mode:',
+    mode,
+    'Is Dev Build:',
+    isDevBuild
+  )
 
-      // 2. 底层监听器配置
-      chokidar: {
-        // 增加轮询间隔（毫秒）。默认可能非常快。
-        // 设置为 1000ms（1秒）能极大缓解 Windows 的磁盘扫描压力。
-        interval: 1000, 
-        
-        // 必须忽略 dist 和 node_modules，防止“产物变动 -> 触发监听 -> 再次构建”的死循环
-        ignored: ['**/node_modules/**', '**/dist/**'],
-        
-        // 在 Windows 11 上，开启 usePolling 有时比原生事件更省资源
-        usePolling: true, 
+  return {
+    base: './',
+    plugins: [react()],
+    build: {
+      // 开发时直接投递到 chrome 的开发目录，生产时就地打包
+      outDir: isDevBuild ? '../chrome/dist/options' : 'dist',
+      watch: isDevBuild ? {
+        // 建议添加，防止构建过于频繁
+        buildDelay: 500,
+        // 排除掉干扰项
+        exclude: ['node_modules/**', 'dist/**'],
+      } : null,
+      // 关键：防止开发模式下 options 删掉 chrome 目录下的其他东西
+      emptyOutDir: !isDevBuild,
+      sourcemap: isDevBuild,
+      minify: isDevBuild ? false : 'esbuild',
+      rollupOptions: {
+        // 确保输出的文件名固定，方便 chrome 引用（如果需要的话）
+        output: {
+          entryFileNames: `assets/[name].js`,
+          chunkFileNames: `assets/[name]-[hash].js`,
+          assetFileNames: `assets/[name].[ext]`,
+        },
       },
+    },
 
-      // 3. 排除不必要的文件，减少内存中监听器的数量
-      exclude: ['node_modules/**', 'dist/**'],
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src'),
+      },
     },
-  },
-  server: {
-    host: '::',
-    port: 8001,
-    watch: {
-      // 这里的 chokidar 配置直接影响扫描频率，尤其是在 Windows 上，默认配置可能导致文件变动时反应迟钝或不稳定。以下配置能显著提升开发体验：
-      usePolling: true,   // 在 Windows 上，有时开启轮询反而更稳定
-      interval: 1000,     // 检查间隔（毫秒），调大这个值（如 1000 或 2000）能救命
-      binaryInterval: 3000,
-      ignored: [
-        // 忽略不必要的目录，减少扫描负担
-        '**/node_modules/**',
-        // '**/dist/**'
-      ],
+
+    server: {
+      host: '::',
+      port: 8000,
+      watch: {
+        usePolling: true,
+        interval: 1000,
+        binaryInterval: 3000,
+        ignored: ['**/node_modules/**'],
+      },
     },
-  },
+  }
 })

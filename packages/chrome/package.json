@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc -b && vite",
     "build": "tsc -b && vite build",
-    "build:watch": "concurrently \"tsc -b --watch\" \"vite build --watch\"",
+    "build:watch": "concurrently \"tsc -b --watch\" \"vite build --watch --mode development\"",
     "build:packages": "pnpm -r --filter \"./packages/**\" run build:watch",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -3,10 +3,16 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm -r --filter ./packages/** run dev",
-    "build": "pnpm -r run build",
-    "build:watch": "pnpm -r --parallel run build:watch",
-    "build:watch:turbo": "turbo run build:watch",
+    "dev:popup": "pnpm --filter ./packages/popup run build:watch",
+    "dev:newtab": "pnpm --filter ./packages/newtab run build:watch",
+    "dev:options": "pnpm --filter ./packages/options run build:watch",
+    "dev:chrome": "pnpm --filter ./packages/chrome run build:watch",
+    "dev": "concurrently \"pnpm dev:popup\" \"pnpm dev:newtab\" \"pnpm dev:options\" \"pnpm dev:chrome\"",
+    "build:apps": "pnpm --filter \"./packages/*\" --filter \"!chrome\" -r build",
+    "build:chrome": "pnpm --filter chrome run build",
+    "build": "pnpm run build:apps && pnpm run build:chrome",
+    "clean": "rimraf packages/*/dist",
+    "prebuild": "pnpm run clean",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"
   },
@@ -26,6 +32,8 @@
   },
   "devDependencies": {
     "@types/chrome": "catalog:",
+    "concurrently": "catalog:",
+    "rimraf": "^6.1.3",
     "turbo": "^2.8.7",
     "vite-plugin-static-copy": "catalog:"
   }

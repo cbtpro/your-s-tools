@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:watch": "concurrently \"tsc -b --watch\" \"vite build --watch\"",
+    "build:watch": "concurrently \"tsc -b --watch\" \"vite build --watch --mode development\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
