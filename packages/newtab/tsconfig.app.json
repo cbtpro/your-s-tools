@@ -26,11 +26,7 @@
       "@/*": [
         "./src/*"
       ],
-      "typeRoots": [
-        "./node_modules/@your-s-tools/types",
-        "./node_modules/@types"
-      ]
-    }
+    },
+    "types": ["chrome"],
   },
-  "include": ["src", "../shared/src/constants/settings-config.ts"]
 }
