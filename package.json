@@ -11,7 +11,7 @@
     "build:apps": "pnpm --filter \"./packages/*\" --filter \"!chrome\" -r build",
     "build:chrome": "pnpm --filter chrome run build",
     "build": "pnpm run build:apps && pnpm run build:chrome",
-    "clean": "rimraf packages/*/dist",
+    "clean": "pnpm -r exec rimraf dist",
     "prebuild": "pnpm run clean",
     "catalog": "pnpx codemod pnpm/catalog",
     "test": "vitest run"
