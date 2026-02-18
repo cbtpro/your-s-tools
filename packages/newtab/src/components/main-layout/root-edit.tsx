@@ -30,7 +30,7 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
   BaseFavorite: AsyncBaseFavorite,
 };
 
-function Root() {
+function LayoutEdit() {
   const { t } = useTranslation();
 
   const { registerGuard } = useRouterGuard();
@@ -214,4 +214,4 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
   );
 }
 
-export default Root;
+export default LayoutEdit;

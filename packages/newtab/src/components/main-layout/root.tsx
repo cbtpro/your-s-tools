@@ -24,27 +24,31 @@ const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>>
 interface LayoutProps {
   children?: ReactNode; // ReactNode 涵盖了字符串、数字、组件、数组等
 }
-function Root({ children }: LayoutProps) {
+function Layout({ children }: LayoutProps) {
   // const { t } = useTranslation();
   // const [isLoading, setIsLoading] = useState(false);
   /**
    * 编辑状态
    */
   const [isEditMode, setIsEditMode] = useState(true);
-  const addToggleIsEditMode = (message: any, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-    const { type, value = !isEditMode } = message;
-    if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
-      setIsEditMode(value);
-      sendResponse({ success: true })
-    }
-  }
 
   useEffect(() => {
+    const addToggleIsEditMode = (message: any, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
+      const { type, value } = message;
+      if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
+        setIsEditMode((prev) => {
+          const nextValue = value ?? !prev;
+          return nextValue;
+        });
+        sendResponse({ success: true })
+      }
+      return false;
+    }
     chrome.runtime.onMessage.addListener(addToggleIsEditMode);
     return () => {
       chrome.runtime.onMessage.removeListener(addToggleIsEditMode);
     };
-  });
+  }, []);
   const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
@@ -142,4 +146,4 @@ function Root({ children }: LayoutProps) {
   );
 }
 
-export default Root;
+export default Layout;

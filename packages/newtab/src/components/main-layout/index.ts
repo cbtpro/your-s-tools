@@ -1,2 +1,2 @@
-export { default as Root } from './root';
-export { default as RootEdit } from './root-edit';
+export { default as Layout } from './root';
+export { default as LayoutEdit } from './root-edit';
