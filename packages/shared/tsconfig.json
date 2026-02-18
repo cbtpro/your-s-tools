@@ -13,6 +13,7 @@
     "declarationDir": "dist",
     "declarationMap": true,
     "emitDeclarationOnly": true,
+    "jsx": "react-jsx",
     "sourceMap": true,
     // "baseUrl": "./",
     "rootDir": "./src",

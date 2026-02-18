@@ -7,24 +7,29 @@ export default defineConfig({
     minify: false,
     sourcemap: true,
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'shared',
+      entry: {
+        index: path.resolve(__dirname, 'src/index.ts'),
+        provider: path.resolve(__dirname, 'src/provider.tsx'),
+      },
+      name: 'i18n',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format) => `[name].${format}.js`,
     },
     rollupOptions: {
       external: [
+        'i18next',
         'react',
-        'react-dom',
-        'react-grid-layout',
-        /@arco-design\/web-react(\/.*)?/ // 使用正则匹配 arco 及其子路径
+        'react-dom/client',
+        'react-i18next',
+        'react-router-dom',
       ],
       output: {
         globals: {
+          i18next: 'i18next',
           react: 'React',
-          'react-dom': 'ReactDOM',
-          'react-grid-layout': 'ReactGridLayout',
-          '@arco-design/web-react': 'arco',
+          'react-dom/client': 'ReactDOMClient',
+          'react-i18next': 'reactI18next',
+          'react-router-dom': 'reactRouterDom',
         },
       },
       plugins: [],
