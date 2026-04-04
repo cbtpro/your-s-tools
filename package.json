@@ -35,8 +35,8 @@
   "devDependencies": {
     "@types/chrome": "catalog:",
     "concurrently": "catalog:",
-    "rimraf": "^6.1.3",
-    "turbo": "^2.8.7",
+    "rimraf": "catalog:",
+    "turbo": "catalog:",
     "vite-plugin-static-copy": "catalog:"
   }
 }

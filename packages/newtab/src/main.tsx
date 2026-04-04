@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
-import { initI18n } from '@your-project/i18n';
+import { initI18n } from '@your-s-tools/i18n';
 import { GuardProvider } from "@/routes/router-guard";
 import App from '@/App.tsx';
 
@@ -21,7 +21,7 @@ const renderApp = () => {
     <StrictMode>
       <HashRouter>
         <GuardProvider>
-          <App />
+            <App />
         </GuardProvider>
       </HashRouter>
     </StrictMode>

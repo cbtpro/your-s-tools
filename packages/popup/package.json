@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@your-project/i18n": "workspace:*",
+    "@your-s-tools/i18n": "workspace:*",
     "@your-s-tools/shared": "workspace:*",
     "@your-s-tools/types": "workspace:*",
     "react": "catalog:",

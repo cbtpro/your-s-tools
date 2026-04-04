@@ -1,5 +1,5 @@
 {
-  "name": "@your-project/i18n",
+  "name": "@your-s-tools/i18n",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.cjs.js",

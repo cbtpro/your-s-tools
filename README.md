@@ -32,6 +32,16 @@ pnpm add -D sass-embedded classnames
 pnpm add @your-s-tools/types --filter <你的目标子包名> --workspace
 ```
 
+```
+# 给指定packages添加依赖
+pnpm add react-redux --filter newtab
+# 给指定packages移除依赖
+pnpm remove react-redux --filter newtab
+
+# 重新执行pnpm run catalog，统一管理版本
+pnpm run catalog
+```
+
 或者进入目标子包所在的目录直接运行：
 
 ```sh
