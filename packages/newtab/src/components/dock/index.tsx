@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tooltip } from '@arco-design/web-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import {
   Home,
   Mail,

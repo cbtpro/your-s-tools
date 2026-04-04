@@ -5,6 +5,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
@@ -19,9 +20,14 @@
     "rootDir": "./src",
     "outDir": "dist",
     "types": ["chrome", "node"],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+    },
   },
   "include": [
-    "src"
+    "src/**/*"
   ],
   "exclude": [
     "dist",

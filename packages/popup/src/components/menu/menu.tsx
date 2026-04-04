@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import './menu.css';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
 import MenuFooter from './menu-footer';

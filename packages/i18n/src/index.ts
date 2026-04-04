@@ -1,7 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import enUS from '../locales/en-US.json';
-import zhCN from '../locales/zh-CN.json';
+import {
+  useTranslation as useI18NextTranslation,
+} from 'react-i18next';
+import enUS from '@/locales/en-US';
+import zhCN from '@/locales/zh-CN';
 
 // 1. 导出资源定义（命名导出）
 export const resources = {
@@ -14,13 +17,11 @@ let isLanguageListenerAdded = false;
 
 /**
  * 2. 初始化 i18n（命名导出）
- * 包含从 chrome.storage 加载配置及监听自动更新
  */
 export const initI18n = async () => {
   const storage = await chrome.storage.local.get('general');
   const savedLanguage = storage?.general?.language || 'zh-CN';
 
-  // 如果已经初始化过，且 i18next 实例已存在，直接返回
   if (!i18n.isInitialized) {
     await i18n
       .use(initReactI18next)
@@ -30,19 +31,16 @@ export const initI18n = async () => {
         fallbackLng: 'en-US',
         interpolation: { escapeValue: false },
         defaultNS: 'translation',
-        // 允许检测语言变化
         react: {
           useSuspense: false,
         },
       });
   }
 
-  // 3. 监听插件全局存储变化，同步语言状态（单例模式）
   if (!isLanguageListenerAdded) {
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area === 'local' && changes.general) {
         const newLang = changes.general.newValue?.language;
-        // 确保实例存在且语言确实发生了变化
         if (newLang && newLang !== i18n.language) {
           i18n.changeLanguage(newLang);
         }
@@ -56,7 +54,6 @@ export const initI18n = async () => {
 
 /**
  * 4. 设置语言（命名导出）
- * 封装持久化逻辑，供 UI 层的语言切换组件调用
  */
 export const setAppLanguage = async (lang: keyof typeof resources) => {
   const storage = await chrome.storage.local.get('general');
@@ -70,6 +67,14 @@ export const setAppLanguage = async (lang: keyof typeof resources) => {
 
 /**
  * 5. 导出 i18n 实例本身（命名导出）
- * 代替 export default，彻底解决 Rollup 警告
  */
 export const i18nInstance = i18n;
+
+/**
+ * 封装 react-i18next 的 useTranslation
+ * 修复：移除显式泛型约束，直接透传参数，利用 TS 自动推断解决类型不兼容问题
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useTranslation = (ns?: any, options?: any) => {
+  return useI18NextTranslation(ns, options);
+};

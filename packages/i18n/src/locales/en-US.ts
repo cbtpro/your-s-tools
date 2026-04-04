@@ -1,6 +1,16 @@
-{
+export default {
   "title": "MacOS Style Dock",
   "subtitle": "Hover over the dock icons to see the magnification effect",
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
+    "success": "Success"
+  },
+  "languages": {
+    "zh-CN": "中文",
+    "en-US": "English"
+  },
   "features": {
     "title": "Features",
     "item1": "Smooth magnification on hover",
@@ -31,7 +41,10 @@
     "language": "Language",
     "languageDesc": "Select interface language",
     "dockSection": "Dock Settings",
-    "generalSection": "General Settings"
+    "generalSection": "General Settings",
+    "reset": {
+      "success": "Settings have been reset to default"
+    }
   },
   "components": {
     "components": "Components"
@@ -61,4 +74,4 @@
     "section3": "Help & Support",
     "content3": "Get help and learn more about available features."
   }
-}
+} as const;

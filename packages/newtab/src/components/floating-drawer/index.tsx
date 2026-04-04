@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Drawer } from '@arco-design/web-react';
 import { Menu } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 
 interface FloatingDrawerProps {
   children?: ReactNode;

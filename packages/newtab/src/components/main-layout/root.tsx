@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, type JSX, type ReactNode } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-// import { useTranslation } from 'react-i18next';
+// import { useTranslation } from '@your-s-tools/i18n';
 import type { YourToolApp } from "@your-s-tools/types";
 import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
 import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';

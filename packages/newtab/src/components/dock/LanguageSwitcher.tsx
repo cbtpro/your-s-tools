@@ -1,5 +1,5 @@
 import { Select } from '@arco-design/web-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import { Globe } from 'lucide-react';
 
 const Option = Select.Option;

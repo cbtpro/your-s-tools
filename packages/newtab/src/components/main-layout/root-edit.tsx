@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, type JSX } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import type { YourToolApp } from "@your-s-tools/types";

@@ -1,6 +1,16 @@
-{
+export default {
   "title": "MacOS 风格 Dock",
   "subtitle": "将鼠标悬停在 Dock 图标上以查看放大效果",
+  "common": {
+    "ok": "确定",
+    "cancel": "取消",
+    "close": "关闭",
+    "success": "成功"
+  },
+  "languages": {
+    "zh-CN": "中文",
+    "en-US": "English"
+  },
   "features": {
     "title": "功能特性",
     "item1": "悬停时平滑放大",
@@ -31,7 +41,10 @@
     "language": "语言",
     "languageDesc": "选择界面语言",
     "dockSection": "Dock 设置",
-    "generalSection": "通用设置"
+    "generalSection": "通用设置",
+    "reset": {
+      "success": "设置已恢复默认"
+    }
   },
   "components": {
     "components": "组件"
@@ -61,4 +74,4 @@
     "section3": "帮助与支持",
     "content3": "获取帮助并了解更多可用功能。"
   }
-}
+} as const;

@@ -1,5 +1,5 @@
 import { Switch, Slider, Button, Notification, Select, Popconfirm,  } from '@arco-design/web-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import { RotateCcw, Globe } from 'lucide-react';
 import type { YourToolApp } from '@your-s-tools/types';
 import { initialSettings, useStorageState } from '@your-s-tools/shared';
@@ -112,6 +112,8 @@ export default function Setting({
         <Popconfirm
           title={t('settings.resetConfirm')}
           onOk={handleReset}
+          okText={t('common.ok')}
+          cancelText={t('common.cancel')}
         >
           <Button
             type="outline"

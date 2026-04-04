@@ -1,5 +1,5 @@
 import { Modal, } from '@arco-design/web-react';
-import { useTranslation, } from 'react-i18next';
+import { useTranslation } from '@your-s-tools/i18n';
 import { Settings2, } from 'lucide-react';
 import { useSettings } from '@/hooks/use-settings';
 import Settings from '@/pages/settings/setting';
