@@ -32,7 +32,7 @@ pnpm add -D sass-embedded classnames
 pnpm add @your-s-tools/types --filter <你的目标子包名> --workspace
 ```
 
-```
+```shell
 # 给指定packages添加依赖
 pnpm add react-redux --filter newtab
 # 给指定packages移除依赖

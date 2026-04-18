@@ -5,14 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ command, mode }) => {
   const isDevBuild = command === 'build' && mode === 'development'
 
-  console.error(
+  console.debug(
     'Vite Config - Command:',
     command,
     'Mode:',
     mode,
     'Is Dev Build:',
     isDevBuild
-  )
+  );
 
   return {
     base: './',

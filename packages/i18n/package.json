@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "tsc -b tsconfig.json && vite build --watch",
-    "build:watch": "concurrently \"tsc -b tsconfig.json --watch\" \"vite build --watch\"",
+    "build:watch": "concurrently \"tsc -b tsconfig.json --watch\" \"vite build --mode development --watch\"",
     "build": "vite build"
   },
   "peerDependencies": {
