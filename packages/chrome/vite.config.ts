@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
             { src: '../popup/dist/*', dest: './popup' }
           ])
         ]
-      })
+      }),
     ]
   };
 });

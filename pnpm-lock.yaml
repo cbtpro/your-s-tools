@@ -158,7 +158,7 @@ importers:
         version: 2.8.7
       vite-plugin-static-copy:
         specifier: 'catalog:'
-        version: 3.1.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 3.1.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
 
   packages/chrome:
     dependencies:
@@ -198,7 +198,7 @@ importers:
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       concurrently:
         specifier: 'catalog:'
         version: 9.2.1
@@ -222,7 +222,7 @@ importers:
         version: 8.43.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.8.3)
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
 
   packages/i18n:
     devDependencies:
@@ -237,7 +237,7 @@ importers:
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       i18next:
         specifier: 'catalog:'
         version: 25.5.3(typescript@5.8.3)
@@ -255,10 +255,10 @@ importers:
         version: 5.8.3
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
       vite-plugin-dts:
         specifier: 'catalog:'
-        version: 4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
 
   packages/newtab:
     dependencies:
@@ -331,7 +331,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       '@your-s-tools/types':
         specifier: workspace:^
         version: link:../types
@@ -373,7 +373,7 @@ importers:
         version: 8.43.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.8.3)
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
 
   packages/options:
     dependencies:
@@ -395,7 +395,7 @@ importers:
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       concurrently:
         specifier: 'catalog:'
         version: 9.2.1
@@ -419,7 +419,7 @@ importers:
         version: 8.43.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.8.3)
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
 
   packages/popup:
     dependencies:
@@ -462,7 +462,7 @@ importers:
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       concurrently:
         specifier: 'catalog:'
         version: 9.2.1
@@ -486,7 +486,7 @@ importers:
         version: 8.43.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.8.3)
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
 
   packages/shared:
     dependencies:
@@ -514,7 +514,7 @@ importers:
         version: 1.3.5
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
       '@your-s-tools/types':
         specifier: workspace:^
         version: link:../types
@@ -547,10 +547,10 @@ importers:
         version: 8.43.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.8.3)
       vite:
         specifier: 'catalog:'
-        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+        version: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
       vite-plugin-dts:
         specifier: 'catalog:'
-        version: 4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))
+        version: 4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))
 
   packages/types: {}
 
@@ -2835,6 +2835,11 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
+  yaml@2.8.3:
+    resolution: {integrity: sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yargs-parser@21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
@@ -3617,7 +3622,7 @@ snapshots:
       '@typescript-eslint/types': 8.43.0
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react@5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0))':
+  '@vitejs/plugin-react@5.0.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
@@ -3625,7 +3630,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.34
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -4932,7 +4937,7 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vite-plugin-dts@4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)):
+  vite-plugin-dts@4.5.4(@types/node@24.3.1)(rollup@4.50.1)(typescript@5.8.3)(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)):
     dependencies:
       '@microsoft/api-extractor': 7.52.13(@types/node@24.3.1)
       '@rollup/pluginutils': 5.3.0(rollup@4.50.1)
@@ -4945,22 +4950,22 @@ snapshots:
       magic-string: 0.30.19
       typescript: 5.8.3
     optionalDependencies:
-      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
       - supports-color
 
-  vite-plugin-static-copy@3.1.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)):
+  vite-plugin-static-copy@3.1.2(vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)):
     dependencies:
       chokidar: 3.6.0
       fs-extra: 11.3.1
       p-map: 7.0.3
       picocolors: 1.1.1
       tinyglobby: 0.2.15
-      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)
+      vite: 7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3)
 
-  vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0):
+  vite@7.1.5(@types/node@24.3.1)(jiti@2.6.1)(lightningcss@1.30.1)(sass-embedded@1.96.0)(sass@1.96.0)(yaml@2.8.3):
     dependencies:
       esbuild: 0.25.9
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4975,6 +4980,7 @@ snapshots:
       lightningcss: 1.30.1
       sass: 1.96.0
       sass-embedded: 1.96.0
+      yaml: 2.8.3
 
   void-elements@3.1.0: {}
 
@@ -5021,6 +5027,9 @@ snapshots:
   yallist@4.0.0: {}
 
   yallist@5.0.0: {}
+
+  yaml@2.8.3:
+    optional: true
 
   yargs-parser@21.1.1: {}
 

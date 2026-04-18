@@ -1,5 +1,7 @@
 # your-s-tools
 
+> 此项目是我自己搭建的学习项目，有更成熟的开发框架推荐 [vite-plugin-web-extension](https://github.com/aklinker1/vite-plugin-web-extension)
+
 ## 开发
 
 ```bash
