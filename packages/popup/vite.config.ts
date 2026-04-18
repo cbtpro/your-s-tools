@@ -1,6 +1,10 @@
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { resolve } from 'path';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+const packageJson = require('./package.json');
+const PACKAGE_NAME = packageJson.name;
+const PACKAGE_VERSION = packageJson.version;
 
 export default defineConfig(({ command, mode }) => {
   const isDevBuild = command === 'build' && mode === 'development'
@@ -11,7 +15,11 @@ export default defineConfig(({ command, mode }) => {
     'Mode:',
     mode,
     'Is Dev Build:',
-    isDevBuild
+    isDevBuild,
+    'Package:',
+    PACKAGE_NAME,
+    'Version:',
+    PACKAGE_VERSION,
   )
 
   return {
