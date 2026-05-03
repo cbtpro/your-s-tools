@@ -1,34 +1,18 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Drawer } from '@arco-design/web-react';
-import { Menu } from 'lucide-react';
 import { useTranslation } from '@your-s-tools/i18n';
 
 interface FloatingDrawerProps {
   children?: ReactNode;
   title?: string;
   width?: number | 'auto';
-}
-
-interface DrawerTriggerProps {
-  title: string;
-  onClick: () => void;
+  visible: boolean;
+  onClose: () => void;
 }
 
 interface DrawerSectionProps {
   title: string;
   content: string;
-}
-
-function DrawerTrigger({ title, onClick }: DrawerTriggerProps) {
-  return (
-    <button
-      title={title}
-      onClick={onClick}
-      className="fixed top-24 left-6 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 opacity-30 hover:opacity-100"
-    >
-      <Menu size={24} />
-    </button>
-  );
 }
 
 function DrawerTitle({ children }: { children: ReactNode }) {
@@ -75,27 +59,22 @@ function DefaultDrawerContent() {
   );
 }
 
-export default function FloatingDrawer({ children, title, width }: FloatingDrawerProps) {
-  const [visible, setVisible] = useState(false);
+export default function FloatingDrawer({ children, title, width, visible, onClose }: FloatingDrawerProps) {
   const { t } = useTranslation();
   const drawerTitle = title || t('drawer.title');
 
   return (
-    <>
-      <DrawerTrigger title={t('drawer.title')} onClick={() => setVisible(true)} />
-
-      <Drawer
-        width={width ?? 320}
-        title={<DrawerTitle>{drawerTitle}</DrawerTitle>}
-        visible={visible}
-        onOk={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
-        mask={false}
-        footer={null}
-        placement="left"
-      >
-        {children || <DefaultDrawerContent />}
-      </Drawer>
-    </>
+    <Drawer
+      width={width ?? 320}
+      title={<DrawerTitle>{drawerTitle}</DrawerTitle>}
+      visible={visible}
+      onOk={onClose}
+      onCancel={onClose}
+      mask={false}
+      footer={null}
+      placement="left"
+    >
+      {children || <DefaultDrawerContent />}
+    </Drawer>
   );
 }

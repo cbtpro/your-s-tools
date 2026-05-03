@@ -27,6 +27,15 @@ export declare namespace YourToolApp {
     triggerDistance: number;
   }
   /**
+   * 命令面板设置
+   */
+  interface CommandPalette {
+    /**
+     * 搜索结果打开方式
+     */
+    searchOpenTarget: 'currentTab' | 'newTab' | 'newWindow';
+  }
+  /**
    * 高级设置
    */
   interface Advanced {
@@ -56,6 +65,10 @@ export declare namespace YourToolApp {
      */
     dock: Dock;
     /**
+     * 命令面板设置
+     */
+    commandPalette: CommandPalette;
+    /**
      * 高级设置
      */
     advanced: Advanced;
@@ -78,6 +91,12 @@ export declare namespace YourToolApp {
   interface LayoutJsonData {
     id: string;
     component: string;
+    layout?: {
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+    };
   }
   /**
    * 资产类型

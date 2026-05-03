@@ -9,6 +9,8 @@ export default function Settings() {
     setSettings,
     dock,
     setDock,
+    commandPalette,
+    setCommandPalette,
     handleCancel,
     handleResetToDefault
   } = useSettings();
@@ -25,6 +27,8 @@ export default function Settings() {
           onAutoHideChange={(value) => setDock({ ...dock, autoHide: value })}
           triggerDistance={dock.triggerDistance}
           onTriggerDistanceChange={(value) => setDock({ ...dock, triggerDistance: value })}
+          searchOpenTarget={commandPalette.searchOpenTarget}
+          onSearchOpenTargetChange={(value) => setCommandPalette({ ...commandPalette, searchOpenTarget: value })}
           onResetToDefault={handleResetToDefault}
         />
         {settings.map((setting) => (

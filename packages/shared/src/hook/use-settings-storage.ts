@@ -16,6 +16,9 @@ export const initialSettings: YourToolApp.Settings = {
     autoHide: false,
     triggerDistance: 100,
   },
+  commandPalette: {
+    searchOpenTarget: 'newTab',
+  },
   advanced: {},
   settings: defaultSettings,
   searchEngine: [],
@@ -45,6 +48,10 @@ const useSettingsStorage = () : [UseChromeStorageReturn<YourToolApp.Settings>] =
       if (advanced) {
         storage.setItem('advanced', advanced);
       }
+      const commandPalette = await storage.getItem('commandPalette');
+      if (commandPalette) {
+        storage.setItem('commandPalette', commandPalette);
+      }
       setInitialized(true);
     };
     initial();
@@ -55,6 +62,7 @@ const useSettingsStorage = () : [UseChromeStorageReturn<YourToolApp.Settings>] =
       storage.setItem('general', initialSettings.general);
       storage.setItem('settings', initialSettings.settings);
       storage.setItem('dock', initialSettings.dock);
+      storage.setItem('commandPalette', initialSettings.commandPalette);
       storage.setItem('advanced', initialSettings.advanced);
     }
   }, [initialized, storage]);

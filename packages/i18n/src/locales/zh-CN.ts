@@ -10,7 +10,11 @@ export default {
   },
   "languages": {
     "zh-CN": "中文",
-    "en-US": "English"
+    "en-US": "English",
+    "ja-JP": "日本語",
+    "de-DE": "Deutsch",
+    "es-ES": "Español",
+    "ru-RU": "Русский"
   },
   "features": {
     "title": "功能特性",
@@ -43,6 +47,16 @@ export default {
     "languageDesc": "选择界面语言",
     "dockSection": "Dock 设置",
     "generalSection": "通用设置",
+    "commandPaletteSection": "命令面板",
+    "searchOpenTarget": "搜索结果打开方式",
+    "searchOpenTargetDesc": "控制命令面板和首页搜索框打开搜索结果的位置",
+    "searchOpenTargets": {
+      "newWindow": "新窗口",
+      "newTab": "新标签页",
+      "currentTab": "当前页"
+    },
+    "resetSuccessTitle": "消息",
+    "resetSuccessContent": "设置已恢复默认",
     "reset": {
       "success": "设置已恢复默认"
     }
@@ -72,6 +86,7 @@ export default {
       "baseLink": "网址"
     },
     "operator": {
+      "openComponents": "打开组件面板",
       "cancelEdit": "取消编辑",
       "saveEdit": "保存编辑",
       "keepEditing": "继续编辑",
@@ -84,6 +99,43 @@ export default {
     "loadingComponent": "正在加载 {{component}}...",
     "missingConfig": "组件配置丢失",
     "unregisteredComponent": "组件未注册：{{component}}"
+  },
+  "search": {
+    "placeholder": "搜索，或输入 g / gh / npm 前缀",
+    "submit": "搜索"
+  },
+  "commandPalette": {
+    "title": "命令面板",
+    "placeholder": "搜索或执行命令，例如：g React、gh vite、npm arco",
+    "empty": "没有匹配的命令",
+    "commands": {
+      "home": "打开主页",
+      "layoutEdit": "编辑布局",
+      "settings": "打开设置",
+      "about": "关于"
+    },
+    "descriptions": {
+      "home": "返回新标签页主页",
+      "layoutEdit": "打开布局编辑器",
+      "settings": "管理插件设置",
+      "about": "查看项目信息",
+      "defaultSearch": "使用 {{engine}} 搜索",
+      "prefixedSearch": "使用 {{engine}} 搜索，前缀 {{prefix}}",
+      "engineHint": "输入 {{prefix}} 关键词 使用这个搜索引擎"
+    },
+    "engines": {
+      "google": "Google",
+      "baidu": "百度",
+      "bing": "Bing",
+      "duckduckgo": "DuckDuckGo",
+      "github": "GitHub",
+      "npm": "npm",
+      "mdn": "MDN"
+    },
+    "footer": {
+      "navigate": "↑↓ 选择",
+      "confirm": "Enter 执行"
+    }
   },
   "apps": {
     "name": "Your's Tools",

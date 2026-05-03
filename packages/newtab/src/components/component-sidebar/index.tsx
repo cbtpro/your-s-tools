@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CompositionEvent, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type CompositionEvent, type ReactNode } from 'react';
 import { useDrag } from 'react-dnd';
 import {
   IconApps,
@@ -94,10 +94,8 @@ function ComponentSearch({ value, suggestions, onChange }: ComponentSearchProps)
   const isComposingRef = useRef(false);
   const showSuggestions = focused && value.trim() && suggestions.length > 0;
 
-  const handleInput = (event: FormEvent<HTMLInputElement>) => {
-    if (!isComposingRef.current) {
-      onChange(event.currentTarget.value);
-    }
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event.currentTarget.value);
   };
 
   const handleCompositionStart = () => {
@@ -125,7 +123,7 @@ function ComponentSearch({ value, suggestions, onChange }: ComponentSearchProps)
         aria-label={t('components.sidebar.searchPlaceholder')}
         aria-autocomplete="list"
         aria-expanded={Boolean(showSuggestions)}
-        onInput={handleInput}
+        onChange={handleChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onCompositionStart={handleCompositionStart}

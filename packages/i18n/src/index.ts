@@ -5,11 +5,28 @@ import {
 } from 'react-i18next';
 import enUS from '@/locales/en-US';
 import zhCN from '@/locales/zh-CN';
+import jaJP from '@/locales/ja-JP';
+import deDE from '@/locales/de-DE';
+import esES from '@/locales/es-ES';
+import ruRU from '@/locales/ru-RU';
+
+export const supportedLanguages = [
+  { value: 'zh-CN', labelKey: 'languages.zh-CN' },
+  { value: 'en-US', labelKey: 'languages.en-US' },
+  { value: 'ja-JP', labelKey: 'languages.ja-JP' },
+  { value: 'de-DE', labelKey: 'languages.de-DE' },
+  { value: 'es-ES', labelKey: 'languages.es-ES' },
+  { value: 'ru-RU', labelKey: 'languages.ru-RU' },
+] as const;
 
 // 1. 导出资源定义（命名导出）
 export const resources = {
   'en-US': { translation: enUS },
   'zh-CN': { translation: zhCN },
+  'ja-JP': { translation: jaJP },
+  'de-DE': { translation: deDE },
+  'es-ES': { translation: esES },
+  'ru-RU': { translation: ruRU },
 } as const;
 
 // 内部状态，防止 Chrome 监听器重复注册

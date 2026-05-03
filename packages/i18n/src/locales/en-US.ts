@@ -10,7 +10,11 @@ export default {
   },
   "languages": {
     "zh-CN": "中文",
-    "en-US": "English"
+    "en-US": "English",
+    "ja-JP": "日本語",
+    "de-DE": "Deutsch",
+    "es-ES": "Español",
+    "ru-RU": "Русский"
   },
   "features": {
     "title": "Features",
@@ -43,6 +47,16 @@ export default {
     "languageDesc": "Select interface language",
     "dockSection": "Dock Settings",
     "generalSection": "General Settings",
+    "commandPaletteSection": "Command Palette",
+    "searchOpenTarget": "Search result target",
+    "searchOpenTargetDesc": "Choose where command palette and home search results open",
+    "searchOpenTargets": {
+      "newWindow": "New window",
+      "newTab": "New tab",
+      "currentTab": "Current tab"
+    },
+    "resetSuccessTitle": "Notice",
+    "resetSuccessContent": "Settings have been reset to default",
     "reset": {
       "success": "Settings have been reset to default"
     }
@@ -72,6 +86,7 @@ export default {
       "baseLink": "Link"
     },
     "operator": {
+      "openComponents": "Open component panel",
       "cancelEdit": "Cancel editing",
       "saveEdit": "Save edits",
       "keepEditing": "Keep editing",
@@ -84,6 +99,43 @@ export default {
     "loadingComponent": "Loading {{component}}...",
     "missingConfig": "Component configuration is missing",
     "unregisteredComponent": "Component is not registered: {{component}}"
+  },
+  "search": {
+    "placeholder": "Search, or use prefixes like g / gh / npm",
+    "submit": "Search"
+  },
+  "commandPalette": {
+    "title": "Command palette",
+    "placeholder": "Search or run a command, e.g. g React, gh vite, npm arco",
+    "empty": "No matching commands",
+    "commands": {
+      "home": "Open home",
+      "layoutEdit": "Edit layout",
+      "settings": "Open settings",
+      "about": "About"
+    },
+    "descriptions": {
+      "home": "Return to the new tab home",
+      "layoutEdit": "Open the layout editor",
+      "settings": "Manage extension settings",
+      "about": "View project information",
+      "defaultSearch": "Search with {{engine}}",
+      "prefixedSearch": "Search with {{engine}} using {{prefix}}",
+      "engineHint": "Type {{prefix}} keywords to use this search engine"
+    },
+    "engines": {
+      "google": "Google",
+      "baidu": "Baidu",
+      "bing": "Bing",
+      "duckduckgo": "DuckDuckGo",
+      "github": "GitHub",
+      "npm": "npm",
+      "mdn": "MDN"
+    },
+    "footer": {
+      "navigate": "↑↓ Navigate",
+      "confirm": "Enter Run"
+    }
   },
   "apps": {
     "name": "Your's Tools",

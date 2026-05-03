@@ -1,11 +1,11 @@
 import { Select } from '@arco-design/web-react';
-import { useTranslation } from '@your-s-tools/i18n';
+import { supportedLanguages, useTranslation } from '@your-s-tools/i18n';
 import { Globe } from 'lucide-react';
 
 const Option = Select.Option;
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleLanguageChange = (value: string) => {
     i18n.changeLanguage(value);
@@ -25,8 +25,11 @@ export default function LanguageSwitcher() {
           position: 'bottom',
         }}
       >
-        <Option value="zh-CN">中文</Option>
-        <Option value="en-US">English</Option>
+        {supportedLanguages.map((language) => (
+          <Option key={language.value} value={language.value}>
+            {t(language.labelKey)}
+          </Option>
+        ))}
       </Select>
     </div>
   );

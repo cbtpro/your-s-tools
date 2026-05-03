@@ -1,0 +1,68 @@
+.searchBar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(760px, calc(100vw - 32px));
+  margin: 0 auto;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.searchIcon {
+  flex: 0 0 auto;
+  color: #64748b;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  color: #0f172a;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.submitButton {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: #165dff;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.engineList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.engineChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  font-size: 12px;
+}
+
+.enginePrefix {
+  color: #165dff;
+  font-weight: 700;
+}

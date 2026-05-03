@@ -6,6 +6,7 @@ export const useSettings = () => {
   const navigate = useNavigate();
   const [general, setGeneral] = useStorageState<YourToolApp.Settings, 'general'>('general', initialSettings.general);
   const [dock, setDock] = useStorageState<YourToolApp.Settings, 'dock'>('dock', initialSettings.dock);
+  const [commandPalette, setCommandPalette] = useStorageState<YourToolApp.Settings, 'commandPalette'>('commandPalette', initialSettings.commandPalette);
   const [settings, setSettings] = useStorageState<YourToolApp.Settings, 'settings'>('settings', initialSettings.settings);
   const [advanced, setAdvanced] = useStorageState<YourToolApp.Settings, 'advanced'>('advanced', initialSettings.advanced);
 
@@ -16,6 +17,7 @@ export const useSettings = () => {
   const handleResetToDefault = () => {
     setGeneral(initialSettings.general);
     setDock(initialSettings.dock);
+    setCommandPalette(initialSettings.commandPalette);
     setSettings(initialSettings.settings);
     setAdvanced(initialSettings.advanced);
   };
@@ -25,6 +27,8 @@ export const useSettings = () => {
     setGeneral,
     dock,
     setDock,
+    commandPalette,
+    setCommandPalette,
     settings,
     setSettings,
     advanced,

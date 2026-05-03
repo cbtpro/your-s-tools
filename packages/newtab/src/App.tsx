@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import consola from 'consola';
 import { MESSAGE_TYPE } from '@your-s-tools/shared';
+import { CommandPalette, useCommandPaletteShortcut } from '@/features/command-palette';
 import Home from '@/pages/home';
 import About from '@/pages/about';
 import LayoutEdit from '@/pages/layout-edit';
@@ -13,6 +14,12 @@ import './App.css'
 
 export default function App() {
   const { safeNavigate } = useRouterGuard();
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const openCommandPalette = useCallback(() => setCommandPaletteOpen(true), []);
+  const closeCommandPalette = useCallback(() => setCommandPaletteOpen(false), []);
+
+  useCommandPaletteShortcut(openCommandPalette);
+
   const routerMessage = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
     if (message.type === MESSAGE_TYPE.NAVIGATION) {
       // console.log("收到 popup 消息:", msg.payload);
@@ -48,6 +55,7 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <CommandPalette open={commandPaletteOpen} onClose={closeCommandPalette} />
     </div>
   );
 }

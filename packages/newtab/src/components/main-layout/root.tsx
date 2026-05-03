@@ -1,69 +1,26 @@
 import {
-  lazy,
-  Suspense,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type ComponentType,
-  type LazyExoticComponent,
   type ReactNode,
 } from 'react';
-import { Empty, Result, Spin } from '@arco-design/web-react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useTranslation } from '@your-s-tools/i18n';
 import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';
-import type { YourToolApp } from '@your-s-tools/types';
-import { defaultSizeMap } from '@/constants/layout';
+import {
+  ComponentSlot,
+  createLayouts,
+  layoutCompactType,
+  layoutGridColumns,
+  LayoutItem,
+} from './layout-renderer';
 import './root.css';
 import '../../assets/styles/styles.css';
 
-const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
-const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
-const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
-const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
-
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
-const GRID_COLUMNS = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
-const COMPACT_TYPE: 'vertical' | 'horizontal' | null = 'vertical';
-const componentMap: Record<string, LazyExoticComponent<ComponentType>> = {
-  BaseNavbar: AsyncBaseNavbar,
-  BaseSearchBar: AsyncBaseSearchBar,
-  BasePopular: AsyncBasePopular,
-  BaseFavorite: AsyncBaseFavorite,
-};
 
 interface LayoutProps {
   children?: ReactNode;
-}
-
-interface ComponentSlotProps {
-  layout: ReactGridLayout.Layout;
-  layoutJsonData: YourToolApp.LayoutJsonData[];
-}
-
-function createLayouts(layoutJsonData: YourToolApp.LayoutJsonData[]): ReactGridLayout.Layouts {
-  const lg = layoutJsonData.map((item, index) => {
-    const size = defaultSizeMap[item.component] || { w: 4, h: 2 };
-
-    return {
-      i: item.id,
-      x: 0,
-      y: index * size.h,
-      w: Math.min(size.w, GRID_COLUMNS.lg),
-      h: size.h,
-      static: false,
-    };
-  });
-
-  return {
-    lg,
-    md: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.md) })),
-    sm: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.sm) })),
-    xs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xs) })),
-    xxs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xxs) })),
-  };
 }
 
 function useEditModeMessage() {
@@ -89,44 +46,6 @@ function useEditModeMessage() {
   }, []);
 
   return isEditMode;
-}
-
-function LoadingComponent({ component }: { component: string }) {
-  const { t } = useTranslation();
-
-  return (
-    <div className="flex h-full items-center justify-center">
-      <Spin tip={t('layout.loadingComponent', { component })} />
-    </div>
-  );
-}
-
-function ComponentSlot({ layout, layoutJsonData }: ComponentSlotProps) {
-  const { t } = useTranslation();
-  const item = layoutJsonData.find((entry) => entry.id === layout.i);
-
-  if (!item) {
-    return <Empty description={t('layout.missingConfig')} />;
-  }
-
-  const Component = componentMap[item.component];
-  if (!Component) {
-    return <Result status="404" title={t('layout.unregisteredComponent', { component: item.component })} />;
-  }
-
-  return (
-    <Suspense fallback={<LoadingComponent component={item.component} />}>
-      <Component />
-    </Suspense>
-  );
-}
-
-function LayoutItem({ children }: { children: ReactNode }) {
-  return (
-    <div className="hover-group" style={{ position: 'relative', height: '100%' }}>
-      {children}
-    </div>
-  );
 }
 
 function Layout({ children }: LayoutProps) {
@@ -170,11 +89,11 @@ function Layout({ children }: LayoutProps) {
           layouts={layouts}
           onLayoutChange={handleLayoutChange}
           measureBeforeMount={false}
-          compactType={COMPACT_TYPE}
-          preventCollision={!COMPACT_TYPE}
+          compactType={layoutCompactType}
+          preventCollision={!layoutCompactType}
           isDraggable={isEditMode}
           isResizable={isEditMode}
-          cols={GRID_COLUMNS}
+          cols={layoutGridColumns}
           rowHeight={85}
           draggableCancel=".hover-delete-btn"
           style={{ visibility: firstRender ? 'hidden' : 'visible' }}
