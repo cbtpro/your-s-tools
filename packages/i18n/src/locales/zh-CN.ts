@@ -2,6 +2,7 @@ export default {
   "title": "MacOS 风格 Dock",
   "subtitle": "将鼠标悬停在 Dock 图标上以查看放大效果",
   "common": {
+    "loading": "加载中",
     "ok": "确定",
     "cancel": "取消",
     "close": "关闭",

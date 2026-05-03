@@ -2,6 +2,7 @@ export default {
   "title": "MacOS Style Dock",
   "subtitle": "Hover over the dock icons to see the magnification effect",
   "common": {
+    "loading": "Loading",
     "ok": "OK",
     "cancel": "Cancel",
     "close": "Close",

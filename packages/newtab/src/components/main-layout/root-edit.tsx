@@ -11,6 +11,7 @@ import './root.css';
 import '../../assets/styles/styles.css';
 import { randomString } from '@/utils';
 import { defaultSizeMap } from '@/constants/layout';
+import EditBar from '@/components/edit-bar';
 
 const HoverDeleteButton = lazy(() => import('@/components/hover-delete-button'));
 const ComponentSidebar = lazy(() => import('@/components/component-sidebar'));
@@ -118,7 +119,7 @@ function LayoutEdit() {
     if (!Comp) return <span>Missing Component: {item.component}</span>;
 
     return (
-      <Suspense fallback={<div>Loading {item.component}...</div>}>
+      <Suspense fallback={<div>t('common.loading') {item.component}...</div>}>
         <Comp />
       </Suspense>
     );
@@ -173,14 +174,26 @@ const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
     return (
       <FloatingDrawer title={t('components.components')} width={'auto'}>
         {/* 组件面板 */}
-        <Suspense fallback={<div>Loading Sidebar...</div>}>
+        <Suspense fallback={<div>t('common.loading') Sidebar...</div>}>
           <ComponentSidebar />
         </Suspense>
       </FloatingDrawer>
     );
   }
+  const renderFloatingEditor = () => {
+    if (!layoutEdit.isEditMode) return null;
+    return (
+      <>
+        {/* 编辑栏 */}
+        <Suspense fallback={<div>t('common.loading') Editor...</div>}>
+          <EditBar />
+        </Suspense>
+      </>
+    );
+  }
   return (
     <>
+      {renderFloatingEditor()}
       {renderFloatingDrawer()}
       <DndProvider backend={HTML5Backend}>
         <div style={{ display: 'flex', height: '100vh' }}>

@@ -9,7 +9,6 @@ import {
 } from '@arco-design/web-react/icon';
 import { useCompositionInput } from '@your-s-tools/shared';
 import { iconMap, componentList, type ComponentItem } from '@/constants/components';
-import ComponentOperator from '@/components/component-operator';
 import styles from './style.module.scss';
 
 const DraggableComponent: React.FC<{
@@ -60,20 +59,12 @@ const ComponentSidebar: React.FC<{
 
   return (
     <aside
-      style={{
-        width: 280,
-        background: '#fff',
-        height: '100%',
-        overflowY: 'auto',
-        padding: 16,
-      }}
+      className={styles['component-sidebar']}
     >
       {/* 面板标题 */}
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
         <IconApps style={{ marginRight: 8 }} />
         <span style={{ fontWeight: 600 }}>组件面板</span>
-        {/* 编辑、保存 */}
-        <ComponentOperator />
       </div>
 
       {/* 搜索框 */}

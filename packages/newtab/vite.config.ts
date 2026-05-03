@@ -24,7 +24,9 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     base: './',
-    plugins: [react()],
+    plugins: [
+      react(),
+    ],
     build: {
       // 开发时直接投递到 chrome 的开发目录，生产时就地打包
       outDir: isDevBuild ? '../chrome/dist/newtab' : 'dist',

@@ -6,6 +6,7 @@ import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
 import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';
 import './root.css';
 import '../../assets/styles/styles.css';
+import { useTranslation } from '@your-s-tools/i18n';
 
 const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
@@ -25,7 +26,7 @@ interface LayoutProps {
   children?: ReactNode; // ReactNode 涵盖了字符串、数字、组件、数组等
 }
 function Layout({ children }: LayoutProps) {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   // const [isLoading, setIsLoading] = useState(false);
   /**
    * 编辑状态
@@ -82,7 +83,7 @@ function Layout({ children }: LayoutProps) {
     if (!Comp) return <span>Missing Component: {item.component}</span>;
 
     return (
-      <Suspense fallback={<div>Loading {item.component}...</div>}>
+      <Suspense fallback={<div>{t('common.loading')} {item.component}...</div>}>
         <Comp />
       </Suspense>
     );
