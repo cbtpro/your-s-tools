@@ -1,228 +1,293 @@
-import { lazy, Suspense, useEffect, useRef, useState, type JSX } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+  type LazyExoticComponent,
+  type ReactNode,
+} from 'react';
+import { Empty, Result, Spin } from '@arco-design/web-react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { useDrop } from 'react-dnd';
 import { useTranslation } from '@your-s-tools/i18n';
-import { DndProvider, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import type { YourToolApp } from "@your-s-tools/types";
 import { initialSettings, useLayoutStorage, useStorageState } from '@your-s-tools/shared';
-import { useRouterGuard } from "@/routes/router-guard";
-import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
-import './root.css';
-import '../../assets/styles/styles.css';
+import type { YourToolApp } from '@your-s-tools/types';
+import { useRouterGuard } from '@/routes/router-guard';
 import { randomString } from '@/utils';
 import { defaultSizeMap } from '@/constants/layout';
 import EditBar from '@/components/edit-bar';
+import './root.css';
+import '../../assets/styles/styles.css';
 
 const HoverDeleteButton = lazy(() => import('@/components/hover-delete-button'));
 const ComponentSidebar = lazy(() => import('@/components/component-sidebar'));
+const FloatingDrawer = lazy(() => import('@/components/floating-drawer'));
 const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
 const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
 const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
-const FloatingDrawer = lazy(() => import('@/components/floating-drawer'));
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-// 组件映射表
-const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
+const GRID_COLUMNS = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
+const COMPACT_TYPE: 'vertical' | 'horizontal' | null = 'vertical';
+const componentMap: Record<string, LazyExoticComponent<ComponentType>> = {
   BaseNavbar: AsyncBaseNavbar,
   BaseSearchBar: AsyncBaseSearchBar,
   BasePopular: AsyncBasePopular,
   BaseFavorite: AsyncBaseFavorite,
 };
 
-function LayoutEdit() {
+interface ComponentSlotProps {
+  layout: ReactGridLayout.Layout;
+  layoutJsonData: YourToolApp.LayoutJsonData[];
+}
+
+interface EditableLayoutItemProps {
+  layout: ReactGridLayout.Layout;
+  children: ReactNode;
+  onDelete: (id: string) => void;
+}
+
+function createLayouts(layoutJsonData: YourToolApp.LayoutJsonData[]): ReactGridLayout.Layouts {
+  const lg = layoutJsonData.map((item, index) => {
+    const size = defaultSizeMap[item.component] || { w: 4, h: 2 };
+
+    return {
+      i: item.id,
+      x: 0,
+      y: index * size.h,
+      w: Math.min(size.w, GRID_COLUMNS.lg),
+      h: size.h,
+      static: false,
+    };
+  });
+
+  return {
+    lg,
+    md: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.md) })),
+    sm: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.sm) })),
+    xs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xs) })),
+    xxs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xxs) })),
+  };
+}
+
+function LoadingComponent({ component }: { component: string }) {
   const { t } = useTranslation();
 
-  const { registerGuard } = useRouterGuard();
-  const [isDirty, setIsDirty] = useState(false);
+  return (
+    <div className="flex h-full items-center justify-center">
+      <Spin tip={t('layout.loadingComponent', { component })} />
+    </div>
+  );
+}
 
-  useEffect(() => {
-    const unregister = registerGuard((from, to) => {
-      return (
-        from === "/layout-edit" &&
-        to !== "/layout-edit" &&
-        isDirty
-      );
-    });
+function ComponentSlot({ layout, layoutJsonData }: ComponentSlotProps) {
+  const { t } = useTranslation();
+  const item = layoutJsonData.find((entry) => entry.id === layout.i);
 
-    return unregister; // 自动注销
-  }, [isDirty]);
+  if (!item) {
+    return <Empty description={t('layout.missingConfig')} />;
+  }
 
-  useEffect(() => {
-    setIsDirty(true);
-    return () => {
-      setIsDirty(false);
-    };
-  }, []);
-  // const [isLoading, setIsLoading] = useState(false);
-  /**
-   * 编辑状态
-   */
-  const [layoutEdit, setLayoutEdit] = useStorageState<YourToolApp.Settings, 'layoutEdit'>('layoutEdit', initialSettings.layoutEdit);
+  const Component = componentMap[item.component];
+  if (!Component) {
+    return <Result status="404" title={t('layout.unregisteredComponent', { component: item.component })} />;
+  }
+
+  return (
+    <Suspense fallback={<LoadingComponent component={item.component} />}>
+      <Component />
+    </Suspense>
+  );
+}
+
+function LoadingPanel({ label }: { label: string }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex h-full items-center justify-center">
+      <Spin tip={t('common.loading')} />
+      <span className="sr-only">{label}</span>
+    </div>
+  );
+}
+
+function EditableLayoutItem({ layout, children, onDelete }: EditableLayoutItemProps) {
+  return (
+    <div className="hover-group" style={{ position: 'relative', height: '100%' }}>
+      <HoverDeleteButton onClick={() => onDelete(layout.i)} />
+      {children}
+    </div>
+  );
+}
+
+function useLayoutEditMode() {
+  const [layoutEdit, setLayoutEdit] = useStorageState<YourToolApp.Settings, 'layoutEdit'>(
+    'layoutEdit',
+    initialSettings.layoutEdit,
+  );
 
   useEffect(() => {
     setLayoutEdit((prev) => ({ ...prev, isEditMode: true }));
     return () => {
       setLayoutEdit((prev) => ({ ...prev, isEditMode: false }));
     };
-  }, []);
+  }, [setLayoutEdit]);
 
-  const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
-  const compactType = "vertical";
-  const [mounted, setMounted] = useState(false);
-  const [_LayoutJsonData, _setLayoutJsonData] = useLayoutStorage();
+  return layoutEdit;
+}
 
-  const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>({
-    lg: [],
-    sm: [],
-  });
-
-  const [layoutJson, setLayoutJson] = useState<YourToolApp.LayoutJsonData[]>([]);
-
-  const { ready: _ready } = useStableResponsiveLayout(layouts, containerRef);
+function useUnsavedLayoutGuard(isDirty: boolean) {
+  const { registerGuard } = useRouterGuard();
 
   useEffect(() => {
-    if (!mounted) setMounted(true);
-  }, [mounted]);
+    return registerGuard((from, to) => (
+      from === '/layout-edit' &&
+      to !== '/layout-edit' &&
+      isDirty
+    ));
+  }, [isDirty, registerGuard]);
+}
 
-  // 允许右侧接收拖拽
+function LayoutEdit() {
+  const { t } = useTranslation();
+  const layoutEdit = useLayoutEditMode();
+  const [storedLayoutJsonData, setStoredLayoutJsonData] = useLayoutStorage();
+  const [layoutJsonData, setLayoutJsonData] = useState<YourToolApp.LayoutJsonData[]>([]);
+  const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>(() => createLayouts([]));
+  const [firstRender, setFirstRender] = useState(true);
+  const [isDirty, setIsDirty] = useState(false);
+  const dropRef = useRef<HTMLDivElement>(null);
+
+  useUnsavedLayoutGuard(isDirty);
+
+  useEffect(() => {
+    setLayoutJsonData(storedLayoutJsonData);
+    setLayouts(createLayouts(storedLayoutJsonData));
+    setIsDirty(false);
+  }, [storedLayoutJsonData]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setFirstRender(false), 200);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const addComponent = useCallback((type: string) => {
+    const newId = randomString();
+    const size = defaultSizeMap[type] || { w: 4, h: 2 };
+
+    setIsDirty(true);
+    setLayoutJsonData((prev) => [...prev, { id: newId, component: type }]);
+    setLayouts((prev) => ({
+      ...prev,
+      lg: [
+        ...(prev.lg || []),
+        {
+          ...size,
+          w: Math.min(size.w, GRID_COLUMNS.lg),
+          x: 0,
+          y: Infinity,
+          i: newId,
+          static: false,
+        },
+      ],
+    }));
+  }, []);
+
   const [, drop] = useDrop(() => ({
     accept: 'COMPONENT',
-    drop: (item: { type: string }) => {
-      const newId = randomString();
-      const newItem = { id: newId, component: item.type };
-      setLayoutJson((prev) => [...prev, newItem]);
-      const size = defaultSizeMap[item.type] || { w: 6, h: 2 };
-      setLayouts((prev) => ({
-        ...prev,
-        lg: [
-          ...(prev.lg || []),
-          { ...size, x: 0, y: Infinity, i: newId, static: false },
-        ],
-      }));
-    },
-  }));
+    drop: (item: { type: string }) => addComponent(item.type),
+  }), [addComponent]);
 
-  const onLayoutChange = (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
-    setLayouts(allLayouts);
-  };
-
-  const renderComponent = (layout: ReactGridLayout.Layout) => {
-    const { i: id } = layout;
-    const item = layoutJson.find((x) => x.id === id);
-    if (!item) return <span>Unknown Component</span>;
-
-    const Comp = componentMap[item.component];
-    if (!Comp) return <span>Missing Component: {item.component}</span>;
-
-    return (
-      <Suspense fallback={<div>t('common.loading') {item.component}...</div>}>
-        <Comp />
-      </Suspense>
-    );
-  };
-
-  const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
-    const timer = setTimeout(() => setFirstRender(false), 200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const onBreakpointChange = (newBreakpoint: string, _newCols: number) => {
-    setCurrentBreakpoint(newBreakpoint);
-  };
-
-// 包装渲染的组件，增加 hover & 删除按钮
-const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
-  const { i: id } = layout;
-  return (
-    <div
-      style={{
-        position: "relative",
-        height: "100%",
-      }}
-      className="hover-group"
-    >
-      {/* 删除按钮 */}
-      <HoverDeleteButton onClick={() => confirmDelete(id)} />
-
-      {/* 真实组件 */}
-      {renderComponent(layout)}
-    </div>
-  );
-};
-  const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (divRef.current) {
-      drop(divRef.current);
+    if (dropRef.current) {
+      drop(dropRef.current);
     }
   }, [drop]);
 
-  const confirmDelete = (deleteTarget: string) => {
-    setLayoutJson((prev) => prev.filter((item) => item.id !== deleteTarget));
+  const handleLayoutChange = useCallback(
+    (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
+      setLayouts(allLayouts);
+      setIsDirty(true);
+    },
+    [],
+  );
+
+  const handleDelete = useCallback((deleteTarget: string) => {
+    setIsDirty(true);
+    setLayoutJsonData((prev) => prev.filter((item) => item.id !== deleteTarget));
     setLayouts((prev) => ({
       ...prev,
-      lg: (prev.lg || []).filter((l) => l.i !== deleteTarget),
+      lg: (prev.lg || []).filter((layout) => layout.i !== deleteTarget),
     }));
-  };
+  }, []);
 
-  const renderFloatingDrawer = () => {
+  const handleCancelEdit = useCallback(() => {
+    setLayoutJsonData(storedLayoutJsonData);
+    setLayouts(createLayouts(storedLayoutJsonData));
+    setIsDirty(false);
+  }, [storedLayoutJsonData]);
+
+  const handleSaveEdit = useCallback(() => {
+    setStoredLayoutJsonData(layoutJsonData);
+    setIsDirty(false);
+  }, [layoutJsonData, setStoredLayoutJsonData]);
+
+  const gridItems = useMemo(
+    () => (layouts.lg || []).map((layout) => (
+      <div key={layout.i} className={layout.static ? 'static' : ''}>
+        <EditableLayoutItem layout={layout} onDelete={handleDelete}>
+          <ComponentSlot layout={layout} layoutJsonData={layoutJsonData} />
+        </EditableLayoutItem>
+      </div>
+    )),
+    [handleDelete, layoutJsonData, layouts.lg],
+  );
+
+  const renderEditorTools = () => {
     if (!layoutEdit.isEditMode) return null;
-    return (
-      <FloatingDrawer title={t('components.components')} width={'auto'}>
-        {/* 组件面板 */}
-        <Suspense fallback={<div>t('common.loading') Sidebar...</div>}>
-          <ComponentSidebar />
-        </Suspense>
-      </FloatingDrawer>
-    );
-  }
-  const renderFloatingEditor = () => {
-    if (!layoutEdit.isEditMode) return null;
+
     return (
       <>
-        {/* 编辑栏 */}
-        <Suspense fallback={<div>t('common.loading') Editor...</div>}>
-          <EditBar />
+        <Suspense fallback={<LoadingPanel label={t('layout.editor')} />}>
+          <EditBar onCancelEdit={handleCancelEdit} onSaveEdit={handleSaveEdit} />
         </Suspense>
+        <FloatingDrawer title={t('components.components')} width="auto">
+          <Suspense fallback={<LoadingPanel label={t('components.components')} />}>
+            <ComponentSidebar />
+          </Suspense>
+        </FloatingDrawer>
       </>
     );
-  }
+  };
+
   return (
     <>
-      {renderFloatingEditor()}
-      {renderFloatingDrawer()}
-      <DndProvider backend={HTML5Backend}>
-        <div style={{ display: 'flex', height: '100vh' }}>
-          {/* 右侧布局区 */}
-          <div ref={divRef} style={{ flex: 1, background: "#f8f9fa" }} className="layout-container">
-            <ResponsiveReactGridLayout
-              layouts={layouts}
-              onLayoutChange={onLayoutChange}
-              onBreakpointChange={onBreakpointChange}
-              measureBeforeMount={false}
-              useCSSTransforms={mounted}
-              compactType={compactType}
-              preventCollision={!compactType}
-              isDraggable={layoutEdit.isEditMode}
-              isResizable={layoutEdit.isEditMode}
-              cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
-              rowHeight={85}
-              draggableCancel=".hover-delete-btn"
-              style={{ visibility: firstRender ? 'hidden' : 'visible' }}
-            >
-              {(layouts.lg || []).map((l) => (
-                <div key={l.i} className={l.static ? 'static' : ''}>
-                  {renderWithWrapper(l)}
-                </div>
-              ))}
-            </ResponsiveReactGridLayout>
-          </div>
+      {renderEditorTools()}
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <div ref={dropRef} style={{ flex: 1, background: '#f8f9fa' }} className="layout-container">
+          <ResponsiveReactGridLayout
+            layouts={layouts}
+            onLayoutChange={handleLayoutChange}
+            measureBeforeMount={false}
+            compactType={COMPACT_TYPE}
+            preventCollision={!COMPACT_TYPE}
+            isDraggable={layoutEdit.isEditMode}
+            isResizable={layoutEdit.isEditMode}
+            cols={GRID_COLUMNS}
+            rowHeight={85}
+            draggableCancel=".hover-delete-btn"
+            style={{ visibility: firstRender ? 'hidden' : 'visible' }}
+          >
+            {gridItems}
+          </ResponsiveReactGridLayout>
         </div>
-      </DndProvider>
+      </div>
     </>
   );
 }

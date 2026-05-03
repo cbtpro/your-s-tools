@@ -1,12 +1,22 @@
-import { lazy, Suspense, useEffect, useRef, useState, type JSX, type ReactNode } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ComponentType,
+  type LazyExoticComponent,
+  type ReactNode,
+} from 'react';
+import { Empty, Result, Spin } from '@arco-design/web-react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-// import { useTranslation } from '@your-s-tools/i18n';
-import type { YourToolApp } from "@your-s-tools/types";
-import { useStableResponsiveLayout } from './hooks/use-stable-grid-layout';
+import { useTranslation } from '@your-s-tools/i18n';
 import { MESSAGE_TYPE, useLayoutStorage } from '@your-s-tools/shared';
+import type { YourToolApp } from '@your-s-tools/types';
+import { defaultSizeMap } from '@/constants/layout';
 import './root.css';
 import '../../assets/styles/styles.css';
-import { useTranslation } from '@your-s-tools/i18n';
 
 const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
@@ -15,135 +25,164 @@ const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-// 组件映射表
-const componentMap: Record<string, React.LazyExoticComponent<() => JSX.Element>> = {
+const GRID_COLUMNS = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
+const COMPACT_TYPE: 'vertical' | 'horizontal' | null = 'vertical';
+const componentMap: Record<string, LazyExoticComponent<ComponentType>> = {
   BaseNavbar: AsyncBaseNavbar,
   BaseSearchBar: AsyncBaseSearchBar,
   BasePopular: AsyncBasePopular,
   BaseFavorite: AsyncBaseFavorite,
 };
+
 interface LayoutProps {
-  children?: ReactNode; // ReactNode 涵盖了字符串、数字、组件、数组等
+  children?: ReactNode;
 }
-function Layout({ children }: LayoutProps) {
-  const { t } = useTranslation();
-  // const [isLoading, setIsLoading] = useState(false);
-  /**
-   * 编辑状态
-   */
-  const [isEditMode, setIsEditMode] = useState(true);
 
-  useEffect(() => {
-    const addToggleIsEditMode = (message: any, _sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-      const { type, value } = message;
-      if (type === MESSAGE_TYPE.TOGGLE_EDIT) {
-        setIsEditMode((prev) => {
-          const nextValue = value ?? !prev;
-          return nextValue;
-        });
-        sendResponse({ success: true })
-      }
-      return false;
-    }
-    chrome.runtime.onMessage.addListener(addToggleIsEditMode);
-    return () => {
-      chrome.runtime.onMessage.removeListener(addToggleIsEditMode);
+interface ComponentSlotProps {
+  layout: ReactGridLayout.Layout;
+  layoutJsonData: YourToolApp.LayoutJsonData[];
+}
+
+function createLayouts(layoutJsonData: YourToolApp.LayoutJsonData[]): ReactGridLayout.Layouts {
+  const lg = layoutJsonData.map((item, index) => {
+    const size = defaultSizeMap[item.component] || { w: 4, h: 2 };
+
+    return {
+      i: item.id,
+      x: 0,
+      y: index * size.h,
+      w: Math.min(size.w, GRID_COLUMNS.lg),
+      h: size.h,
+      static: false,
     };
-  }, []);
-  const [_list, _setList] = useState<YourToolApp.BasePropertyEntity[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [_currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
-  const compactType = "vertical";
-  const [mounted, setMounted] = useState(false);
-  const [_LayoutJsonData, _setLayoutJsonData] = useLayoutStorage();
-
-  const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>({
-    lg: [],
-    sm: [],
   });
 
-  const [layoutJson, ] = useState<YourToolApp.LayoutJsonData[]>([]);
+  return {
+    lg,
+    md: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.md) })),
+    sm: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.sm) })),
+    xs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xs) })),
+    xxs: lg.map((item) => ({ ...item, w: Math.min(item.w, GRID_COLUMNS.xxs) })),
+  };
+}
 
-  const { ready: _ready } = useStableResponsiveLayout(layouts, containerRef);
+function useEditModeMessage() {
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    if (!mounted) setMounted(true);
-  }, [mounted]);
+    const toggleEditMode = (
+      message: { type?: string; value?: boolean },
+      _sender: chrome.runtime.MessageSender,
+      sendResponse: (response?: { success: boolean }) => void,
+    ) => {
+      if (message.type !== MESSAGE_TYPE.TOGGLE_EDIT) return false;
 
-  const onLayoutChange = (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
-    setLayouts(allLayouts);
-  };
+      setIsEditMode((prev) => message.value ?? !prev);
+      sendResponse({ success: true });
+      return false;
+    };
 
-  const renderComponent = (layout: ReactGridLayout.Layout) => {
-    const { i: id } = layout;
-    const item = layoutJson.find((x) => x.id === id);
-    if (!item) return <span>Unknown Component</span>;
-
-    const Comp = componentMap[item.component];
-    if (!Comp) return <span>Missing Component: {item.component}</span>;
-
-    return (
-      <Suspense fallback={<div>{t('common.loading')} {item.component}...</div>}>
-        <Comp />
-      </Suspense>
-    );
-  };
-
-  const [firstRender, setFirstRender] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => setFirstRender(false), 200);
-    return () => clearTimeout(timer);
+    chrome.runtime.onMessage.addListener(toggleEditMode);
+    return () => {
+      chrome.runtime.onMessage.removeListener(toggleEditMode);
+    };
   }, []);
 
-  const onBreakpointChange = (newBreakpoint: string, _newCols: number) => {
-    setCurrentBreakpoint(newBreakpoint);
-  };
+  return isEditMode;
+}
 
-  // 包装渲染的组件
-  const renderWithWrapper = (layout: ReactGridLayout.Layout) => {
-    return (
-      <div
-        style={{
-          position: "relative",
-          height: "100%",
-        }}
-        className="hover-group"
-      >
-        {/* 真实组件 */}
-        {renderComponent(layout)}
-      </div>
-    );
-  };
+function LoadingComponent({ component }: { component: string }) {
+  const { t } = useTranslation();
+
   return (
-    <>
-      <div style={{ display: 'flex', height: '100vh' }}>
-          {children}
-          {/* 右侧布局区 */}
-          <div style={{ flex: 1, background: "#f8f9fa" }} className="layout-container">
-            <ResponsiveReactGridLayout
-              layouts={layouts}
-              onLayoutChange={onLayoutChange}
-              onBreakpointChange={onBreakpointChange}
-              measureBeforeMount={false}
-              useCSSTransforms={mounted}
-              compactType={compactType}
-              preventCollision={!compactType}
-              isDraggable={isEditMode}
-              isResizable={isEditMode}
-              cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
-              rowHeight={85}
-              draggableCancel=".hover-delete-btn"
-              style={{ visibility: firstRender ? 'hidden' : 'visible' }}
-            >
-              {(layouts.lg || []).map((l) => (
-                <div key={l.i} className={l.static ? 'static' : ''}>
-                  {renderWithWrapper(l)}
-                </div>
-              ))}
-            </ResponsiveReactGridLayout>
-          </div>
-        </div>
-    </>
+    <div className="flex h-full items-center justify-center">
+      <Spin tip={t('layout.loadingComponent', { component })} />
+    </div>
+  );
+}
+
+function ComponentSlot({ layout, layoutJsonData }: ComponentSlotProps) {
+  const { t } = useTranslation();
+  const item = layoutJsonData.find((entry) => entry.id === layout.i);
+
+  if (!item) {
+    return <Empty description={t('layout.missingConfig')} />;
+  }
+
+  const Component = componentMap[item.component];
+  if (!Component) {
+    return <Result status="404" title={t('layout.unregisteredComponent', { component: item.component })} />;
+  }
+
+  return (
+    <Suspense fallback={<LoadingComponent component={item.component} />}>
+      <Component />
+    </Suspense>
+  );
+}
+
+function LayoutItem({ children }: { children: ReactNode }) {
+  return (
+    <div className="hover-group" style={{ position: 'relative', height: '100%' }}>
+      {children}
+    </div>
+  );
+}
+
+function Layout({ children }: LayoutProps) {
+  const isEditMode = useEditModeMessage();
+  const [firstRender, setFirstRender] = useState(true);
+  const [layoutJsonData] = useLayoutStorage();
+  const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>(() => createLayouts([]));
+
+  useEffect(() => {
+    setLayouts(createLayouts(layoutJsonData));
+  }, [layoutJsonData]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setFirstRender(false), 200);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const handleLayoutChange = useCallback(
+    (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
+      setLayouts(allLayouts);
+    },
+    [],
+  );
+
+  const gridItems = useMemo(
+    () => (layouts.lg || []).map((layout) => (
+      <div key={layout.i} className={layout.static ? 'static' : ''}>
+        <LayoutItem>
+          <ComponentSlot layout={layout} layoutJsonData={layoutJsonData} />
+        </LayoutItem>
+      </div>
+    )),
+    [layoutJsonData, layouts.lg],
+  );
+
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {children}
+      <div style={{ flex: 1, background: '#f8f9fa' }} className="layout-container">
+        <ResponsiveReactGridLayout
+          layouts={layouts}
+          onLayoutChange={handleLayoutChange}
+          measureBeforeMount={false}
+          compactType={COMPACT_TYPE}
+          preventCollision={!COMPACT_TYPE}
+          isDraggable={isEditMode}
+          isResizable={isEditMode}
+          cols={GRID_COLUMNS}
+          rowHeight={85}
+          draggableCancel=".hover-delete-btn"
+          style={{ visibility: firstRender ? 'hidden' : 'visible' }}
+        >
+          {gridItems}
+        </ResponsiveReactGridLayout>
+      </div>
+    </div>
   );
 }
 

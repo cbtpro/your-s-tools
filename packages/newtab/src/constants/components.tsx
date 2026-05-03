@@ -1,10 +1,21 @@
-import { 
-  IconApps, IconSearch,
-  IconFire, IconStar, IconLayout, IconFolder,
-  IconAt, IconCode, IconQrcode, IconLink,
+import {
+  IconApps,
+  IconAt,
+  IconCode,
+  IconFire,
+  IconFolder,
+  IconLayout,
+  IconLink,
+  IconQrcode,
+  IconSearch,
+  IconStar,
 } from '@arco-design/web-react/icon';
+import type { ReactNode } from 'react';
 
-export const iconMap = {
+export const componentGroupKeys = ['layout', 'container', 'feature'] as const;
+export type ComponentGroupKey = (typeof componentGroupKeys)[number];
+
+export const componentIconMap = {
   layout: <IconLayout />,
   folder: <IconFolder />,
   apps: <IconApps />,
@@ -15,25 +26,94 @@ export const iconMap = {
   code: <IconCode />,
   qrcode: <IconQrcode />,
   link: <IconLink />,
-} as const;
+} satisfies Record<string, ReactNode>;
+
+export type ComponentIconKey = keyof typeof componentIconMap;
 
 export interface ComponentItem {
   type: string;
-  label: string;
-  group: string;
-  icon?: keyof typeof iconMap;
+  labelKey: string;
+  groupKey: ComponentGroupKey;
+  icon: ComponentIconKey;
+  enabled: boolean;
 }
 
 export const componentList: ComponentItem[] = [
-  { type: 'BaseLayout', label: '布局', group: '布局', icon: 'layout' },
-  { type: 'BaseSection', label: '分组', group: '容器', icon: 'folder' },
-  { type: 'BaseSwiper', label: 'Swiper', group: '容器', icon: 'folder' },
-  { type: 'BaseNavbar', label: '导航栏', group: '功能', icon: 'apps' },
-  { type: 'BaseSearchBar', label: '搜索框', group: '功能', icon: 'search' },
-  { type: 'BasePopular', label: '热门推荐', group: '功能', icon: 'popular' },
-  { type: 'BaseFavorite', label: '收藏夹', group: '功能', icon: 'favorite' },
-  { type: 'BaseAt', label: '邮箱', group: '功能', icon: 'at' },
-  { type: 'BaseCode', label: '代码片段', group: '功能', icon: 'code' },
-  { type: 'BaseQrcode', label: '二维码', group: '功能', icon: 'qrcode' },
-  { type: 'BaseLink', label: '网址', group: '功能', icon: 'link' },
+  {
+    type: 'BaseLayout',
+    labelKey: 'components.items.baseLayout',
+    groupKey: 'layout',
+    icon: 'layout',
+    enabled: false,
+  },
+  {
+    type: 'BaseSection',
+    labelKey: 'components.items.baseSection',
+    groupKey: 'container',
+    icon: 'folder',
+    enabled: false,
+  },
+  {
+    type: 'BaseSwiper',
+    labelKey: 'components.items.baseSwiper',
+    groupKey: 'container',
+    icon: 'folder',
+    enabled: false,
+  },
+  {
+    type: 'BaseNavbar',
+    labelKey: 'components.items.baseNavbar',
+    groupKey: 'feature',
+    icon: 'apps',
+    enabled: true,
+  },
+  {
+    type: 'BaseSearchBar',
+    labelKey: 'components.items.baseSearchBar',
+    groupKey: 'feature',
+    icon: 'search',
+    enabled: true,
+  },
+  {
+    type: 'BasePopular',
+    labelKey: 'components.items.basePopular',
+    groupKey: 'feature',
+    icon: 'popular',
+    enabled: true,
+  },
+  {
+    type: 'BaseFavorite',
+    labelKey: 'components.items.baseFavorite',
+    groupKey: 'feature',
+    icon: 'favorite',
+    enabled: true,
+  },
+  {
+    type: 'BaseAt',
+    labelKey: 'components.items.baseAt',
+    groupKey: 'feature',
+    icon: 'at',
+    enabled: false,
+  },
+  {
+    type: 'BaseCode',
+    labelKey: 'components.items.baseCode',
+    groupKey: 'feature',
+    icon: 'code',
+    enabled: false,
+  },
+  {
+    type: 'BaseQrcode',
+    labelKey: 'components.items.baseQrcode',
+    groupKey: 'feature',
+    icon: 'qrcode',
+    enabled: false,
+  },
+  {
+    type: 'BaseLink',
+    labelKey: 'components.items.baseLink',
+    groupKey: 'feature',
+    icon: 'link',
+    enabled: false,
+  },
 ];

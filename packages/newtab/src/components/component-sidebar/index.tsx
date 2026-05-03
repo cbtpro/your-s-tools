@@ -1,143 +1,280 @@
-import React, { useRef, useState, useEffect, } from 'react';
+import { useEffect, useMemo, useRef, useState, type CompositionEvent, type FormEvent, type ReactNode } from 'react';
 import { useDrag } from 'react-dnd';
 import {
-  IconCommon,
   IconApps,
-  IconSearch,
-  IconPlusCircle,
+  IconCommon,
   IconMinusCircle,
+  IconPlusCircle,
+  IconSearch,
 } from '@arco-design/web-react/icon';
-import { useCompositionInput } from '@your-s-tools/shared';
-import { iconMap, componentList, type ComponentItem } from '@/constants/components';
+import { useTranslation } from '@your-s-tools/i18n';
+import {
+  componentGroupKeys,
+  componentIconMap,
+  componentList,
+  type ComponentGroupKey,
+  type ComponentItem,
+} from '@/constants/components';
 import styles from './style.module.scss';
 
-const DraggableComponent: React.FC<{
+interface ComponentSidebarProps {
+  components?: ComponentItem[];
+  showDisabled?: boolean;
+}
+
+interface LocalizedComponentItem extends ComponentItem {
+  label: string;
+  groupLabel: string;
+}
+
+interface DraggableComponentProps {
   type: string;
   label: string;
-  icon?: React.ReactNode;
-}> = ({ type, label, icon }) => {
-  const itemRef = useRef<HTMLDivElement>(null);
+  icon: ReactNode;
+}
 
+interface ComponentSearchProps {
+  value: string;
+  suggestions: LocalizedComponentItem[];
+  onChange: (value: string) => void;
+}
+
+function classNames(...names: Array<string | false | undefined>) {
+  return names.filter(Boolean).join(' ');
+}
+
+function DraggableComponent({ type, label, icon }: DraggableComponentProps) {
+  const itemRef = useRef<HTMLDivElement>(null);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'COMPONENT',
     item: { type },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }));
+  }), [type]);
 
   useEffect(() => {
-    if (itemRef.current) drag(itemRef.current);
+    if (itemRef.current) {
+      drag(itemRef.current);
+    }
   }, [drag]);
-  const style1s: React.CSSProperties = { fontSize: 20, marginBottom: 6 };
-  const style2s: React.CSSProperties = { fontSize: 12 };
+
   return (
     <div
       ref={itemRef}
-      className={[styles['sidebar-item'], isDragging ? styles['is-dragging'] : ''].join(' ')}
+      className={classNames(styles.sidebarItem, isDragging && styles.isDragging)}
+      role="button"
+      tabIndex={0}
+      aria-label={label}
     >
-      <div style={style1s}>{icon}</div>
-      <span style={style2s}>{label}</span>
+      <div className={styles.itemIcon}>{icon}</div>
+      <span className={styles.itemLabel}>{label}</span>
     </div>
   );
-};
+}
 
-// ---------- 组件面板 ----------
-const ComponentSidebar: React.FC<{
-  components?: ComponentItem[]; // 可传入自定义列表
-}> = ({ components = componentList }) => {
-  const { value: search, bind: bindSearch } = useCompositionInput('');
+function SidebarHeader() {
+  const { t } = useTranslation();
 
+  return (
+    <div className={styles.sidebarHeader}>
+      <IconApps />
+      <span>{t('components.sidebar.title')}</span>
+    </div>
+  );
+}
 
-  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+function GroupToggleIcon({ collapsed }: { collapsed: boolean }) {
+  return collapsed ? <IconPlusCircle /> : <IconMinusCircle />;
+}
 
-  const groups = Array.from(new Set(components.map(c => c.group)));
+function ComponentSearch({ value, suggestions, onChange }: ComponentSearchProps) {
+  const { t } = useTranslation();
+  const [focused, setFocused] = useState(false);
+  const isComposingRef = useRef(false);
+  const showSuggestions = focused && value.trim() && suggestions.length > 0;
 
-  const toggleGroup = (group: string) => {
-    setCollapsedGroups(prev => ({ ...prev, [group]: !prev[group] }));
+  const handleInput = (event: FormEvent<HTMLInputElement>) => {
+    if (!isComposingRef.current) {
+      onChange(event.currentTarget.value);
+    }
+  };
+
+  const handleCompositionStart = () => {
+    isComposingRef.current = true;
+  };
+
+  const handleCompositionEnd = (event: CompositionEvent<HTMLInputElement>) => {
+    isComposingRef.current = false;
+    onChange(event.currentTarget.value);
+  };
+
+  const selectSuggestion = (component: LocalizedComponentItem) => {
+    onChange(component.label);
+    setFocused(false);
   };
 
   return (
-    <aside
-      className={styles['component-sidebar']}
-    >
-      {/* 面板标题 */}
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-        <IconApps style={{ marginRight: 8 }} />
-        <span style={{ fontWeight: 600 }}>组件面板</span>
-      </div>
+    <div className={styles.searchBox}>
+      <IconSearch className={styles.searchIcon} />
+      <input
+        value={value}
+        type="text"
+        className={styles.searchInput}
+        placeholder={t('components.sidebar.searchPlaceholder')}
+        aria-label={t('components.sidebar.searchPlaceholder')}
+        aria-autocomplete="list"
+        aria-expanded={Boolean(showSuggestions)}
+        onInput={handleInput}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onCompositionStart={handleCompositionStart}
+        onCompositionEnd={handleCompositionEnd}
+      />
 
-      {/* 搜索框 */}
-      <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center' }}>
-        <IconSearch style={{ marginRight: 4 }} />
-        <input
-          // ref={inputRef}
-          // defaultValue={search}
-          // onInput={handleInput}
-          // onCompositionStart={handleCompositionStart}
-          // onCompositionEnd={handleCompositionEnd}
-          {...bindSearch}
-          type="text"
-          placeholder="搜索组件..."
-          style={{
-            flex: 1,
-            padding: '6px 10px',
-            borderRadius: 6,
-            border: '1px solid #ddd',
-          }}
-        />
-      </div>
-
-      {/* 分组列表 */}
-      {groups.map(group => {
-        const filtered = components.filter(
-          c => c.group === group && c.label.toLowerCase().includes(search.toLowerCase())
-        );
-        if (filtered.length === 0) return null;
-
-        return (
-          <div key={group} style={{ marginBottom: 16 }}>
-            {/* 分组标题 */}
-            <div
-              style={{
-                fontWeight: 600,
-                cursor: 'pointer',
-                marginBottom: 6,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-              onClick={() => toggleGroup(group)}
+      {showSuggestions && (
+        <div className={styles.suggestionList} role="listbox">
+          {suggestions.map((component) => (
+            <button
+              key={component.type}
+              type="button"
+              className={styles.suggestionItem}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => selectSuggestion(component)}
+              role="option"
             >
-              <span>{group}</span>
-              <span style={{ marginLeft: 6 }}>
-                {collapsedGroups[group] ? <IconPlusCircle /> : <IconMinusCircle />}
-              </span>
-            </div>
+              <span className={styles.suggestionLabel}>{component.label}</span>
+              <span className={styles.suggestionMeta}>{component.groupLabel}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
-            {/* 分组内容，网格布局 */}
-            {!collapsedGroups[group] && (
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
-                  gap: 12,
-                }}
-              >
-                {filtered.map(c => {
-                  return  <DraggableComponent
-                    key={c.type}
-                    type={c.type}
-                    label={c.label}
-                    icon={c.icon ? iconMap[c.icon] : <IconCommon />}
-                  />;
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })}
+function ComponentGroup({
+  groupKey,
+  groupLabel,
+  components,
+  collapsed,
+  onToggle,
+}: {
+  groupKey: ComponentGroupKey;
+  groupLabel: string;
+  components: LocalizedComponentItem[];
+  collapsed: boolean;
+  onToggle: (group: ComponentGroupKey) => void;
+}) {
+  return (
+    <section className={styles.componentGroup}>
+      <button
+        type="button"
+        className={styles.groupHeader}
+        onClick={() => onToggle(groupKey)}
+        aria-expanded={!collapsed}
+      >
+        <span>{groupLabel}</span>
+        <GroupToggleIcon collapsed={collapsed} />
+      </button>
+
+      {!collapsed && (
+        <div className={styles.componentGrid}>
+          {components.map((component) => (
+            <DraggableComponent
+              key={component.type}
+              type={component.type}
+              label={component.label}
+              icon={componentIconMap[component.icon] ?? <IconCommon />}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default function ComponentSidebar({
+  components = componentList,
+  showDisabled = true,
+}: ComponentSidebarProps) {
+  const { t } = useTranslation();
+  const [search, setSearch] = useState('');
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<ComponentGroupKey, boolean>>({
+    layout: false,
+    container: false,
+    feature: false,
+  });
+
+  const localizedComponents = useMemo<LocalizedComponentItem[]>(() => (
+    components
+      .filter((component) => showDisabled || component.enabled)
+      .map((component) => ({
+        ...component,
+        label: t(component.labelKey),
+        groupLabel: t(`components.groups.${component.groupKey}`),
+      }))
+  ), [components, showDisabled, t]);
+
+  const filteredComponents = useMemo(() => {
+    const keyword = search.trim().toLowerCase();
+    if (!keyword) return localizedComponents;
+
+    return localizedComponents.filter((component) => (
+      component.label.toLowerCase().includes(keyword) ||
+      component.groupLabel.toLowerCase().includes(keyword) ||
+      component.type.toLowerCase().includes(keyword)
+    ));
+  }, [localizedComponents, search]);
+
+  const suggestedComponents = useMemo(() => {
+    const keyword = search.trim().toLowerCase();
+    if (!keyword) return [];
+
+    return localizedComponents
+      .filter((component) => (
+        component.label.toLowerCase().includes(keyword) ||
+        component.type.toLowerCase().includes(keyword)
+      ))
+      .slice(0, 6);
+  }, [localizedComponents, search]);
+
+  const groupedComponents = useMemo(() => (
+    componentGroupKeys
+      .map((groupKey) => ({
+        groupKey,
+        groupLabel: t(`components.groups.${groupKey}`),
+        components: filteredComponents.filter((component) => component.groupKey === groupKey),
+      }))
+      .filter((group) => group.components.length > 0)
+  ), [filteredComponents, t]);
+
+  const toggleGroup = (group: ComponentGroupKey) => {
+    setCollapsedGroups((prev) => ({ ...prev, [group]: !prev[group] }));
+  };
+
+  return (
+    <aside className={styles.componentSidebar}>
+      <SidebarHeader />
+
+      <ComponentSearch
+        value={search}
+        suggestions={suggestedComponents}
+        onChange={setSearch}
+      />
+
+      <div className={styles.groupList}>
+        {groupedComponents.map((group) => (
+          <ComponentGroup
+            key={group.groupKey}
+            groupKey={group.groupKey}
+            groupLabel={group.groupLabel}
+            components={group.components}
+            collapsed={collapsedGroups[group.groupKey]}
+            onToggle={toggleGroup}
+          />
+        ))}
+      </div>
     </aside>
   );
-};
-
-export default ComponentSidebar;
+}

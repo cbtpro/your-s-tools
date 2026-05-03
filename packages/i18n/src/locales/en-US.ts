@@ -48,7 +48,42 @@ export default {
     }
   },
   "components": {
-    "components": "Components"
+    "components": "Components",
+    "sidebar": {
+      "title": "Component panel",
+      "searchPlaceholder": "Search components..."
+    },
+    "groups": {
+      "layout": "Layout",
+      "container": "Containers",
+      "feature": "Features"
+    },
+    "items": {
+      "baseLayout": "Layout",
+      "baseSection": "Section",
+      "baseSwiper": "Carousel",
+      "baseNavbar": "Navigation bar",
+      "baseSearchBar": "Search box",
+      "basePopular": "Popular",
+      "baseFavorite": "Favorites",
+      "baseAt": "Email",
+      "baseCode": "Code snippet",
+      "baseQrcode": "QR code",
+      "baseLink": "Link"
+    },
+    "operator": {
+      "cancelEdit": "Cancel editing",
+      "saveEdit": "Save edits",
+      "keepEditing": "Keep editing",
+      "cancelConfirm": "Are you sure you want to cancel editing?",
+      "saveConfirm": "Are you sure you want to save your edits?"
+    }
+  },
+  "layout": {
+    "editor": "Layout editor",
+    "loadingComponent": "Loading {{component}}...",
+    "missingConfig": "Component configuration is missing",
+    "unregisteredComponent": "Component is not registered: {{component}}"
   },
   "apps": {
     "name": "Your's Tools",

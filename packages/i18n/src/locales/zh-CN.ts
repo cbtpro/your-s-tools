@@ -48,7 +48,42 @@ export default {
     }
   },
   "components": {
-    "components": "组件"
+    "components": "组件",
+    "sidebar": {
+      "title": "组件面板",
+      "searchPlaceholder": "搜索组件..."
+    },
+    "groups": {
+      "layout": "布局",
+      "container": "容器",
+      "feature": "功能"
+    },
+    "items": {
+      "baseLayout": "布局",
+      "baseSection": "分组",
+      "baseSwiper": "轮播",
+      "baseNavbar": "导航栏",
+      "baseSearchBar": "搜索框",
+      "basePopular": "热门推荐",
+      "baseFavorite": "收藏夹",
+      "baseAt": "邮箱",
+      "baseCode": "代码片段",
+      "baseQrcode": "二维码",
+      "baseLink": "网址"
+    },
+    "operator": {
+      "cancelEdit": "取消编辑",
+      "saveEdit": "保存编辑",
+      "keepEditing": "继续编辑",
+      "cancelConfirm": "确定要取消编辑吗？",
+      "saveConfirm": "确定要保存编辑吗？"
+    }
+  },
+  "layout": {
+    "editor": "布局编辑器",
+    "loadingComponent": "正在加载 {{component}}...",
+    "missingConfig": "组件配置丢失",
+    "unregisteredComponent": "组件未注册：{{component}}"
   },
   "apps": {
     "name": "Your's Tools",

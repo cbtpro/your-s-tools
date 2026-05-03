@@ -1,11 +1,18 @@
 import React from 'react';
 import ComponentOperator from '@/components/component-operator';
 
-const EdtiBar: React.FC<{}> = () => {
-  return <>
-    {/* 编辑、保存 */}
-    <ComponentOperator />
-  </>
+interface EditBarProps {
+  onCancelEdit?: () => void;
+  onSaveEdit?: () => void;
 }
 
-export default EdtiBar;
+const EditBar: React.FC<EditBarProps> = ({ onCancelEdit, onSaveEdit }) => {
+  return (
+    <ComponentOperator
+      onCancelEdit={onCancelEdit}
+      onSaveEdit={onSaveEdit}
+    />
+  );
+};
+
+export default EditBar;
