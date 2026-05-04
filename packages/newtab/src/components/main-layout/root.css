@@ -25,6 +25,24 @@ button {
   width: 100%;
   /* height: 100vh; */
 }
+
+.layout-item {
+  height: 100%;
+}
+
+.layout-item--editing {
+  cursor: move;
+}
+
+.layout-item-content {
+  height: 100%;
+}
+
+.layout-item-content--disabled {
+  pointer-events: none;
+  user-select: none;
+}
+
 .hover-group:hover .hover-delete-btn {
   display: block !important;
 }
@@ -37,6 +55,7 @@ button {
   cursor: pointer;
   display: none;
   z-index: 100;
+  pointer-events: auto;
 }
 
 .hover-delete-btn:hover {

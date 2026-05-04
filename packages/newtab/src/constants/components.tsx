@@ -16,6 +16,7 @@ const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
 const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
 const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
+const AsyncBaseQrcode = lazy(() => import('@/components/base-qrcode'));
 
 export const componentGroupKeys = ['layout', 'container', 'feature'] as const;
 export type ComponentGroupKey = (typeof componentGroupKeys)[number];
@@ -63,22 +64,22 @@ export const componentRegistry = {
     enabled: false,
     defaultSize: { w: 12, h: 4 },
   },
-  BaseSection: {
-    type: 'BaseSection',
-    labelKey: 'components.items.baseSection',
-    groupKey: 'container',
-    icon: 'folder',
-    enabled: false,
-    defaultSize: { w: 6, h: 4 },
-  },
-  BaseSwiper: {
-    type: 'BaseSwiper',
-    labelKey: 'components.items.baseSwiper',
-    groupKey: 'container',
-    icon: 'folder',
-    enabled: false,
-    defaultSize: { w: 6, h: 3 },
-  },
+  // BaseSection: {
+  //   type: 'BaseSection',
+  //   labelKey: 'components.items.baseSection',
+  //   groupKey: 'container',
+  //   icon: 'folder',
+  //   enabled: false,
+  //   defaultSize: { w: 6, h: 4 },
+  // },
+  // BaseSwiper: {
+  //   type: 'BaseSwiper',
+  //   labelKey: 'components.items.baseSwiper',
+  //   groupKey: 'container',
+  //   icon: 'folder',
+  //   enabled: false,
+  //   defaultSize: { w: 6, h: 3 },
+  // },
   BaseNavbar: {
     type: 'BaseNavbar',
     labelKey: 'components.items.baseNavbar',
@@ -136,8 +137,9 @@ export const componentRegistry = {
     labelKey: 'components.items.baseQrcode',
     groupKey: 'feature',
     icon: 'qrcode',
-    enabled: false,
-    defaultSize: { w: 3, h: 3 },
+    enabled: true,
+    defaultSize: { w: 2, h: 2 },
+    component: AsyncBaseQrcode,
   },
   BaseLink: {
     type: 'BaseLink',

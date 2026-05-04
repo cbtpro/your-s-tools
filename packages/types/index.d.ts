@@ -27,13 +27,89 @@ export declare namespace YourToolApp {
     triggerDistance: number;
   }
   /**
+   * 搜索结果打开方式
+   */
+  type SearchOpenTarget = 'currentTab' | 'newTab' | 'newWindow';
+
+  /**
+   * 二维码协议类型
+   */
+  type QrcodeProtocol = 'text' | 'url' | 'wifi' | 'email' | 'phone' | 'sms' | 'vcard' | 'geo' | 'event';
+
+  /**
+   * Wi-Fi 二维码加密类型
+   */
+  type WifiEncryption = 'WPA' | 'WEP' | 'nopass';
+
+  /**
+   * 加密存储值
+   */
+  interface EncryptedValue {
+    cipherText: string;
+    iv: string;
+    salt: string;
+  }
+
+  /**
+   * 二维码组件表单数据
+   */
+  interface QrcodeFormState {
+    protocol: QrcodeProtocol;
+    text: string;
+    url: string;
+    ssid: string;
+    password: string;
+    encryption: WifiEncryption;
+    hidden: boolean;
+    email: string;
+    subject: string;
+    body: string;
+    phone: string;
+    smsMessage: string;
+    name: string;
+    latitude: string;
+    longitude: string;
+    eventTitle: string;
+    eventLocation: string;
+    eventStart: string;
+    eventEnd: string;
+  }
+
+  /**
+   * 二维码组件持久化数据，Wi-Fi 密码加密存储
+   */
+  type StoredQrcodeFormState = Omit<QrcodeFormState, 'password'> & {
+    encryptedPassword?: EncryptedValue;
+  };
+
+  /**
+   * 二维码历史项
+   */
+  interface QrcodeHistoryItem {
+    id: string;
+    protocol: QrcodeProtocol;
+    label: string;
+    createdAt: number;
+    form: StoredQrcodeFormState;
+  }
+
+  /**
+   * 二维码组件持久化状态
+   */
+  interface StoredQrcodeState {
+    current?: StoredQrcodeFormState;
+    history: Partial<Record<QrcodeProtocol, QrcodeHistoryItem[]>>;
+    savedAt?: number;
+  }
+
+  /**
    * 命令面板设置
    */
   interface CommandPalette {
     /**
      * 搜索结果打开方式
      */
-    searchOpenTarget: 'currentTab' | 'newTab' | 'newWindow';
+    searchOpenTarget: SearchOpenTarget;
   }
   /**
    * 高级设置

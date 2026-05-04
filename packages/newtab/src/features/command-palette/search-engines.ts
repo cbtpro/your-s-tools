@@ -1,5 +1,6 @@
+import type { YourToolApp } from "@your-s-tools/types";
+
 export type SearchEngineKey = 'google' | 'baidu' | 'bing' | 'duckduckgo' | 'github' | 'npm' | 'mdn';
-export type SearchOpenTarget = 'currentTab' | 'newTab' | 'newWindow';
 
 export interface SearchEngine {
   key: SearchEngineKey;
@@ -94,7 +95,7 @@ export function parseSearchInput(input: string) {
   };
 }
 
-export function openUrl(url: string, target: SearchOpenTarget = 'newTab') {
+export function openUrl(url: string, target: YourToolApp.SearchOpenTarget = 'newTab') {
   if (target === 'currentTab') {
     window.location.assign(url);
     return;
@@ -108,7 +109,7 @@ export function openUrl(url: string, target: SearchOpenTarget = 'newTab') {
   chrome.tabs?.create?.({ url });
 }
 
-export function openSearch(input: string, target: SearchOpenTarget = 'newTab') {
+export function openSearch(input: string, target: YourToolApp.SearchOpenTarget = 'newTab') {
   const parsedSearch = parseSearchInput(input);
   if (!parsedSearch.query) return;
 

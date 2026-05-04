@@ -73,12 +73,12 @@ function Layout({ children }: LayoutProps) {
   const gridItems = useMemo(
     () => (layouts.lg || []).map((layout) => (
       <div key={layout.i} className={layout.static ? 'static' : ''}>
-        <LayoutItem>
+        <LayoutItem interactionDisabled={isEditMode}>
           <ComponentSlot layout={layout} layoutJsonData={layoutJsonData} />
         </LayoutItem>
       </div>
     )),
-    [layoutJsonData, layouts.lg],
+    [isEditMode, layoutJsonData, layouts.lg],
   );
 
   return (

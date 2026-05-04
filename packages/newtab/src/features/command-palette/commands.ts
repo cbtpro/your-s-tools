@@ -1,5 +1,6 @@
 import type { NavigateFunction } from 'react-router-dom';
-import { defaultSearchEngine, openUrl, parseSearchInput, searchEngines, type SearchEngine, type SearchOpenTarget } from './search-engines';
+import type { YourToolApp } from '@your-s-tools/types';
+import { defaultSearchEngine, openUrl, parseSearchInput, searchEngines, type SearchEngine } from './search-engines';
 
 export type CommandKind = 'navigation' | 'search';
 
@@ -17,7 +18,7 @@ export interface CommandAction {
 interface CreateCommandsParams {
   input: string;
   navigate: NavigateFunction;
-  searchOpenTarget: SearchOpenTarget;
+  searchOpenTarget: YourToolApp.SearchOpenTarget;
 }
 
 const navigationCommands = [
@@ -47,7 +48,7 @@ const navigationCommands = [
   },
 ];
 
-function openSearchUrl(engine: SearchEngine, query: string, target: SearchOpenTarget) {
+function openSearchUrl(engine: SearchEngine, query: string, target: YourToolApp.SearchOpenTarget) {
   if (!query.trim()) return;
   openUrl(engine.buildUrl(query), target);
 }

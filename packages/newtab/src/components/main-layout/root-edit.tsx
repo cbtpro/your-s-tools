@@ -40,6 +40,54 @@ interface EditableLayoutItemProps {
   onDelete: (id: string) => void;
 }
 
+interface LayoutSnapshotItem {
+  id: string;
+  component: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+function createLayoutSnapshot(
+  layoutJsonData: YourToolApp.LayoutJsonData[],
+  layouts: ReactGridLayout.Layout[],
+) {
+  return layoutJsonData
+    .map<LayoutSnapshotItem>((item) => {
+      const layout = layouts.find((entry) => entry.i === item.id) ?? item.layout;
+      const size = getComponentSize(item.component);
+
+      return {
+        id: item.id,
+        component: item.component,
+        x: layout?.x ?? 0,
+        y: layout?.y ?? 0,
+        w: layout?.w ?? size.w,
+        h: layout?.h ?? size.h,
+      };
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function areLayoutSnapshotsEqual(
+  left: LayoutSnapshotItem[],
+  right: LayoutSnapshotItem[],
+) {
+  if (left.length !== right.length) return false;
+
+  return left.every((item, index) => {
+    const next = right[index];
+    return next &&
+      item.id === next.id &&
+      item.component === next.component &&
+      item.x === next.x &&
+      item.y === next.y &&
+      item.w === next.w &&
+      item.h === next.h;
+  });
+}
+
 function LoadingPanel({ label }: { label: string }) {
   const { t } = useTranslation();
 
@@ -53,7 +101,7 @@ function LoadingPanel({ label }: { label: string }) {
 
 function EditableLayoutItem({ layout, children, onDelete }: EditableLayoutItemProps) {
   return (
-    <LayoutItem>
+    <LayoutItem interactionDisabled>
       <HoverDeleteButton onClick={() => onDelete(layout.i)} />
       {children}
     </LayoutItem>
@@ -98,6 +146,8 @@ function LayoutEdit() {
   const [isDirty, setIsDirty] = useState(false);
   const [componentsDrawerVisible, setComponentsDrawerVisible] = useState(false);
   const dropRef = useRef<HTMLDivElement>(null);
+  const baselineSnapshotRef = useRef<LayoutSnapshotItem[]>([]);
+  const gridSyncedRef = useRef(false);
 
   useUnsavedLayoutGuard(isDirty);
 
@@ -108,8 +158,11 @@ function LayoutEdit() {
   }, []);
 
   useEffect(() => {
+    const nextLayouts = createLayouts(storedLayoutJsonData);
     setLayoutJsonData(storedLayoutJsonData);
-    setLayouts(createLayouts(storedLayoutJsonData));
+    setLayouts(nextLayouts);
+    baselineSnapshotRef.current = createLayoutSnapshot(storedLayoutJsonData, nextLayouts.lg || []);
+    gridSyncedRef.current = false;
     // 数据加载完成后再次确保重置状态
     setIsDirty(false);
 
@@ -158,25 +211,21 @@ function LayoutEdit() {
 
   const handleLayoutChange = useCallback(
     (_currentLayout: ReactGridLayout.Layout[], allLayouts: ReactGridLayout.Layouts) => {
-      // 检查布局是否真正发生了变化（用户拖拽操作）
-      const hasLayoutChanged = layouts.lg?.some((existingItem, index) => {
-        const newItem = allLayouts.lg?.[index];
-        return newItem && (
-          existingItem.x !== newItem.x ||
-          existingItem.y !== newItem.y ||
-          existingItem.w !== newItem.w ||
-          existingItem.h !== newItem.h
-        );
-      }) || false;
-
       setLayouts(allLayouts);
 
-      // 只有在布局真正发生变化时才标记为脏状态
-      if (hasLayoutChanged) {
-        setIsDirty(true);
+      const nextLayout = allLayouts.lg || [];
+      const nextSnapshot = createLayoutSnapshot(layoutJsonData, nextLayout);
+
+      if (!gridSyncedRef.current) {
+        baselineSnapshotRef.current = nextSnapshot;
+        gridSyncedRef.current = true;
+        setIsDirty(false);
+        return;
       }
+
+      setIsDirty(!areLayoutSnapshotsEqual(baselineSnapshotRef.current, nextSnapshot));
     },
-    [layouts.lg],
+    [layoutJsonData],
   );
 
   const handleDelete = useCallback((deleteTarget: string) => {
@@ -190,8 +239,11 @@ function LayoutEdit() {
   }, []);
 
   const handleCancelEdit = useCallback(() => {
+    const nextLayouts = createLayouts(storedLayoutJsonData);
     setLayoutJsonData(storedLayoutJsonData);
-    setLayouts(createLayouts(storedLayoutJsonData));
+    setLayouts(nextLayouts);
+    baselineSnapshotRef.current = createLayoutSnapshot(storedLayoutJsonData, nextLayouts.lg || []);
+    gridSyncedRef.current = false;
     setIsDirty(false);
   }, [storedLayoutJsonData]);
 
@@ -211,6 +263,8 @@ function LayoutEdit() {
     });
 
     setStoredLayoutJsonData(layoutDataWithPosition);
+    baselineSnapshotRef.current = createLayoutSnapshot(layoutDataWithPosition, layouts.lg || []);
+    gridSyncedRef.current = true;
     setIsDirty(false);
   }, [layoutJsonData, layouts.lg, setStoredLayoutJsonData]);
 

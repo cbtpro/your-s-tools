@@ -78,10 +78,20 @@ export function ComponentSlot({ layout, layoutJsonData }: ComponentSlotProps) {
   );
 }
 
-export function LayoutItem({ children }: { children: ReactNode }) {
+interface LayoutItemProps {
+  children: ReactNode;
+  interactionDisabled?: boolean;
+}
+
+export function LayoutItem({ children, interactionDisabled = false }: LayoutItemProps) {
   return (
-    <div className="hover-group" style={{ position: 'relative', height: '100%' }}>
-      {children}
+    <div
+      className={`hover-group layout-item${interactionDisabled ? ' layout-item--editing' : ''}`}
+      style={{ position: 'relative', height: '100%' }}
+    >
+      <div className={interactionDisabled ? 'layout-item-content layout-item-content--disabled' : 'layout-item-content'}>
+        {children}
+      </div>
     </div>
   );
 }

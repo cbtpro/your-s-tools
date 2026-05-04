@@ -33,6 +33,7 @@ const ComponentOperator: React.FC<ComponentOperatorProps> = ({
           cancelText={t('components.operator.keepEditing')}
           position="top"
           onOk={onCancelEdit}
+          disabled={!isDirty}
         >
           <AButton
             aria-label={t('components.operator.cancelEdit')}
