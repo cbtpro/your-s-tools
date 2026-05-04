@@ -253,6 +253,7 @@ export default {
     "videos": "Videos",
     "files": "Files",
     "settings": "Settings",
+    "tools": "Tools",
     "customize": "Customize",
     "help": "Help",
     "about": "About"

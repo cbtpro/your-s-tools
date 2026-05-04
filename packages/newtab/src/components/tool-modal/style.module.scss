@@ -1,0 +1,93 @@
+.modal {
+  width: min(980px, calc(100vw - 32px)) !important;
+}
+
+.wrap {
+  overflow: hidden;
+}
+
+.wrap :global(.arco-modal) {
+  max-height: calc(100vh - 32px);
+  padding-bottom: 0;
+}
+
+.wrap :global(.arco-modal-content) {
+  display: flex;
+  max-height: calc(100vh - 32px);
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wrap :global(.arco-modal-header) {
+  flex: 0 0 auto;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.wrap :global(.arco-modal-title) {
+  width: 100%;
+}
+
+.wrap :global(.arco-modal-body) {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.wrap :global(.arco-modal-footer) {
+  flex: 0 0 auto;
+  padding: 0;
+  border-top: 0;
+}
+
+.header {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header :global(.arco-space),
+.footer :global(.arco-space) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.header :global(.arco-space-item),
+.footer :global(.arco-space-item) {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.header :global(.arco-btn),
+.footer :global(.arco-btn) {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.header :global(.arco-btn svg),
+.footer :global(.arco-btn svg) {
+  flex: 0 0 auto;
+}
+
+.body {
+  max-height: calc(100vh - 176px);
+  min-height: 0;
+  padding: 16px;
+  overflow: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+@media (max-width: 720px) {
+  .body {
+    max-height: calc(100vh - 168px);
+  }
+}

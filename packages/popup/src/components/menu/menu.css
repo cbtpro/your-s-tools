@@ -49,6 +49,46 @@
   background: #eee;
 }
 
+.menu-list .menu-group {
+  display: block;
+  padding: 0;
+}
+
+.menu-list .menu-group:hover {
+  background: transparent;
+}
+
+.menu-group details {
+  width: 100%;
+}
+
+.menu-group summary {
+  display: flex;
+  gap: 4px;
+  padding: 12px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.menu-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-group summary:hover {
+  background: #eee;
+}
+
+.submenu-list {
+  margin: 0;
+  padding: 0 0 4px 0;
+  list-style: none;
+}
+
+.submenu-list li {
+  padding-left: 34px;
+  font-size: 13px;
+}
+
 .menu-footer {
   display: flex;
   justify-content: space-around;

@@ -49,20 +49,12 @@
   white-space: nowrap;
 }
 
-.modal {
-  width: min(980px, calc(100vw - 32px));
-}
-
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #f9fafb;
+  padding-right: 28px;
 }
 
 .title {
@@ -84,46 +76,11 @@
   gap: 8px;
 }
 
-.primaryButton,
-.secondaryButton,
-.dangerButton,
-.iconButton {
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.primaryButton {
-  border: 0;
-  background: #2563eb;
-  color: #fff;
-}
-
-.secondaryButton,
-.iconButton {
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
-}
-
-.dangerButton {
-  border: 1px solid #fecaca;
-  background: #fff;
-  color: #dc2626;
-}
-
 .workspace {
   display: grid;
   grid-template-columns: minmax(240px, 320px) minmax(360px, 1fr);
   gap: 16px;
-  max-height: min(720px, calc(100vh - 160px));
+  max-height: min(660px, calc(100vh - 204px));
   color: #111827;
 }
 

@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Modal } from '@arco-design/web-react';
+import { Button, Divider, Space } from '@arco-design/web-react';
 import { Copy, ExternalLink, Link as LinkIcon, Plus, Save, Star, Trash2 } from 'lucide-react';
 import { useTranslation } from '@your-s-tools/i18n';
 import type { YourToolApp } from '@your-s-tools/types';
+import ToolModal from '../tool-modal';
 import styles from './style.module.scss';
 
 const storageKey = 'your-s-tools:links';
@@ -195,35 +196,46 @@ export default function BaseLink() {
         </button>
       </div>
 
-      <Modal
-        className={styles.modal}
+      <ToolModal
         title={activeDisplayName}
         visible={visible}
-        footer={null}
-        unmountOnExit={false}
         onCancel={() => setVisible(false)}
+        header={(
+          <div className={styles.toolbar}>
+            <div>
+              <div className={styles.title}>{activeDisplayName}</div>
+              <div className={styles.meta}>{t('link.linkCount', { count: links.length })}</div>
+            </div>
+            <Space className={styles.toolbarActions} split={<Divider type="vertical" />}>
+              <Button icon={<Copy size={16} />} onClick={copyLink}>
+                {t('link.copy')}
+              </Button>
+              <Button icon={<ExternalLink size={16} />} onClick={openLink}>
+                {t('link.visit')}
+              </Button>
+              <Button type="primary" icon={<Plus size={16} />} onClick={addLink}>
+                {t('link.add')}
+              </Button>
+            </Space>
+          </div>
+        )}
+        footer={activeLink ? (
+          <Space className={styles.linkActions} split={<Divider type="vertical" />}>
+            <Button
+              icon={<Star size={16} fill={activeLink.pinned ? 'currentColor' : 'none'} />}
+              onClick={() => updateLink('pinned', !activeLink.pinned)}
+            >
+              {activeLink.pinned ? t('link.unpin') : t('link.pin')}
+            </Button>
+            <Button status="danger" icon={<Trash2 size={16} />} onClick={deleteLink}>
+              {t('link.delete')}
+            </Button>
+            <Button type="primary" icon={<Save size={16} />} onClick={() => setVisible(false)}>
+              {t('link.done')}
+            </Button>
+          </Space>
+        ) : null}
       >
-        <div className={styles.toolbar}>
-          <div>
-            <div className={styles.title}>{activeDisplayName}</div>
-            <div className={styles.meta}>{t('link.linkCount', { count: links.length })}</div>
-          </div>
-          <div className={styles.toolbarActions}>
-            <button type="button" className={styles.secondaryButton} onClick={copyLink}>
-              <Copy size={16} />
-              <span>{t('link.copy')}</span>
-            </button>
-            <button type="button" className={styles.secondaryButton} onClick={openLink}>
-              <ExternalLink size={16} />
-              <span>{t('link.visit')}</span>
-            </button>
-            <button type="button" className={styles.primaryButton} onClick={addLink}>
-              <Plus size={16} />
-              <span>{t('link.add')}</span>
-            </button>
-          </div>
-        </div>
-
         <div className={styles.workspace}>
           <div className={styles.sidebar}>
             <label className={styles.row}>
@@ -310,26 +322,12 @@ export default function BaseLink() {
                   </div>
                 )}
               </div>
-              <div className={styles.linkActions}>
-                <button type="button" className={styles.iconButton} onClick={() => updateLink('pinned', !activeLink.pinned)}>
-                  <Star size={16} fill={activeLink.pinned ? 'currentColor' : 'none'} />
-                  <span>{activeLink.pinned ? t('link.unpin') : t('link.pin')}</span>
-                </button>
-                <button type="button" className={styles.dangerButton} onClick={deleteLink}>
-                  <Trash2 size={16} />
-                  <span>{t('link.delete')}</span>
-                </button>
-                <button type="button" className={styles.primaryButton} onClick={() => setVisible(false)}>
-                  <Save size={16} />
-                  <span>{t('link.done')}</span>
-                </button>
-              </div>
             </div>
           ) : (
             <div className={styles.empty}>{t('link.empty')}</div>
           )}
         </div>
-      </Modal>
+      </ToolModal>
     </>
   );
 }

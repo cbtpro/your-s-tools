@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Modal } from '@arco-design/web-react';
+import { Button, Divider, Space } from '@arco-design/web-react';
 import QRCode from 'qrcode';
 import { Edit3, History, QrCode, Save, Trash2 } from 'lucide-react';
 import { useTranslation } from '@your-s-tools/i18n';
 import type { YourToolApp } from '@your-s-tools/types';
+import ToolModal from '../tool-modal';
 import styles from './style.module.scss';
 
 type QrcodeMode = 'display' | 'edit';
+interface BaseQrcodeProps {
+  variant?: 'launcher' | 'page';
+  onClose?: () => void;
+}
 type RuntimeHistoryItem = Omit<YourToolApp.QrcodeHistoryItem, 'form'> & {
   form: YourToolApp.QrcodeFormState;
 };
@@ -363,7 +368,7 @@ function formatSavedTime(value?: number) {
   }).format(value);
 }
 
-export default function BaseQrcode() {
+export default function BaseQrcode({ variant = 'launcher', onClose }: BaseQrcodeProps = {}) {
   const { t } = useTranslation();
   const defaultDisplayName = t('components.items.baseQrcode');
   const [form, setForm] = useState<YourToolApp.QrcodeFormState>(initialForm);
@@ -374,7 +379,7 @@ export default function BaseQrcode() {
   const [mode, setMode] = useState<QrcodeMode>('edit');
   const [savedAt, setSavedAt] = useState<number>();
   const [qrImage, setQrImage] = useState('');
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(variant === 'page');
   const [hoverPreviewVisible, setHoverPreviewVisible] = useState(false);
   const loadedRef = useRef(false);
   const hoverPreviewTimerRef = useRef<number | undefined>(undefined);
@@ -554,8 +559,27 @@ export default function BaseQrcode() {
     setMode('edit');
   };
 
+  const openDetail = () => {
+    if (variant === 'page') {
+      setVisible(true);
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent('your-s-tools:open-tool', { detail: 'qrcode' }));
+  };
+
+  const closeDetail = () => {
+    if (variant === 'page') {
+      onClose?.();
+      return;
+    }
+
+    setVisible(false);
+  };
+
   return (
     <>
+      {variant === 'launcher' && (
       <div className={styles.launcherWrap} onMouseEnter={showHoverPreview} onMouseLeave={hideHoverPreview}>
         <button
           type="button"
@@ -564,7 +588,7 @@ export default function BaseQrcode() {
           title={t('qrcode.open')}
           onFocus={showHoverPreview}
           onBlur={hideHoverPreview}
-          onClick={() => setVisible(true)}
+          onClick={openDetail}
         >
           <span className={styles.launcherIcon}>
             <QrCode size={28} strokeWidth={2.2} />
@@ -577,48 +601,52 @@ export default function BaseQrcode() {
           </div>
         )}
       </div>
+      )}
 
-      <Modal
-        className={styles.modal}
+      <ToolModal
         title={activeDisplayName}
         visible={visible}
-        footer={null}
-        unmountOnExit={false}
-        onCancel={() => setVisible(false)}
+        onCancel={closeDetail}
+        header={(
+          <div className={styles.toolbar}>
+            <div>
+              <div className={styles.modeTitle}>
+                {activeDisplayName}
+              </div>
+              <div className={styles.modeMeta}>
+                {mode === 'display'
+                  ? t('qrcode.displayMode')
+                  : t('qrcode.editMode')}
+                {' · '}
+                {savedForm ? t('qrcode.savedAt', { time: formatSavedTime(savedAt) }) : t('qrcode.unsaved')}
+              </div>
+            </div>
+            <Space className={styles.toolbarActions} split={<Divider type="vertical" />}>
+              {mode === 'display' ? (
+                <Button type="primary" icon={<Edit3 size={16} />} onClick={startEdit}>
+                  {t('qrcode.edit')}
+                </Button>
+              ) : (
+                <>
+                  <Button disabled={!savedForm} onClick={cancelEdit}>
+                    {t('qrcode.cancelEdit')}
+                  </Button>
+                  <Button type="primary" icon={<Save size={16} />} onClick={saveForm}>
+                    {t('qrcode.save')}
+                  </Button>
+                </>
+              )}
+            </Space>
+          </div>
+        )}
+        footer={(
+          <Space className={styles.actions} split={<Divider type="vertical" />}>
+            <Button type="primary" onClick={copyPayload}>
+              {t('qrcode.copy')}
+            </Button>
+          </Space>
+        )}
       >
-        <div className={styles.toolbar}>
-          <div>
-            <div className={styles.modeTitle}>
-              {activeDisplayName}
-            </div>
-            <div className={styles.modeMeta}>
-              {mode === 'display'
-                ? t('qrcode.displayMode')
-                : t('qrcode.editMode')}
-              {' · '}
-              {savedForm ? t('qrcode.savedAt', { time: formatSavedTime(savedAt) }) : t('qrcode.unsaved')}
-            </div>
-          </div>
-          <div className={styles.toolbarActions}>
-            {mode === 'display' ? (
-              <button type="button" className={styles.iconButton} onClick={startEdit}>
-                <Edit3 size={16} />
-                <span>{t('qrcode.edit')}</span>
-              </button>
-            ) : (
-              <>
-                <button type="button" className={styles.secondaryButton} disabled={!savedForm} onClick={cancelEdit}>
-                  {t('qrcode.cancelEdit')}
-                </button>
-                <button type="button" className={styles.iconButton} onClick={saveForm}>
-                  <Save size={16} />
-                  <span>{t('qrcode.save')}</span>
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-
         <div className={styles.qrcode}>
           <div className={styles.preview}>
             <div className={styles.qrImage}>
@@ -626,11 +654,6 @@ export default function BaseQrcode() {
             </div>
             {!qrImage && <div className={styles.error}>{t('qrcode.unavailable')}</div>}
             <div className={styles.payload} title={payload}>{payload}</div>
-            <div className={styles.actions}>
-              <button type="button" className={styles.button} onClick={copyPayload}>
-                {t('qrcode.copy')}
-              </button>
-            </div>
           </div>
 
           {mode === 'display' ? (
@@ -818,7 +841,7 @@ export default function BaseQrcode() {
             </div>
           )}
         </div>
-      </Modal>
+      </ToolModal>
     </>
   );
 }

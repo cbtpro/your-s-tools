@@ -14,6 +14,12 @@ interface MenuItem {
   icon: string;
 }
 
+interface MenuGroup {
+  label: string;
+  icon: string;
+  children: MenuItem[];
+}
+
 const Menu: React.FC<MenuProps> = ({ appName, version }) => {
   const { t } = useTranslation();
   const menuItems: MenuItem[] = [
@@ -21,6 +27,16 @@ const Menu: React.FC<MenuProps> = ({ appName, version }) => {
     { label: t('apps.customize'), path: '/layout-edit', icon: '🎨' },
     { label: t('apps.help'), path: '/help', icon: '❓' },
     { label: t('apps.about'), path: '/about', icon: 'ℹ️' },
+  ];
+  const menuGroups: MenuGroup[] = [
+    {
+      label: t('apps.tools'),
+      icon: '🧰',
+      children: [
+        { label: t('components.items.baseQrcode'), path: '/tools/qrcode', icon: '▣' },
+        { label: t('components.items.baseCode'), path: '/tools/code', icon: '</>' },
+      ],
+    },
   ];
 
   const handleNavigate = async (path: string) => {
@@ -48,6 +64,24 @@ const Menu: React.FC<MenuProps> = ({ appName, version }) => {
           <li key={item.path} onClick={() => handleNavigate(item.path)}>
             <span className="icon">{item.icon}</span>
             <span className="label">{item.label}</span>
+          </li>
+        ))}
+        {menuGroups.map((group) => (
+          <li key={group.label} className="menu-group">
+            <details>
+              <summary>
+                <span className="icon">{group.icon}</span>
+                <span className="label">{group.label}</span>
+              </summary>
+              <ul className="submenu-list">
+                {group.children.map((item) => (
+                  <li key={item.path} onClick={() => handleNavigate(item.path)}>
+                    <span className="icon">{item.icon}</span>
+                    <span className="label">{item.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
           </li>
         ))}
       </ul>

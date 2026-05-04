@@ -49,20 +49,12 @@
   white-space: nowrap;
 }
 
-.modal {
-  width: min(1040px, calc(100vw - 32px));
-}
-
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #f9fafb;
+  padding-right: 28px;
 }
 
 .title {
@@ -84,45 +76,20 @@
   gap: 8px;
 }
 
-.primaryButton,
-.secondaryButton,
-.dangerButton {
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.primaryButton {
-  border: 0;
-  background: #0f766e;
-  color: #fff;
-}
-
-.secondaryButton {
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
-}
-
-.dangerButton {
-  border: 1px solid #fecaca;
-  background: #fff;
-  color: #dc2626;
+.snippetActions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(360px, 1fr);
+  grid-template-columns: minmax(240px, 320px) minmax(360px, 1fr);
   gap: 16px;
-  max-height: min(720px, calc(100vh - 160px));
+  height: min(660px, calc(100vh - 204px));
+  max-height: min(660px, calc(100vh - 204px));
+  min-height: 460px;
   color: #111827;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -174,9 +141,10 @@
 
 .editor {
   display: grid;
-  grid-template-rows: auto minmax(160px, 1fr) minmax(160px, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
   min-width: 0;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -189,6 +157,7 @@
 .row {
   display: flex;
   min-width: 0;
+  min-height: 0;
   flex-direction: column;
   gap: 4px;
 }
@@ -215,8 +184,10 @@
 
 .textarea {
   height: 100%;
-  min-height: 180px;
+  min-height: 0;
+  box-sizing: border-box;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  overflow: auto;
   resize: none;
 }
 
@@ -249,6 +220,19 @@
 
   .workspace {
     grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .editor {
+    grid-template-rows: auto minmax(220px, auto) minmax(220px, auto);
+    overflow: visible;
+  }
+
+  .textarea {
+    min-height: 220px;
   }
 
   .formGrid {

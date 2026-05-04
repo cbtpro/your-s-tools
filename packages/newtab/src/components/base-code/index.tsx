@@ -1,18 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Modal } from '@arco-design/web-react';
+import { Button, Divider, Space } from '@arco-design/web-react';
 import { Code2, Copy, FilePlus2, Save, Sparkles, Trash2 } from 'lucide-react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
+import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
+import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import json from 'react-syntax-highlighter/dist/esm/languages/prism/json';
+import markdown from 'react-syntax-highlighter/dist/esm/languages/prism/markdown';
+import markup from 'react-syntax-highlighter/dist/esm/languages/prism/markup';
+import sql from 'react-syntax-highlighter/dist/esm/languages/prism/sql';
+import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import prettier from 'prettier/standalone';
-import babelPlugin from 'prettier/plugins/babel';
-import estreePlugin from 'prettier/plugins/estree';
-import htmlPlugin from 'prettier/plugins/html';
-import markdownPlugin from 'prettier/plugins/markdown';
-import postcssPlugin from 'prettier/plugins/postcss';
-import typescriptPlugin from 'prettier/plugins/typescript';
 import { useTranslation } from '@your-s-tools/i18n';
 import type { YourToolApp } from '@your-s-tools/types';
+import ToolModal from '../tool-modal';
 import styles from './style.module.scss';
+
+interface BaseCodeProps {
+  variant?: 'launcher' | 'page';
+  onClose?: () => void;
+}
 
 const storageKey = 'your-s-tools:code-snippets';
 
@@ -27,6 +34,15 @@ const languageOptions: YourToolApp.CodeSnippetLanguage[] = [
   'shell',
   'text',
 ];
+
+SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('json', json);
+SyntaxHighlighter.registerLanguage('markdown', markdown);
+SyntaxHighlighter.registerLanguage('markup', markup);
+SyntaxHighlighter.registerLanguage('sql', sql);
+SyntaxHighlighter.registerLanguage('typescript', typescript);
 
 const initialSnippet: YourToolApp.CodeSnippet = {
   id: 'welcome',
@@ -67,7 +83,26 @@ function getParser(language: YourToolApp.CodeSnippetLanguage) {
 
 function getSyntaxLanguage(language: YourToolApp.CodeSnippetLanguage) {
   if (language === 'shell') return 'bash';
+  if (language === 'html') return 'markup';
   return language;
+}
+
+function getPrettierPluginLoaders(language: YourToolApp.CodeSnippetLanguage) {
+  switch (language) {
+    case 'typescript':
+      return [() => import('prettier/plugins/typescript'), () => import('prettier/plugins/estree')];
+    case 'javascript':
+    case 'json':
+      return [() => import('prettier/plugins/babel'), () => import('prettier/plugins/estree')];
+    case 'css':
+      return [() => import('prettier/plugins/postcss')];
+    case 'html':
+      return [() => import('prettier/plugins/html')];
+    case 'markdown':
+      return [() => import('prettier/plugins/markdown')];
+    default:
+      return [];
+  }
 }
 
 function formatDate(value: number) {
@@ -98,10 +133,10 @@ async function setStoredState(value: YourToolApp.StoredCodeState) {
   window.localStorage.setItem(storageKey, JSON.stringify(value));
 }
 
-export default function BaseCode() {
+export default function BaseCode({ variant = 'launcher', onClose }: BaseCodeProps = {}) {
   const { t } = useTranslation();
   const defaultDisplayName = t('components.items.baseCode');
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(variant === 'page');
   const [displayName, setDisplayName] = useState('');
   const [snippets, setSnippets] = useState<YourToolApp.CodeSnippet[]>([initialSnippet]);
   const [activeId, setActiveId] = useState(initialSnippet.id);
@@ -167,9 +202,13 @@ export default function BaseCode() {
     }
 
     try {
-      const formatted = await prettier.format(activeSnippet.code, {
+      const [prettierModule, ...pluginModules] = await Promise.all([
+        import('prettier/standalone'),
+        ...getPrettierPluginLoaders(activeSnippet.language).map((loadPlugin) => loadPlugin()),
+      ]);
+      const formatted = await prettierModule.default.format(activeSnippet.code, {
         parser,
-        plugins: [babelPlugin, estreePlugin, htmlPlugin, markdownPlugin, postcssPlugin, typescriptPlugin],
+        plugins: pluginModules.map((pluginModule) => pluginModule.default),
         semi: true,
         singleQuote: true,
       });
@@ -184,15 +223,34 @@ export default function BaseCode() {
     t('code.snippetCount', { count: snippets.length })
   ), [snippets.length, t]);
 
+  const openDetail = () => {
+    if (variant === 'page') {
+      setVisible(true);
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent('your-s-tools:open-tool', { detail: 'code' }));
+  };
+
+  const closeDetail = () => {
+    if (variant === 'page') {
+      onClose?.();
+      return;
+    }
+
+    setVisible(false);
+  };
+
   return (
     <>
+      {variant === 'launcher' && (
       <div className={styles.launcherWrap}>
         <button
           type="button"
           className={styles.launcher}
           aria-label={t('code.open')}
           title={t('code.open')}
-          onClick={() => setVisible(true)}
+          onClick={openDetail}
         >
           <span className={styles.launcherIcon}>
             <Code2 size={28} strokeWidth={2.2} />
@@ -200,36 +258,43 @@ export default function BaseCode() {
           <span className={styles.launcherText}>{activeDisplayName}</span>
         </button>
       </div>
+      )}
 
-      <Modal
-        className={styles.modal}
+      <ToolModal
         title={activeDisplayName}
         visible={visible}
-        footer={null}
-        unmountOnExit={false}
-        onCancel={() => setVisible(false)}
+        onCancel={closeDetail}
+        header={(
+          <div className={styles.toolbar}>
+            <div>
+              <div className={styles.title}>{activeDisplayName}</div>
+              <div className={styles.meta}>{snippetCountLabel}</div>
+            </div>
+            <Space className={styles.toolbarActions} split={<Divider type="vertical" />}>
+              <Button icon={<Copy size={16} />} onClick={copySnippet}>
+                {t('code.copy')}
+              </Button>
+              <Button icon={<Sparkles size={16} />} onClick={formatSnippet}>
+                {t('code.format')}
+              </Button>
+              <Button type="primary" icon={<FilePlus2 size={16} />} onClick={addSnippet}>
+                {t('code.add')}
+              </Button>
+            </Space>
+          </div>
+        )}
+        footer={activeSnippet ? (
+          <Space className={styles.snippetActions} split={<Divider type="vertical" />}>
+            {formatError && <span className={styles.meta}>{formatError}</span>}
+            <Button status="danger" icon={<Trash2 size={16} />} onClick={deleteSnippet}>
+              {t('code.delete')}
+            </Button>
+            <Button type="primary" icon={<Save size={16} />} onClick={closeDetail}>
+              {t('code.done')}
+            </Button>
+          </Space>
+        ) : null}
       >
-        <div className={styles.toolbar}>
-          <div>
-            <div className={styles.title}>{activeDisplayName}</div>
-            <div className={styles.meta}>{snippetCountLabel}</div>
-          </div>
-          <div className={styles.toolbarActions}>
-            <button type="button" className={styles.secondaryButton} onClick={copySnippet}>
-              <Copy size={16} />
-              <span>{t('code.copy')}</span>
-            </button>
-            <button type="button" className={styles.secondaryButton} onClick={formatSnippet}>
-              <Sparkles size={16} />
-              <span>{t('code.format')}</span>
-            </button>
-            <button type="button" className={styles.primaryButton} onClick={addSnippet}>
-              <FilePlus2 size={16} />
-              <span>{t('code.add')}</span>
-            </button>
-          </div>
-        </div>
-
         <div className={styles.workspace}>
           <div className={styles.sidebar}>
             <label className={styles.row}>
@@ -301,24 +366,12 @@ export default function BaseCode() {
                   {activeSnippet.code || ' '}
                 </SyntaxHighlighter>
               </div>
-
-              <div className={styles.snippetActions}>
-                {formatError && <span className={styles.meta}>{formatError}</span>}
-                <button type="button" className={styles.dangerButton} onClick={deleteSnippet}>
-                  <Trash2 size={16} />
-                  <span>{t('code.delete')}</span>
-                </button>
-                <button type="button" className={styles.primaryButton} onClick={() => setVisible(false)}>
-                  <Save size={16} />
-                  <span>{t('code.done')}</span>
-                </button>
-              </div>
             </div>
           ) : (
             <div className={styles.empty}>{t('code.empty')}</div>
           )}
         </div>
-      </Modal>
+      </ToolModal>
     </>
   );
 }

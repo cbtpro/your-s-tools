@@ -253,6 +253,7 @@ export default {
     "videos": "视频",
     "files": "文件",
     "settings": "设置",
+    "tools": "工具",
     "customize": "个性化",
     "help": "帮助",
     "about": "关于"

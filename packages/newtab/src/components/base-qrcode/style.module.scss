@@ -71,20 +71,12 @@
   object-fit: contain;
 }
 
-.modal {
-  width: min(820px, calc(100vw - 32px));
-}
-
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #f9fafb;
+  padding-right: 28px;
 }
 
 .modeTitle {
@@ -106,50 +98,18 @@
   gap: 8px;
 }
 
-.iconButton,
-.secondaryButton,
-.button {
-  display: inline-flex;
-  min-height: 34px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border: 0;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.iconButton,
-.button {
-  background: #165dff;
-  color: #fff;
-}
-
-.secondaryButton {
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
-}
-
-.secondaryButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
 .qrcode {
   display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(220px, 1fr);
+  grid-template-columns: minmax(240px, 320px) minmax(360px, 1fr);
   gap: 16px;
   width: 100%;
-  max-height: min(680px, calc(100vh - 160px));
-  min-height: 260px;
-  padding: 4px;
+  height: min(660px, calc(100vh - 204px));
+  max-height: min(660px, calc(100vh - 204px));
+  min-height: 460px;
   border-radius: 8px;
   background: #fff;
   color: #111827;
+  overflow: hidden;
 }
 
 .preview {
@@ -159,13 +119,19 @@
   justify-content: center;
   gap: 10px;
   min-width: 0;
+  min-height: 0;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  overflow: auto;
 }
 
 .qrImage {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(100%, 220px);
+  width: min(100%, 260px);
   aspect-ratio: 1;
   padding: 10px;
   border: 1px solid #e5e7eb;
@@ -188,7 +154,7 @@
 
 .payload {
   width: 100%;
-  max-width: 220px;
+  max-width: 260px;
   overflow: hidden;
   color: #6b7280;
   font-size: 12px;
@@ -202,10 +168,12 @@
   align-content: start;
   gap: 8px;
   min-width: 0;
+  min-height: 0;
   padding: 18px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
+  overflow: auto;
 }
 
 .summaryLabel {
@@ -225,6 +193,7 @@
 .form {
   display: flex;
   min-width: 0;
+  min-height: 0;
   flex-direction: column;
   gap: 10px;
   overflow: auto;
@@ -316,6 +285,7 @@
 
 .row {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 4px;
 }
@@ -365,5 +335,13 @@
 
   .qrcode {
     grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .preview {
+    overflow: visible;
   }
 }
