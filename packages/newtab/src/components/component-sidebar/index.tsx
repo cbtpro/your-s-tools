@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent, type CompositionEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ReactNode } from 'react';
 import { useDrag } from 'react-dnd';
 import {
   IconApps,
@@ -15,6 +15,7 @@ import {
   type ComponentGroupKey,
   type ComponentItem,
 } from '@/constants/components';
+import { useCompositionGuard } from '@/hooks/use-composition-guard';
 import styles from './style.module.scss';
 
 interface ComponentSidebarProps {
@@ -91,19 +92,12 @@ function GroupToggleIcon({ collapsed }: { collapsed: boolean }) {
 function ComponentSearch({ value, suggestions, onChange }: ComponentSearchProps) {
   const { t } = useTranslation();
   const [focused, setFocused] = useState(false);
-  const isComposingRef = useRef(false);
+  const compositionGuard = useCompositionGuard<HTMLInputElement>({
+    onCompositionEnd: (event) => onChange(event.currentTarget.value),
+  });
   const showSuggestions = focused && value.trim() && suggestions.length > 0;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.currentTarget.value);
-  };
-
-  const handleCompositionStart = () => {
-    isComposingRef.current = true;
-  };
-
-  const handleCompositionEnd = (event: CompositionEvent<HTMLInputElement>) => {
-    isComposingRef.current = false;
     onChange(event.currentTarget.value);
   };
 
@@ -126,8 +120,7 @@ function ComponentSearch({ value, suggestions, onChange }: ComponentSearchProps)
         onChange={handleChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        onCompositionStart={handleCompositionStart}
-        onCompositionEnd={handleCompositionEnd}
+        {...compositionGuard.compositionProps}
       />
 
       {showSuggestions && (

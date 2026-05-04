@@ -4,13 +4,13 @@ import {
   useRef,
   useState,
   type ChangeEvent,
-  type CompositionEvent,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconCommand, IconCompass, IconSearch } from '@arco-design/web-react/icon';
 import { useTranslation } from '@your-s-tools/i18n';
 import { initialSettings, useStorageState } from '@your-s-tools/shared';
 import type { YourToolApp } from '@your-s-tools/types';
+import { useCompositionGuard } from '@/hooks/use-composition-guard';
 import { createCommands, type CommandAction } from './commands';
 import styles from './style.module.scss';
 
@@ -45,9 +45,14 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     initialSettings.commandPalette,
   );
   const inputRef = useRef<HTMLInputElement>(null);
-  const isComposingRef = useRef(false);
   const [input, setInput] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const compositionGuard = useCompositionGuard<HTMLInputElement>({
+    onCompositionEnd: (event) => {
+      setInput(event.currentTarget.value);
+      setActiveIndex(0);
+    },
+  });
 
   const commands = useMemo(
     () => createCommands({
@@ -86,12 +91,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     setActiveIndex(0);
   };
 
-  const handleCompositionEnd = (event: CompositionEvent<HTMLInputElement>) => {
-    isComposingRef.current = false;
-    setInput(event.currentTarget.value);
-    setActiveIndex(0);
-  };
-
   return (
     <div
       className={styles.overlay}
@@ -114,10 +113,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             placeholder={t('commandPalette.placeholder')}
             aria-label={t('commandPalette.placeholder')}
             onChange={handleChange}
-            onCompositionStart={() => {
-              isComposingRef.current = true;
-            }}
-            onCompositionEnd={handleCompositionEnd}
+            {...compositionGuard.compositionProps}
             onKeyDown={(event) => {
               if (event.key === 'Escape') {
                 event.preventDefault();
@@ -137,7 +133,9 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 return;
               }
 
-              if (event.key === 'Enter' && !isComposingRef.current) {
+              if (compositionGuard.isEnterDuringComposition(event)) return;
+
+              if (event.key === 'Enter') {
                 event.preventDefault();
                 runCommand(commands[activeIndex]);
               }

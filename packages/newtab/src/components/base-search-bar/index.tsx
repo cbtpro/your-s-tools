@@ -1,10 +1,14 @@
-import { useRef, useState, type ChangeEvent, type CompositionEvent } from 'react';
+import { useCallback, useState } from 'react';
+import { Button, Input } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import { useTranslation } from '@your-s-tools/i18n';
 import { initialSettings, useStorageState } from '@your-s-tools/shared';
 import type { YourToolApp } from '@your-s-tools/types';
 import { openSearch, searchEngines } from '@/features/command-palette/search-engines';
+import { useCompositionGuard } from '@/hooks/use-composition-guard';
 import styles from './style.module.scss';
+
+const { Group: InputGroup } = Input;
 
 export const BaseSearchBar = () => {
   const { t } = useTranslation();
@@ -13,45 +17,45 @@ export const BaseSearchBar = () => {
     initialSettings.commandPalette,
   );
   const [value, setValue] = useState('');
-  const isComposingRef = useRef(false);
+  const compositionGuard = useCompositionGuard<HTMLInputElement>();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.currentTarget.value);
-  };
-
-  const handleCompositionEnd = (event: CompositionEvent<HTMLInputElement>) => {
-    isComposingRef.current = false;
-    setValue(event.currentTarget.value);
-  };
-
-  const submitSearch = () => {
-    openSearch(value, commandPaletteSettings.searchOpenTarget);
-  };
+  const submitSearch = useCallback(() => {
+    openSearch(value.trim(), commandPaletteSettings.searchOpenTarget);
+  }, [commandPaletteSettings.searchOpenTarget, value]);
 
   return (
     <div className={styles.searchBar}>
-      <div className={styles.searchBox}>
-        <IconSearch className={styles.searchIcon} />
-        <input
+      分手的方式大方的身份的所发生的
+      <InputGroup compact className={styles.searchBox}>
+        <Input
           value={value}
           className={styles.input}
+          size="large"
+          allowClear
+          prefix={<IconSearch />}
           placeholder={t('search.placeholder')}
           aria-label={t('search.placeholder')}
-          onChange={handleChange}
-          onCompositionStart={() => {
-            isComposingRef.current = true;
-          }}
-          onCompositionEnd={handleCompositionEnd}
+          onChange={setValue}
+          {...compositionGuard.compositionProps}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' && !isComposingRef.current) {
+            if (compositionGuard.isEnterDuringComposition(event)) return;
+
+            if (event.key === 'Enter') {
+              event.preventDefault();
               submitSearch();
             }
           }}
         />
-        <button type="button" className={styles.submitButton} onClick={submitSearch}>
+        {/* <Button
+          className={styles.submitButton}
+          type="primary"
+          size="large"
+          icon={<IconSearch />}
+          onClick={submitSearch}
+        >
           {t('search.submit')}
-        </button>
-      </div>
+        </Button> */}
+      </InputGroup>
 
       <div className={styles.engineList}>
         {searchEngines.map((engine) => (
