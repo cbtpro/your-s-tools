@@ -8,6 +8,7 @@ const PACKAGE_VERSION = packageJson.version;
 
 export default defineConfig(({ command, mode }) => {
   const isDevBuild = command === 'build' && mode === 'development'
+  const isNodeModule = (id: string) => id.includes('node_modules');
 
   console.debug(
     'Vite Config - Command:',
@@ -40,12 +41,17 @@ export default defineConfig(({ command, mode }) => {
       emptyOutDir: !isDevBuild,
       sourcemap: isDevBuild,
       minify: isDevBuild ? false : 'esbuild',
+      chunkSizeWarningLimit: 3000,
       rollupOptions: {
         // 确保输出的文件名固定，方便 chrome 引用（如果需要的话）
         output: {
           entryFileNames: `assets/[name].js`,
           chunkFileNames: `assets/[name]-[hash].js`,
           assetFileNames: `assets/[name]-[hash].[ext]`,
+          manualChunks(id) {
+            if (!isNodeModule(id)) return undefined;
+            return 'vendor';
+          },
         },
       },
     },
