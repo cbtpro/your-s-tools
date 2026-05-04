@@ -57,6 +57,12 @@
   padding-right: 28px;
 }
 
+.titleGroup {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  column-gap: 4px;
+}
 .title {
   color: #111827;
   font-size: 15px;
@@ -73,7 +79,7 @@
 .snippetActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .snippetActions {

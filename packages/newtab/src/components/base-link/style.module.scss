@@ -57,6 +57,13 @@
   padding-right: 28px;
 }
 
+.titleGroup {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  column-gap: 4px;
+}
+
 .title {
   color: #111827;
   font-size: 15px;

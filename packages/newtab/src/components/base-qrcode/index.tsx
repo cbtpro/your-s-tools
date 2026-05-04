@@ -609,7 +609,7 @@ export default function BaseQrcode({ variant = 'launcher', onClose }: BaseQrcode
         onCancel={closeDetail}
         header={(
           <div className={styles.toolbar}>
-            <div>
+            <div className={styles.titleGroup}>
               <div className={styles.modeTitle}>
                 {activeDisplayName}
               </div>
@@ -622,20 +622,18 @@ export default function BaseQrcode({ variant = 'launcher', onClose }: BaseQrcode
               </div>
             </div>
             <Space className={styles.toolbarActions} split={<Divider type="vertical" />}>
-              {mode === 'display' ? (
-                <Button type="primary" icon={<Edit3 size={16} />} onClick={startEdit}>
+              {mode === 'display' ? [
+                <Button key="edit" type="primary" icon={<Edit3 size={16} />} onClick={startEdit}>
                   {t('qrcode.edit')}
-                </Button>
-              ) : (
-                <>
-                  <Button disabled={!savedForm} onClick={cancelEdit}>
-                    {t('qrcode.cancelEdit')}
-                  </Button>
-                  <Button type="primary" icon={<Save size={16} />} onClick={saveForm}>
-                    {t('qrcode.save')}
-                  </Button>
-                </>
-              )}
+                </Button>,
+              ] : [
+                <Button key="cancel" disabled={!savedForm} onClick={cancelEdit}>
+                  {t('qrcode.cancelEdit')}
+                </Button>,
+                <Button key="save" type="primary" icon={<Save size={16} />} onClick={saveForm}>
+                  {t('qrcode.save')}
+                </Button>,
+              ]}
             </Space>
           </div>
         )}

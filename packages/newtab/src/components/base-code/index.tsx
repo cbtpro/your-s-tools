@@ -266,7 +266,7 @@ export default function BaseCode({ variant = 'launcher', onClose }: BaseCodeProp
         onCancel={closeDetail}
         header={(
           <div className={styles.toolbar}>
-            <div>
+            <div className={styles.titleGroup}>
               <div className={styles.title}>{activeDisplayName}</div>
               <div className={styles.meta}>{snippetCountLabel}</div>
             </div>

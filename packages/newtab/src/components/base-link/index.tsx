@@ -202,7 +202,7 @@ export default function BaseLink() {
         onCancel={() => setVisible(false)}
         header={(
           <div className={styles.toolbar}>
-            <div>
+            <div className={styles.titleGroup}>
               <div className={styles.title}>{activeDisplayName}</div>
               <div className={styles.meta}>{t('link.linkCount', { count: links.length })}</div>
             </div>
