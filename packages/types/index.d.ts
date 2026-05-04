@@ -97,9 +97,58 @@ export declare namespace YourToolApp {
    * 二维码组件持久化状态
    */
   interface StoredQrcodeState {
+    displayName?: string;
     current?: StoredQrcodeFormState;
     history: Partial<Record<QrcodeProtocol, QrcodeHistoryItem[]>>;
     savedAt?: number;
+  }
+
+  /**
+   * 代码片段语言
+   */
+  type CodeSnippetLanguage = 'typescript' | 'javascript' | 'json' | 'css' | 'html' | 'markdown' | 'sql' | 'shell' | 'text';
+
+  /**
+   * 代码片段
+   */
+  interface CodeSnippet {
+    id: string;
+    title: string;
+    language: CodeSnippetLanguage;
+    code: string;
+    updatedAt: number;
+  }
+
+  /**
+   * 代码片段组件持久化状态
+   */
+  interface StoredCodeState {
+    displayName?: string;
+    snippets: CodeSnippet[];
+    activeId?: string;
+  }
+
+  /**
+   * 网址条目
+   */
+  interface LinkItem {
+    id: string;
+    title: string;
+    url: string;
+    iconUrl?: string;
+    description?: string;
+    tags: string[];
+    pinned: boolean;
+    updatedAt: number;
+  }
+
+  /**
+   * 网址组件持久化状态
+   */
+  interface StoredLinkState {
+    displayName?: string;
+    links: LinkItem[];
+    activeId?: string;
   }
 
   /**

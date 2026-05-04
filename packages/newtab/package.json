@@ -16,6 +16,7 @@
     "@your-s-tools/shared": "workspace:^",
     "i18next": "catalog:",
     "lucide-react": "catalog:",
+    "prettier": "^3.8.3",
     "qrcode": "^1.5.4",
     "react": "catalog:",
     "react-dnd": "catalog:",
@@ -25,6 +26,7 @@
     "react-i18next": "catalog:",
     "react-resizable": "catalog:",
     "react-router-dom": "catalog:",
+    "react-syntax-highlighter": "^16.1.1",
     "tailwindcss": "catalog:"
   },
   "devDependencies": {
@@ -37,6 +39,7 @@
     "@types/react-grid-layout": "catalog:",
     "@types/react-resizable": "catalog:",
     "@types/react-router-dom": "catalog:",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "catalog:",
     "@your-s-tools/types": "workspace:^",
     "autoprefixer": "catalog:",

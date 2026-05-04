@@ -132,6 +132,7 @@ export default {
       "event": "Event"
     },
     "fields": {
+      "displayName": "Component name",
       "text": "Text",
       "url": "URL",
       "ssid": "Network name",
@@ -153,6 +154,58 @@ export default {
       "location": "Location",
       "startTime": "Start time",
       "endTime": "End time"
+    }
+  },
+  "code": {
+    "open": "Open code snippets",
+    "add": "Add",
+    "copy": "Copy",
+    "format": "Format",
+    "delete": "Delete",
+    "done": "Done",
+    "empty": "No code snippets yet",
+    "untitled": "Untitled snippet",
+    "snippetCount": "{{count}} snippets",
+    "formatUnsupported": "Formatting is not supported for this language",
+    "formatFailed": "Formatting failed. Check the code syntax",
+    "fields": {
+      "displayName": "Component name",
+      "title": "Title",
+      "language": "Language",
+      "code": "Code"
+    },
+    "languages": {
+      "typescript": "TypeScript",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "css": "CSS",
+      "html": "HTML",
+      "markdown": "Markdown",
+      "sql": "SQL",
+      "shell": "Shell",
+      "text": "Text"
+    }
+  },
+  "link": {
+    "open": "Open links",
+    "add": "Add",
+    "copy": "Copy",
+    "visit": "Visit",
+    "delete": "Delete",
+    "done": "Done",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "search": "Search links",
+    "empty": "No links yet",
+    "untitled": "Untitled link",
+    "linkCount": "{{count}} links",
+    "fields": {
+      "displayName": "Component name",
+      "title": "Title",
+      "url": "URL",
+      "iconUrl": "Image URL (blank uses favicon)",
+      "description": "Description",
+      "tags": "Tags, separated by commas"
     }
   },
   "commandPalette": {

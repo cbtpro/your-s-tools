@@ -132,6 +132,7 @@ export default {
       "event": "日程"
     },
     "fields": {
+      "displayName": "组件名称",
       "text": "文本内容",
       "url": "网址",
       "ssid": "网络名称",
@@ -153,6 +154,58 @@ export default {
       "location": "地点",
       "startTime": "开始时间",
       "endTime": "结束时间"
+    }
+  },
+  "code": {
+    "open": "打开代码片段",
+    "add": "新增",
+    "copy": "复制",
+    "format": "格式化",
+    "delete": "删除",
+    "done": "完成",
+    "empty": "暂无代码片段",
+    "untitled": "未命名片段",
+    "snippetCount": "{{count}} 个代码片段",
+    "formatUnsupported": "当前语言暂不支持格式化",
+    "formatFailed": "格式化失败，请检查代码语法",
+    "fields": {
+      "displayName": "组件名称",
+      "title": "标题",
+      "language": "语言",
+      "code": "代码"
+    },
+    "languages": {
+      "typescript": "TypeScript",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "css": "CSS",
+      "html": "HTML",
+      "markdown": "Markdown",
+      "sql": "SQL",
+      "shell": "Shell",
+      "text": "文本"
+    }
+  },
+  "link": {
+    "open": "打开网址",
+    "add": "新增",
+    "copy": "复制",
+    "visit": "访问",
+    "delete": "删除",
+    "done": "完成",
+    "pin": "置顶",
+    "unpin": "取消置顶",
+    "search": "搜索网址",
+    "empty": "暂无网址",
+    "untitled": "未命名网址",
+    "linkCount": "{{count}} 个网址",
+    "fields": {
+      "displayName": "组件名称",
+      "title": "标题",
+      "url": "网址",
+      "iconUrl": "图片地址（留空自动获取 favicon）",
+      "description": "描述",
+      "tags": "标签，使用逗号分隔"
     }
   },
   "commandPalette": {

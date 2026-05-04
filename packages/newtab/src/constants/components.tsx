@@ -16,7 +16,9 @@ const AsyncBaseNavbar = lazy(() => import('@/components/base-nav-bar'));
 const AsyncBaseSearchBar = lazy(() => import('@/components/base-search-bar'));
 const AsyncBasePopular = lazy(() => import('@/components/base-popular'));
 const AsyncBaseFavorite = lazy(() => import('@/components/base-favorite'));
+const AsyncBaseCode = lazy(() => import('@/components/base-code'));
 const AsyncBaseQrcode = lazy(() => import('@/components/base-qrcode'));
+const AsyncBaseLink = lazy(() => import('@/components/base-link'));
 
 export const componentGroupKeys = ['layout', 'container', 'feature'] as const;
 export type ComponentGroupKey = (typeof componentGroupKeys)[number];
@@ -129,8 +131,9 @@ export const componentRegistry = {
     labelKey: 'components.items.baseCode',
     groupKey: 'feature',
     icon: 'code',
-    enabled: false,
-    defaultSize: { w: 4, h: 3 },
+    enabled: true,
+    defaultSize: { w: 2, h: 2 },
+    component: AsyncBaseCode,
   },
   BaseQrcode: {
     type: 'BaseQrcode',
@@ -146,8 +149,9 @@ export const componentRegistry = {
     labelKey: 'components.items.baseLink',
     groupKey: 'feature',
     icon: 'link',
-    enabled: false,
-    defaultSize: { w: 4, h: 2 },
+    enabled: true,
+    defaultSize: { w: 2, h: 2 },
+    component: AsyncBaseLink,
   },
 } satisfies Record<string, ComponentDefinition>;
 

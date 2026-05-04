@@ -12,6 +12,7 @@ type RuntimeHistoryItem = Omit<YourToolApp.QrcodeHistoryItem, 'form'> & {
 };
 type RuntimeHistory = Partial<Record<YourToolApp.QrcodeProtocol, RuntimeHistoryItem[]>>;
 interface RuntimeQrcodeState {
+  displayName?: string;
   current?: YourToolApp.QrcodeFormState;
   history: RuntimeHistory;
   savedAt?: number;
@@ -176,6 +177,7 @@ async function serializeState(state: RuntimeQrcodeState): Promise<YourToolApp.St
   );
 
   return {
+    displayName: state.displayName,
     current: state.current ? await serializeForm(state.current) : undefined,
     history: Object.fromEntries(historyEntries),
     savedAt: state.savedAt,
@@ -207,6 +209,7 @@ async function parseStoredState(value: string | null): Promise<RuntimeQrcodeStat
   );
 
   return {
+    displayName: stored.displayName,
     current: stored.current ? await parseStoredForm(stored.current) : undefined,
     history: Object.fromEntries(historyEntries),
     savedAt: stored.savedAt,
@@ -362,15 +365,21 @@ function formatSavedTime(value?: number) {
 
 export default function BaseQrcode() {
   const { t } = useTranslation();
+  const defaultDisplayName = t('components.items.baseQrcode');
   const [form, setForm] = useState<YourToolApp.QrcodeFormState>(initialForm);
   const [savedForm, setSavedForm] = useState<YourToolApp.QrcodeFormState | null>(null);
   const [history, setHistory] = useState<RuntimeHistory>({});
+  const [displayName, setDisplayName] = useState('');
+  const [draftDisplayName, setDraftDisplayName] = useState('');
   const [mode, setMode] = useState<QrcodeMode>('edit');
   const [savedAt, setSavedAt] = useState<number>();
   const [qrImage, setQrImage] = useState('');
   const [visible, setVisible] = useState(false);
+  const [hoverPreviewVisible, setHoverPreviewVisible] = useState(false);
   const loadedRef = useRef(false);
+  const hoverPreviewTimerRef = useRef<number | undefined>(undefined);
   const activeForm = mode === 'display' && savedForm ? savedForm : form;
+  const activeDisplayName = (mode === 'display' ? displayName : draftDisplayName).trim() || defaultDisplayName;
   const payload = useMemo(() => buildPayload(activeForm), [activeForm]);
   const currentHistory = history[form.protocol] ?? [];
 
@@ -384,6 +393,8 @@ export default function BaseQrcode() {
         setForm(storedState.current);
         setSavedForm(storedState.current);
         setHistory(storedState.history);
+        setDisplayName(storedState.displayName ?? '');
+        setDraftDisplayName(storedState.displayName ?? '');
         setSavedAt(storedState.savedAt);
         setMode('display');
       })
@@ -427,6 +438,12 @@ export default function BaseQrcode() {
     };
   }, [payload]);
 
+  useEffect(() => () => {
+    if (hoverPreviewTimerRef.current) {
+      window.clearTimeout(hoverPreviewTimerRef.current);
+    }
+  }, []);
+
   const updateForm = <K extends keyof YourToolApp.QrcodeFormState>(key: K, value: YourToolApp.QrcodeFormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
@@ -448,6 +465,7 @@ export default function BaseQrcode() {
     if (!loadedRef.current) return;
 
     serializeState({
+      displayName: displayName.trim() || undefined,
       current: savedForm ?? undefined,
       history: nextHistory,
       savedAt,
@@ -477,7 +495,9 @@ export default function BaseQrcode() {
     if (!loadedRef.current) return;
     const nextHistory = addHistoryItem(history, form);
     const nextSavedAt = Date.now();
+    const nextDisplayName = draftDisplayName.trim();
     const nextState: RuntimeQrcodeState = {
+      displayName: nextDisplayName || undefined,
       current: form,
       history: nextHistory,
       savedAt: nextSavedAt,
@@ -488,6 +508,8 @@ export default function BaseQrcode() {
       .then(() => {
         setHistory(nextHistory);
         setSavedForm(form);
+        setDisplayName(nextDisplayName);
+        setDraftDisplayName(nextDisplayName);
         setSavedAt(nextSavedAt);
         setMode('display');
       })
@@ -500,14 +522,31 @@ export default function BaseQrcode() {
     navigator.clipboard?.writeText(payload);
   };
 
+  const showHoverPreview = () => {
+    if (!qrImage) return;
+    hoverPreviewTimerRef.current = window.setTimeout(() => {
+      setHoverPreviewVisible(true);
+    }, 300);
+  };
+
+  const hideHoverPreview = () => {
+    if (hoverPreviewTimerRef.current) {
+      window.clearTimeout(hoverPreviewTimerRef.current);
+      hoverPreviewTimerRef.current = undefined;
+    }
+    setHoverPreviewVisible(false);
+  };
+
   const startEdit = () => {
     setForm(savedForm ?? form);
+    setDraftDisplayName(displayName);
     setMode('edit');
   };
 
   const cancelEdit = () => {
     if (savedForm) {
       setForm(savedForm);
+      setDraftDisplayName(displayName);
       setMode('display');
       return;
     }
@@ -517,22 +556,31 @@ export default function BaseQrcode() {
 
   return (
     <>
-      <button
-        type="button"
-        className={styles.launcher}
-        aria-label={t('qrcode.open')}
-        title={t('qrcode.open')}
-        onClick={() => setVisible(true)}
-      >
-        <span className={styles.launcherIcon}>
-          <QrCode size={28} strokeWidth={2.2} />
-        </span>
-        <span className={styles.launcherText}>{t('components.items.baseQrcode')}</span>
-      </button>
+      <div className={styles.launcherWrap} onMouseEnter={showHoverPreview} onMouseLeave={hideHoverPreview}>
+        <button
+          type="button"
+          className={styles.launcher}
+          aria-label={t('qrcode.open')}
+          title={t('qrcode.open')}
+          onFocus={showHoverPreview}
+          onBlur={hideHoverPreview}
+          onClick={() => setVisible(true)}
+        >
+          <span className={styles.launcherIcon}>
+            <QrCode size={28} strokeWidth={2.2} />
+          </span>
+          <span className={styles.launcherText}>{activeDisplayName}</span>
+        </button>
+        {hoverPreviewVisible && qrImage && (
+          <div className={styles.hoverPreview} role="presentation">
+            <img src={qrImage} alt={activeDisplayName} />
+          </div>
+        )}
+      </div>
 
       <Modal
         className={styles.modal}
-        title={t('components.items.baseQrcode')}
+        title={activeDisplayName}
         visible={visible}
         footer={null}
         unmountOnExit={false}
@@ -541,9 +589,13 @@ export default function BaseQrcode() {
         <div className={styles.toolbar}>
           <div>
             <div className={styles.modeTitle}>
-              {mode === 'display' ? t('qrcode.displayMode') : t('qrcode.editMode')}
+              {activeDisplayName}
             </div>
             <div className={styles.modeMeta}>
+              {mode === 'display'
+                ? t('qrcode.displayMode')
+                : t('qrcode.editMode')}
+              {' · '}
               {savedForm ? t('qrcode.savedAt', { time: formatSavedTime(savedAt) }) : t('qrcode.unsaved')}
             </div>
           </div>
@@ -570,7 +622,7 @@ export default function BaseQrcode() {
         <div className={styles.qrcode}>
           <div className={styles.preview}>
             <div className={styles.qrImage}>
-              {qrImage && <img src={qrImage} alt={t('components.items.baseQrcode')} />}
+              {qrImage && <img src={qrImage} alt={activeDisplayName} />}
             </div>
             {!qrImage && <div className={styles.error}>{t('qrcode.unavailable')}</div>}
             <div className={styles.payload} title={payload}>{payload}</div>
@@ -590,6 +642,16 @@ export default function BaseQrcode() {
             </div>
           ) : (
             <div className={styles.form}>
+              <label className={styles.row}>
+                <span className={styles.label}>{t('qrcode.fields.displayName')}</span>
+                <input
+                  className={styles.input}
+                  value={draftDisplayName}
+                  placeholder={defaultDisplayName}
+                  onChange={(event) => setDraftDisplayName(event.target.value)}
+                />
+              </label>
+
               <label className={styles.row}>
                 <span className={styles.label}>{t('qrcode.protocol')}</span>
                 <select
